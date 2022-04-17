@@ -39,8 +39,8 @@ public final class Nebula extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        //unregister
         HandlerList.unregisterAll();
     }
-    //test
 
 }
