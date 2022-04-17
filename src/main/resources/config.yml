@@ -1,0 +1,5 @@
+settings:
+    afksystem:
+        enable: true
+    chatping:
+        enable: true

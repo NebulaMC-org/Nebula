@@ -1,0 +1,6 @@
+name: Nebula
+version: '${project.version}'
+main: spectromeda.nebula.Nebula
+api-version: 1.18
+description: The main plugin for NebulaMC.
+author: Spectromeda
