@@ -6,6 +6,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import spectromeda.nebula.events.AfkChange;
 import spectromeda.nebula.events.Chat;
+import spectromeda.nebula.events.SmeltingPatch;
 import spectromeda.nebula.utils.ConfigManager;
 import spectromeda.nebula.utils.ConfigSettings;
 
@@ -33,6 +34,9 @@ public final class Nebula extends JavaPlugin {
         }
         if (ConfigSettings.chatping_enable == true) {
             pm.registerEvents(new Chat(this), this);
+        }
+        if (ConfigSettings.smeltingpatch_enable == true) {
+            pm.registerEvents(new SmeltingPatch(this), this);
         }
 
     }

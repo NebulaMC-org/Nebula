@@ -5,4 +5,6 @@ public class ConfigSettings {
 
     public static boolean chatping_enable;
 
+    public static boolean smeltingpatch_enable;
+
 }

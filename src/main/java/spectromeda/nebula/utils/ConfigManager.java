@@ -22,6 +22,7 @@ public class ConfigManager {
         createFiles();
         addDefault(this.config, "settings.afksystem.enable", Boolean.valueOf(true));
         addDefault(this.config, "settings.chatping.enable",  Boolean.valueOf(true));
+        addDefault(this.config, "settings.smeltingpatch.enable",  Boolean.valueOf(true));
         saveConfig();
         reloadConfigs();
     }
@@ -65,5 +66,6 @@ public class ConfigManager {
         System.out.println("Loading config");
         spectromeda.nebula.utils.ConfigSettings.afksystem_enable = this.config.getBoolean("settings.afksystem.enable");
         spectromeda.nebula.utils.ConfigSettings.chatping_enable = this.config.getBoolean("settings.chatping.enable");
+        spectromeda.nebula.utils.ConfigSettings.smeltingpatch_enable = this.config.getBoolean("settings.smeltingpatch.enable");
     }
 }

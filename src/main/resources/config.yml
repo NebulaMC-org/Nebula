@@ -3,3 +3,5 @@ settings:
         enable: true
     chatping:
         enable: true
+    smeltingpatch:
+        enable: true
