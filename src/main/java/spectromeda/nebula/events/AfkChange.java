@@ -26,6 +26,7 @@ public class AfkChange implements Listener {
         if (event.getValue() == true){
             UUID uuid = player.getUniqueId();
             Location playerLoc = player.getLocation();
+
             Location afkWarp = new Location(Bukkit.getWorld("nebula"), 1013.5, 84, 1006.5,-180 ,-4);
             player.teleport(afkWarp);
 
