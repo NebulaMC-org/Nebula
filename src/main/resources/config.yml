@@ -5,3 +5,11 @@ settings:
         enable: true
     smeltingpatch:
         enable: true
+
+database:
+    MySQL:
+        host:
+        port:
+        database:
+        user:
+        password:

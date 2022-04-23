@@ -23,6 +23,11 @@ public class ConfigManager {
         addDefault(this.config, "settings.afksystem.enable", Boolean.valueOf(true));
         addDefault(this.config, "settings.chatping.enable",  Boolean.valueOf(true));
         addDefault(this.config, "settings.smeltingpatch.enable",  Boolean.valueOf(true));
+        addDefault(this.config, "database.MySQL.host",  "localhost");
+        addDefault(this.config, "database.MySQL.port",  "3306");
+        addDefault(this.config, "database.MySQL.database",  "server");
+        addDefault(this.config, "database.MySQL.user",  "user123");
+        addDefault(this.config, "database.MySQL.pass",  "pass123");
         saveConfig();
         reloadConfigs();
     }
@@ -67,5 +72,10 @@ public class ConfigManager {
         spectromeda.nebula.utils.ConfigSettings.afksystem_enable = this.config.getBoolean("settings.afksystem.enable");
         spectromeda.nebula.utils.ConfigSettings.chatping_enable = this.config.getBoolean("settings.chatping.enable");
         spectromeda.nebula.utils.ConfigSettings.smeltingpatch_enable = this.config.getBoolean("settings.smeltingpatch.enable");
+        spectromeda.nebula.utils.ConfigSettings.host = this.config.getString("database.MySQL.host");
+        spectromeda.nebula.utils.ConfigSettings.host = this.config.getString("database.MySQL.port");
+        spectromeda.nebula.utils.ConfigSettings.host = this.config.getString("database.MySQL.database");
+        spectromeda.nebula.utils.ConfigSettings.host = this.config.getString("database.MySQL.user");
+        spectromeda.nebula.utils.ConfigSettings.host = this.config.getString("database.MySQL.pass");
     }
 }

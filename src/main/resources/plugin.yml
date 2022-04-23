@@ -4,3 +4,10 @@ main: spectromeda.nebula.Nebula
 api-version: 1.18
 description: The main plugin for NebulaMC.
 author: Spectromeda
+softdepend: [PlaceholderAPI, Essentials]
+commands:
+  spawnchest:
+    description: Spawns a chest in the world randomly.
+    usage: /<command>
+    permission: nebula.spawnchest
+
