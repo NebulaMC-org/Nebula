@@ -1,4 +1,4 @@
-package spectromeda.nebula.utils;
+package spectromeda.nebula.utils.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -69,13 +69,13 @@ public class ConfigManager {
 
     public void loadConfig() {
         System.out.println("Loading config");
-        spectromeda.nebula.utils.ConfigSettings.afksystem_enable = this.config.getBoolean("settings.afksystem.enable");
-        spectromeda.nebula.utils.ConfigSettings.chatping_enable = this.config.getBoolean("settings.chatping.enable");
-        spectromeda.nebula.utils.ConfigSettings.smeltingpatch_enable = this.config.getBoolean("settings.smeltingpatch.enable");
-        spectromeda.nebula.utils.ConfigSettings.host = this.config.getString("database.MySQL.host");
-        spectromeda.nebula.utils.ConfigSettings.host = this.config.getString("database.MySQL.port");
-        spectromeda.nebula.utils.ConfigSettings.host = this.config.getString("database.MySQL.database");
-        spectromeda.nebula.utils.ConfigSettings.host = this.config.getString("database.MySQL.user");
-        spectromeda.nebula.utils.ConfigSettings.host = this.config.getString("database.MySQL.pass");
+        ConfigSettings.afksystem_enable = this.config.getBoolean("settings.afksystem.enable");
+        ConfigSettings.chatping_enable = this.config.getBoolean("settings.chatping.enable");
+        ConfigSettings.smeltingpatch_enable = this.config.getBoolean("settings.smeltingpatch.enable");
+        ConfigSettings.host = this.config.getString("database.MySQL.host");
+        ConfigSettings.host = this.config.getString("database.MySQL.port");
+        ConfigSettings.host = this.config.getString("database.MySQL.database");
+        ConfigSettings.host = this.config.getString("database.MySQL.user");
+        ConfigSettings.host = this.config.getString("database.MySQL.pass");
     }
 }

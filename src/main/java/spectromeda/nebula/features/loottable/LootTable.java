@@ -1,4 +1,4 @@
-package spectromeda.nebula.loottable;
+package spectromeda.nebula.features.loottable;
 
 import org.bukkit.inventory.ItemStack;
 

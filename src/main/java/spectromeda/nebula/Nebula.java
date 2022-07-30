@@ -1,7 +1,5 @@
 package spectromeda.nebula;
 
-import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
-import com.mysql.cj.jdbc.MysqlDataSource;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,31 +10,30 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import spectromeda.nebula.commands.SetPronouns;
 import spectromeda.nebula.commands.SpawnChest;
-import spectromeda.nebula.events.AfkChange;
-import spectromeda.nebula.events.Chat;
-import spectromeda.nebula.events.SmeltingPatch;
-import spectromeda.nebula.loottable.LootTable;
-import spectromeda.nebula.utils.ConfigManager;
-import spectromeda.nebula.utils.ConfigSettings;
+import spectromeda.nebula.listeners.AFKStatusChangeListener;
+import spectromeda.nebula.listeners.ChatListener;
+import spectromeda.nebula.listeners.PlayerListener;
+import spectromeda.nebula.listeners.SmeltingListener;
+import spectromeda.nebula.features.haproxy.HAProxy;
+import spectromeda.nebula.features.loottable.LootTable;
+import spectromeda.nebula.utils.config.ConfigManager;
+import spectromeda.nebula.utils.config.ConfigSettings;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Random;
 import java.util.logging.Logger;
 
 public final class Nebula extends JavaPlugin {
 
     private static final Logger log = Bukkit.getLogger();
+    private static Nebula instance;
 
+    private HAProxy haProxy;
     private ConfigManager configManager;
-
     private LandsIntegration landsIntegration;
-
+    private final PluginManager pm = this.getServer().getPluginManager();
     private static LootTable meteorLoot;
 
-    public LootTable getMeteorLoot(){
-        return this.meteorLoot;
+    public static Nebula getInstance() {
+        return instance;
     }
 
     public ConfigManager getConfigManager() {
@@ -47,34 +44,26 @@ public final class Nebula extends JavaPlugin {
         return this.landsIntegration;
     }
 
-    PluginManager pm = this.getServer().getPluginManager();
-
-    private void testDataSource(DataSource dataSource) throws SQLException {
-        try (Connection conn = dataSource.getConnection()) {
-            if (!conn.isValid(1)) {
-                throw new SQLException("Could not establish database connection.");
-            }
-        }
+    public HAProxy haProxy() {
+        return this.haProxy;
     }
 
-    private DataSource initMySQLDataSource() throws SQLException {
-        MysqlDataSource dataSource = new MysqlConnectionPoolDataSource();
-        // set credentials
-
-        // Test connection
-        testDataSource(dataSource);
-        return dataSource;
+    public LootTable getMeteorLoot(){
+        return meteorLoot;
     }
 
-    private void registerEvents(){
-        if (ConfigSettings.afksystem_enable == true) {
-            pm.registerEvents(new AfkChange(this), this);
+    private void registerListeners() {
+
+        pm.registerEvents(new PlayerListener(), this);
+
+        if (ConfigSettings.afksystem_enable) {
+            pm.registerEvents(new AFKStatusChangeListener(this), this);
         }
-        if (ConfigSettings.chatping_enable == true) {
-            pm.registerEvents(new Chat(this), this);
+        if (ConfigSettings.chatping_enable) {
+            pm.registerEvents(new ChatListener(this), this);
         }
-        if (ConfigSettings.smeltingpatch_enable == true) {
-            pm.registerEvents(new SmeltingPatch(this), this);
+        if (ConfigSettings.smeltingpatch_enable) {
+            pm.registerEvents(new SmeltingListener(this), this);
         }
     }
 
@@ -82,20 +71,17 @@ public final class Nebula extends JavaPlugin {
         this.getCommand("spawnchest").setExecutor(new SpawnChest(this));
     }
 
-    private void checkDependencies(){
+    private void checkDependencies() {
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-
             pm.registerEvents(new SetPronouns(this), this);
         } else {
-
             log.warning("Could not find PlaceholderAPI!");
             Bukkit.getPluginManager().disablePlugin(this);
         }
-        if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
 
+        if (Bukkit.getPluginManager().getPlugin("Essentials") != null) {
             pm.registerEvents(new SetPronouns(this), this);
         } else {
-
             log.warning("Could not find Essentials!");
             Bukkit.getPluginManager().disablePlugin(this);
         }
@@ -104,21 +90,20 @@ public final class Nebula extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        instance = this;
         this.configManager = new ConfigManager(this);
         this.landsIntegration = new LandsIntegration(this);
         configManager.createDefaults();
         checkDependencies();
-        registerEvents();
+        registerListeners();
         registerCommands();
 
         try {
-            initMySQLDataSource();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            this.haProxy = new HAProxy();
+        } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException | IllegalAccessException e) {
+            getLogger().info("An exception occured hooking into HAProxyDetector, so it was disabled: " + e.getMessage());
         }
 
-        Random rand = new Random();
         meteorLoot = new LootTable.LootTableBuilder()
                 .add(new ItemStack(Material.AIR), 16)
                 .add(new ItemStack(Material.GOLD_BLOCK, 2), 12)
@@ -135,20 +120,19 @@ public final class Nebula extends JavaPlugin {
                 .build();
 
         new BukkitRunnable() {
-            int times = 1; //initialize
+            int times = 1;
             public void run() {
-                if (times % 6 == 0) { //ONLY if "times" is a multiple of six -> Therefor every hour
+                if (times % 6 == 0) {
                     getServer().dispatchCommand(getServer().getConsoleSender(), "spawnchest");
                 }
                 times++;
             }
-        }.runTaskTimer(this, 0, 10 * 60 * 20); //run the runnable in 0 ticks from onEnable and EVERY 12000 ticks
+        }.runTaskTimer(this, 0, 10 * 60 * 20);
 
     }
 
     @Override
     public void onDisable() {
-        //unregister
         HandlerList.unregisterAll();
     }
 

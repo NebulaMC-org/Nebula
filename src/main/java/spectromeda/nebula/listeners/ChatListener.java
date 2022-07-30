@@ -1,4 +1,4 @@
-package spectromeda.nebula.events;
+package spectromeda.nebula.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.Bukkit;
@@ -10,20 +10,20 @@ import spectromeda.nebula.Nebula;
 
 import static org.bukkit.Sound.BLOCK_NOTE_BLOCK_BELL;
 
-public class Chat implements Listener {
+public class ChatListener implements Listener {
 
     static Nebula plugin;
 
-    public Chat(Nebula main){
+    public ChatListener(Nebula main){
         plugin = main;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void onChat(AsyncChatEvent event){
-        if (event.message().toString().contains("@")){
-            for (Player p : Bukkit.getOnlinePlayers()){
+    public void onChat(AsyncChatEvent event) {
+        if (event.message().toString().contains("@")) {
+            for (Player p : Bukkit.getOnlinePlayers()) {
                 if (event.message().toString().contains("@" + p.getName())){
-                    p.playSound(p.getLocation(), BLOCK_NOTE_BLOCK_BELL, 1, 1);
+                    p.playSound(p.getLocation(), BLOCK_NOTE_BLOCK_BELL, 0.7f, 0.9f);
                 }
             }
         }

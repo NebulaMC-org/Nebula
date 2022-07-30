@@ -1,4 +1,4 @@
-package spectromeda.nebula.utils;
+package spectromeda.nebula.utils.config;
 
 public class ConfigSettings {
     public static boolean afksystem_enable;
