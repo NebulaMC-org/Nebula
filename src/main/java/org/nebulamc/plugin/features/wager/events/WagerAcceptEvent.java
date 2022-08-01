@@ -15,9 +15,11 @@ public class WagerAcceptEvent extends Event {
     private Wager wager;
     private Player player;
 
+    private static final HandlerList handlers = new HandlerList();
+
     @Override
     public @NotNull HandlerList getHandlers() {
-        return null;
+        return handlers;
     }
 
 }
