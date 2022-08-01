@@ -10,10 +10,7 @@ import org.nebulamc.plugin.Nebula;
 
 public class SetPronounsCommand implements CommandExecutor {
 
-    private static Nebula plugin;
-    public SetPronounsCommand(Nebula main){
-        plugin = main;
-    }
+    private static Nebula plugin = Nebula.getInstance();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

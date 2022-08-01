@@ -38,7 +38,7 @@ public class ConfigManager {
             this.config_file.getParentFile().mkdirs();
             main.saveResource("config.yml", false);
         }
-        this.config = (FileConfiguration)new YamlConfiguration();
+        this.config = new YamlConfiguration();
         try {
             this.config.load(this.config_file);
         } catch (Exception e) {
@@ -68,7 +68,7 @@ public class ConfigManager {
     }
 
     public void loadConfig() {
-        System.out.println("Loading config");
+        Nebula.getInstance().getLogger().info("Loading config... ");
         ConfigSettings.afksystem_enable = this.config.getBoolean("settings.afksystem.enable");
         ConfigSettings.chatping_enable = this.config.getBoolean("settings.chatping.enable");
         ConfigSettings.smeltingpatch_enable = this.config.getBoolean("settings.smeltingpatch.enable");

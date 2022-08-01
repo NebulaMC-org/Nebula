@@ -18,12 +18,9 @@ import static org.bukkit.Sound.AMBIENT_BASALT_DELTAS_MOOD;
 
 public class SpawnChestCommand implements CommandExecutor {
 
-    private static Nebula plugin;
+    private static final Nebula plugin = Nebula.getInstance();
     private static final Logger log = plugin.getLogger();
 
-    public SpawnChestCommand(Nebula main) {
-        plugin = main;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

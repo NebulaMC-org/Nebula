@@ -9,7 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.nebulamc.plugin.commands.SetPronounsCommand;
 import org.nebulamc.plugin.commands.SpawnChestCommand;
+import org.nebulamc.plugin.commands.WagerCommand;
 import org.nebulamc.plugin.features.wager.WagerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
 import org.nebulamc.plugin.listeners.PlayerListener;
@@ -107,7 +109,9 @@ public final class Nebula extends JavaPlugin {
     }
 
     private void registerCommands(){
-        this.getCommand("spawnchest").setExecutor(new SpawnChestCommand(this));
+        this.getCommand("spawnchest").setExecutor(new SpawnChestCommand());
+        this.getCommand("wager").setExecutor(new WagerCommand());
+        this.getCommand("setpronouns").setExecutor(new SetPronounsCommand());
     }
 
     private void checkDependencies() {
