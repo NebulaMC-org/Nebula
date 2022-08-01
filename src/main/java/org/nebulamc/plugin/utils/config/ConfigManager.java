@@ -1,8 +1,8 @@
-package spectromeda.nebula.utils.config;
+package org.nebulamc.plugin.utils.config;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import spectromeda.nebula.Nebula;
+import org.nebulamc.plugin.Nebula;
 
 import java.io.File;
 

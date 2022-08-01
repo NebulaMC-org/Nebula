@@ -1,6 +1,6 @@
-package spectromeda.nebula.utils;
+package org.nebulamc.plugin.utils;
 
-import spectromeda.nebula.Nebula;
+import org.nebulamc.plugin.Nebula;
 
 public class Utils {
     static Nebula plugin;

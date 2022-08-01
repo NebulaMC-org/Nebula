@@ -1,11 +1,11 @@
-package spectromeda.nebula.listeners;
+package org.nebulamc.plugin.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockCookEvent;
 import org.bukkit.inventory.ItemStack;
-import spectromeda.nebula.Nebula;
+import org.nebulamc.plugin.Nebula;
 
 public class SmeltingListener implements Listener {
 

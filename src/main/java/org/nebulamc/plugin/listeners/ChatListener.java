@@ -1,4 +1,4 @@
-package spectromeda.nebula.listeners;
+package org.nebulamc.plugin.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.Bukkit;
@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import spectromeda.nebula.Nebula;
+import org.nebulamc.plugin.Nebula;
 
 import static org.bukkit.Sound.BLOCK_NOTE_BLOCK_BELL;
 

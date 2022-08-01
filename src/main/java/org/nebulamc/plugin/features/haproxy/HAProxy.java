@@ -1,4 +1,4 @@
-package spectromeda.nebula.features.haproxy;
+package org.nebulamc.plugin.features.haproxy;
 
 import org.bukkit.entity.Player;
 

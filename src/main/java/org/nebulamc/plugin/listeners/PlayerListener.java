@@ -1,20 +1,20 @@
-package spectromeda.nebula.listeners;
+package org.nebulamc.plugin.listeners;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import spectromeda.nebula.Nebula;
+import org.nebulamc.plugin.Nebula;
 
 public class PlayerListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        if (Nebula.getInstance().haProxy() != null) {
+        if (Nebula.getInstance().getHAProxy() != null) {
             if (
-                !Nebula.getInstance().haProxy().isOnEuropeanIP(e.getPlayer())
-                && Nebula.getInstance().haProxy().isIPInEurope(e.getPlayer())
+                !Nebula.getInstance().getHAProxy().isOnEuropeanIP(e.getPlayer())
+                && Nebula.getInstance().getHAProxy().isIPInEurope(e.getPlayer())
                 && e.getPlayer().getPing() > 150
             ) {
                 e.getPlayer().sendMessage(

@@ -1,4 +1,4 @@
-package spectromeda.nebula.listeners;
+package org.nebulamc.plugin.listeners;
 
 import net.ess3.api.events.AfkStatusChangeEvent;
 import org.bukkit.Bukkit;
@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import spectromeda.nebula.Nebula;
+import org.nebulamc.plugin.Nebula;
 
 import java.util.UUID;
 

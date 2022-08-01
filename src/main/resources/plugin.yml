@@ -1,13 +1,19 @@
 name: Nebula
 version: '${project.version}'
-main: spectromeda.nebula.Nebula
+main: org.nebulamc.plugin.Nebula
 api-version: 1.18
 description: The main plugin for NebulaMC.
-author: Spectromeda
-softdepend: [PlaceholderAPI, Essentials]
+authors: [ Spectrify, smartfrigde, abbysrc ]
 commands:
   spawnchest:
     description: Spawns a chest in the world randomly.
     usage: /<command>
     permission: nebula.spawnchest
-
+  setpronouns:
+    description: Coming soon!
+    usage: /<command>
+    permission: nebula.setpronouns
+  wager:
+    aliases: [ homosex, getbitches ]
+    description: Wagers an item with a player.
+    usage: /<command> [<player>]
