@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.nebulamc.plugin.commands.SpawnChestCommand;
 import org.nebulamc.plugin.features.wager.WagerManager;
-import org.nebulamc.plugin.listeners.AFKStatusChangeListener;
 import org.nebulamc.plugin.listeners.ChatListener;
 import org.nebulamc.plugin.listeners.PlayerListener;
 import org.nebulamc.plugin.listeners.SmeltingListener;
@@ -97,7 +96,7 @@ public final class Nebula extends JavaPlugin {
         pm.registerEvents(new PlayerListener(), this);
 
         if (ConfigSettings.afksystem_enable) {
-            pm.registerEvents(new AFKStatusChangeListener(this), this);
+            // temp removed
         }
         if (ConfigSettings.chatping_enable) {
             pm.registerEvents(new ChatListener(this), this);
