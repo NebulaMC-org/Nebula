@@ -58,8 +58,6 @@ public class WagerManager implements Listener {
                 );
             }
         });
-
-        // TODO: handle the next game being started
     }
 
 }
