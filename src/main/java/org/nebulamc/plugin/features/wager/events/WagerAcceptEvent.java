@@ -9,17 +9,12 @@ import org.jetbrains.annotations.NotNull;
 import org.nebulamc.plugin.features.wager.Wager;
 
 @Getter
-@AllArgsConstructor
-public class WagerAcceptEvent extends Event {
+public class WagerAcceptEvent extends WagerEvent {
 
-    private Wager wager;
     private Player player;
 
-    private static final HandlerList handlers = new HandlerList();
-
-    @Override
-    public @NotNull HandlerList getHandlers() {
-        return handlers;
+    public WagerAcceptEvent(Wager wager, Player p) {
+        super(wager);
+        player = p;
     }
-
 }
