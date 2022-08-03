@@ -3,6 +3,7 @@ package org.nebulamc.plugin.features.wager;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,8 +18,11 @@ import java.util.*;
 
 public class WagerManager implements Listener {
 
-    public HashMap<UUID, Wager> activeWagers = new HashMap<>();
+    public HashMap<String, Wager> activeWagers = new HashMap<>();
     public LinkedList<Wager> queue = new LinkedList<>();
+
+    @Getter
+    private final WagerChannel infoChannel = new WagerChannel();
 
     @Getter
     private final HashMap<Player, Location> lastLocationCache = new HashMap<>();
@@ -28,17 +32,22 @@ public class WagerManager implements Listener {
     }
 
     public void createWager(Player p, Player t) {
-        UUID u = UUID.randomUUID();
-        activeWagers.put(u, new Wager(u, p, t));
+        String s = RandomStringUtils.random(6);
+        Wager w = activeWagers.put(s, new Wager(s, p, t));
+        getInfoChannel().wagerCreate(w);
+        w.sendInvite();
     }
 
     public void createHomosexWager(Player p, Player t) {
-        UUID u = UUID.randomUUID();
-        activeWagers.put(u, new HomosexWager(u, p, t));
+        String s = RandomStringUtils.random(6);
+        Wager w = activeWagers.put(s, new HomosexWager(s, p, t));
+        getInfoChannel().wagerCreate(w);
+        w.sendInvite();
     }
 
     @EventHandler
     public void onInviteAccept(WagerAcceptEvent e) {
+        getInfoChannel().inviteAccept(e.getWager());
         if (e.getWager() instanceof HomosexWager) {
             e.getWager().getHost().sendMessage(
                     Component.text(
@@ -55,6 +64,7 @@ public class WagerManager implements Listener {
 
     @EventHandler
     public void onInviteDecline(WagerDeclineEvent e) {
+        getInfoChannel().inviteDecline(e.getWager());
         if (e.getWager() instanceof HomosexWager) {
             e.getWager().getHost().sendMessage(
                     Component.text(
@@ -74,9 +84,11 @@ public class WagerManager implements Listener {
     @EventHandler
     public void onGameEnd(WagerGameEndEvent e) {
         e.getWager().onEnd(e.getWinner());
+        infoChannel.gameEnd(e.getWager());
         queue.poll();
         if (queue.size() > 0) {
             queue.element().startGameplay();
+            infoChannel.gameStart(queue.element());
         }
         queue.forEach(i -> {
             if (queue.indexOf(i) != 0) {

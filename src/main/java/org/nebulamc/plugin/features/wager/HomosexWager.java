@@ -8,15 +8,13 @@ import org.bukkit.entity.Player;
 import org.nebulamc.plugin.Nebula;
 import org.nebulamc.plugin.utils.SavedInventory;
 
-import java.util.UUID;
-
 public class HomosexWager extends Wager {
 
-    public HomosexWager(UUID u, Player h, Player t) {
-        super(u, h, t);
+    public HomosexWager(String id, Player h, Player t) {
+        super(id, h, t);
     }
 
-    private void sendInvite() {
+    public void sendInvite() {
         getHost().sendMessage(
                 Component.text("Asking for homosex...")
                         .color(NamedTextColor.DARK_GRAY)
@@ -29,11 +27,11 @@ public class HomosexWager extends Wager {
                         .append(
                                 Component.text("[ACCEPT] ")
                                         .color(NamedTextColor.GREEN)
-                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager accept " + getUuid()))
+                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager accept " + getId()))
                         ).append(
                                 Component.text("[DECLINE]")
                                         .color(NamedTextColor.RED)
-                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager decline " + getUuid()))
+                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager decline " + getId()))
                         )
         );
 
@@ -49,7 +47,7 @@ public class HomosexWager extends Wager {
         audience().sendMessage(
                 Component.text("Put the item you'd like to have homosex for in the first slot of your hotbar then click this message to continue.")
                         .color(NamedTextColor.GOLD)
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager itemselect " + getUuid().toString()))
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager itemselect " + getId().toString()))
         );
     }
 

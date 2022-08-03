@@ -45,11 +45,10 @@ public class Wager implements Listener {
                     -222.5
             );
 
-    private final UUID uuid;
+    private final String id;
     private final Player host;
     private final Player target;
 
-    @Setter
     private Status status = Status.REQUESTED;
 
     @Setter
@@ -57,18 +56,17 @@ public class Wager implements Listener {
     @Setter
     @Nullable private ItemStack targetWager;
 
-    public Wager(UUID u, Player h, Player t) {
-        uuid = u;
+    public Wager(String id, Player h, Player t) {
+        this.id = id;
         host = h;
         target = t;
-        sendInvite();
     }
 
     public Audience audience() {
         return Audience.audience(host, target);
     }
 
-    private void sendInvite() {
+    public void sendInvite() {
         host.sendMessage(
                 Component.text("Building invite...")
                         .color(NamedTextColor.DARK_GRAY)
@@ -81,11 +79,11 @@ public class Wager implements Listener {
                 .append(
                     Component.text("[ACCEPT] ")
                         .color(NamedTextColor.GREEN)
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager accept " + uuid))
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager accept " + getId()))
                 ).append(
                     Component.text("[DECLINE]")
                         .color(NamedTextColor.RED)
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager decline " + uuid))
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager decline " + getId()))
                 )
         );
 
@@ -101,7 +99,7 @@ public class Wager implements Listener {
         audience().sendMessage(
                 Component.text("Put the item you'd like to wager in the first slot of your hotbar then click this message to continue.")
                         .color(NamedTextColor.GOLD)
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager itemselect " + getUuid().toString()))
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager itemselect " + getId().toString()))
                         .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, Component.text("Click to deposit item").color(NamedTextColor.AQUA)))
         );
     }
@@ -121,11 +119,11 @@ public class Wager implements Listener {
                         .append(
                                 Component.text("[ACCEPT OFFER] ")
                                         .color(NamedTextColor.GREEN)
-                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager acceptoffer " + uuid))
+                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager acceptoffer " + getId()))
                         ).append(
                                 Component.text("[DECLINE OFFER]")
                                         .color(NamedTextColor.RED)
-                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager declineoffer " + uuid))
+                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager declineoffer " + getId()))
                         )
         );
         host.sendMessage(
@@ -135,11 +133,11 @@ public class Wager implements Listener {
                         .append(
                                 Component.text("[ACCEPT OFFER] ")
                                         .color(NamedTextColor.GREEN)
-                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager acceptoffer " + uuid))
+                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager acceptoffer " + getId()))
                         ).append(
                                 Component.text("[DECLINE OFFER]")
                                         .color(NamedTextColor.RED)
-                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager declineoffer " + uuid))
+                                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/wager declineoffer " + getId()))
                         )
         );
     }
@@ -166,6 +164,7 @@ public class Wager implements Listener {
                     Component.text("Empty queue, joining game...")
                             .color(NamedTextColor.DARK_GRAY)
             );
+            Nebula.getInstance().getWagerManager().getInfoChannel().gameStart(this);
         } else {
             setStatus(Status.QUEUEING);
             audience().sendMessage(
@@ -257,7 +256,13 @@ public class Wager implements Listener {
         );
 
         setStatus(Status.FORCE_ENDED);
+        Nebula.getInstance().getWagerManager().activeWagers.remove(getId());
+        Nebula.getInstance().getWagerManager().queue.remove(this);
+    }
 
+    public void setStatus(Status s) {
+        Nebula.getInstance().getWagerManager().getInfoChannel().stateChange(this);
+        status = s;
     }
 
     public enum Status {

@@ -110,8 +110,10 @@ public final class Nebula extends JavaPlugin {
 
     private void registerCommands(){
         this.getCommand("spawnchest").setExecutor(new SpawnChestCommand());
-        this.getCommand("wager").setExecutor(new WagerCommand());
         this.getCommand("setpronouns").setExecutor(new SetPronounsCommand());
+
+        this.getCommand("wager").setTabCompleter(new WagerCommand());
+        this.getCommand("wager").setExecutor(new WagerCommand());
     }
 
     private void checkDependencies() {
