@@ -12,12 +12,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.nebulamc.plugin.commands.SetPronounsCommand;
 import org.nebulamc.plugin.commands.SpawnChestCommand;
 import org.nebulamc.plugin.commands.WagerCommand;
+import org.nebulamc.plugin.features.haproxy.HAProxy;
+import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.wager.WagerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
 import org.nebulamc.plugin.listeners.PlayerListener;
 import org.nebulamc.plugin.listeners.SmeltingListener;
-import org.nebulamc.plugin.features.haproxy.HAProxy;
-import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.utils.config.ConfigManager;
 import org.nebulamc.plugin.utils.config.ConfigSettings;
 
