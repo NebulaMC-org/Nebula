@@ -17,3 +17,7 @@ commands:
     aliases: [ homosex, getbitches ]
     description: Wagers an item with a player.
     usage: /<command> [<player>]
+  giveitem:
+    description: Gives a custom item to the player.
+    usage: /<command> [<item>]
+    permission: nebula.giveitem

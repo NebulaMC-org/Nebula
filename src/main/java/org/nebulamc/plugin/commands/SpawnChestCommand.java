@@ -21,7 +21,6 @@ public class SpawnChestCommand implements CommandExecutor {
     private static final Nebula plugin = Nebula.getInstance();
     private static final Logger log = plugin.getLogger();
 
-
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) {

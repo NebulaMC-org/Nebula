@@ -16,10 +16,7 @@ public class ManaManager implements Listener {
 
     public static void createManaBar(Player p){
         UUID id = p.getUniqueId();
-        log.info("ID: " + id);
-        log.info("Manabars.get(p) = " + manaBars.get(id));
         if (manaBars.get(id) == null) {
-            log.info("Created new mana bar for " + p.getName());
             manaBars.put(p.getUniqueId(), new ManaBar(id));
         }
         manaBars.get(p.getUniqueId()).tickManaBar();

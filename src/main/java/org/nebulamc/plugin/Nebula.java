@@ -12,7 +12,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.nebulamc.plugin.commands.SetPronounsCommand;
 import org.nebulamc.plugin.commands.SpawnChestCommand;
 import org.nebulamc.plugin.commands.WagerCommand;
+import org.nebulamc.plugin.commands.items.GiveItemCommand;
 import org.nebulamc.plugin.features.haproxy.HAProxy;
+import org.nebulamc.plugin.features.items.ItemManager;
 import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.wager.WagerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
@@ -56,6 +58,8 @@ public final class Nebula extends JavaPlugin {
         } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException | IllegalAccessException e) {
             getLogger().info("An exception occured hooking into HAProxyDetector, so it was disabled: " + e.getMessage());
         }
+
+        ItemManager.init();
 
         meteorLoot = new LootTable.LootTableBuilder()
                 .add(new ItemStack(Material.AIR), 16)
@@ -111,6 +115,8 @@ public final class Nebula extends JavaPlugin {
     private void registerCommands(){
         this.getCommand("spawnchest").setExecutor(new SpawnChestCommand());
         this.getCommand("setpronouns").setExecutor(new SetPronounsCommand());
+
+        this.getCommand("giveitem").setExecutor(new GiveItemCommand());
 
         this.getCommand("wager").setTabCompleter(new WagerCommand());
         this.getCommand("wager").setExecutor(new WagerCommand());

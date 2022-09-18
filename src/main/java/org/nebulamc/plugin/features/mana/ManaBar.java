@@ -27,12 +27,9 @@ public class ManaBar implements Listener {
     }
     public void tickManaBar(){
         Player p = Bukkit.getPlayer(id);
-        log.info("Ticking mana bar of " + p);
         new BukkitRunnable(){
             public void run(){
-                log.info("Ticking runnable for player " + p.getName());
                 if (!p.isOnline()){
-                    log.info("Cancelling runnable");
                     cancel();
                 }
                 if (mana < maxMana){
@@ -41,8 +38,9 @@ public class ManaBar implements Listener {
                         mana = maxMana;
                     }
                 }
+
                 p.sendActionBar(Component.text("Mana: ").color(NamedTextColor.GRAY)
-                        .append(Component.text(mana + "/" + maxMana).color(NamedTextColor.BLUE)));
+                        .append(Component.text(mana + "/" + maxMana).color(NamedTextColor.AQUA)));
             }
         }.runTaskTimer(Nebula.getInstance(), 0 ,5);
     }
