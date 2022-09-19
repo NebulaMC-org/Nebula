@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 
 public class ManaBar implements Listener {
 
-    private static final Logger log = Nebula.getInstance().getLogger();
-
     private final UUID id;
     private int maxMana;
     private int mana;
