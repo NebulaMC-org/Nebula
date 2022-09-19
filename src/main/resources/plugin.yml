@@ -19,5 +19,5 @@ commands:
     usage: /<command> [<player>]
   giveitem:
     description: Gives a custom item to the player.
-    usage: /<command> [<item>]
+    usage: /<command> [<player>] [<item>]
     permission: nebula.giveitem

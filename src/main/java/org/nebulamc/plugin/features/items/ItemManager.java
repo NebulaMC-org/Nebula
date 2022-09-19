@@ -12,13 +12,11 @@ import java.util.List;
 public class ItemManager {
 
     public static ItemStack boomStick;
+    public static ArrayList<ItemStack> items = new ArrayList<>();
 
     public static void init(){
         createBoomStick();
-    }
-
-    public ItemStack getItem(){
-        return boomStick;
+        items.add(boomStick);
     }
 
     private static void createBoomStick(){
