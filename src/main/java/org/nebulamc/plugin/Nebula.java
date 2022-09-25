@@ -13,6 +13,7 @@ import org.nebulamc.plugin.commands.SetPronounsCommand;
 import org.nebulamc.plugin.commands.SpawnChestCommand;
 import org.nebulamc.plugin.commands.WagerCommand;
 import org.nebulamc.plugin.commands.items.GiveItemCommand;
+import org.nebulamc.plugin.commands.items.GiveItemTabCompleter;
 import org.nebulamc.plugin.features.haproxy.HAProxy;
 import org.nebulamc.plugin.features.items.ItemManager;
 import org.nebulamc.plugin.features.loottable.LootTable;
@@ -117,6 +118,7 @@ public final class Nebula extends JavaPlugin {
         this.getCommand("setpronouns").setExecutor(new SetPronounsCommand());
 
         this.getCommand("giveitem").setExecutor(new GiveItemCommand());
+        this.getCommand("giveitem").setTabCompleter(new GiveItemTabCompleter());
 
         this.getCommand("wager").setTabCompleter(new WagerCommand());
         this.getCommand("wager").setExecutor(new WagerCommand());
