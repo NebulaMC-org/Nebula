@@ -4,8 +4,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.CustomItem;
@@ -36,6 +38,11 @@ public class SlimeOrb extends CustomItem {
     }
 
     @Override
+    public List<Enchantment> getEnchants() {
+        return null;
+    }
+
+    @Override
     public void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
 
     }
@@ -53,5 +60,10 @@ public class SlimeOrb extends CustomItem {
 
             manaBar.setMana(manaBar.getMana() - 25);
         }
+    }
+
+    @Override
+    public void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event) {
+
     }
 }

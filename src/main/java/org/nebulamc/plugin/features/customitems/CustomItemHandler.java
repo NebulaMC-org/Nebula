@@ -6,6 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -27,8 +28,16 @@ public class CustomItemHandler implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerConsume(PlayerItemConsumeEvent event){
+
+    }
+
     private boolean isCustomItem(ItemStack itemStack){
-        return (itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(ItemManager.customItemKey, PersistentDataType.STRING));
+        if (itemStack.hasItemMeta()){
+            return (itemStack.getItemMeta().getPersistentDataContainer().has(ItemManager.customItemKey, PersistentDataType.STRING));
+        }
+        return false;
     }
 
     private String getItemId(ItemStack itemStack){

@@ -16,6 +16,7 @@ import org.nebulamc.plugin.commands.items.GiveItemCommand;
 import org.nebulamc.plugin.commands.items.GiveItemTabCompleter;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
+import org.nebulamc.plugin.features.customitems.items.GoldenCookie;
 import org.nebulamc.plugin.features.customitems.items.SlimeOrb;
 import org.nebulamc.plugin.features.haproxy.HAProxy;
 import org.nebulamc.plugin.features.loottable.LootTable;
@@ -62,7 +63,10 @@ public final class Nebula extends JavaPlugin {
             getLogger().info("An exception occured hooking into HAProxyDetector, so it was disabled: " + e.getMessage());
         }
 
-        ItemManager.registerItems(new SlimeOrb());
+        ItemManager.registerItems(
+                new SlimeOrb(),
+                new GoldenCookie()
+        );
 
         meteorLoot = new LootTable.LootTableBuilder()
                 .add(new ItemStack(Material.AIR), 16)
