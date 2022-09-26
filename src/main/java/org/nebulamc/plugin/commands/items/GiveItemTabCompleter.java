@@ -3,7 +3,7 @@ package org.nebulamc.plugin.commands.items;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.nebulamc.plugin.features.items.ItemManager;
+import org.nebulamc.plugin.features.customitems.ItemManager;
 
 import java.util.ArrayList;
 import java.util.List;

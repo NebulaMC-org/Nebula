@@ -14,8 +14,10 @@ import org.nebulamc.plugin.commands.SpawnChestCommand;
 import org.nebulamc.plugin.commands.WagerCommand;
 import org.nebulamc.plugin.commands.items.GiveItemCommand;
 import org.nebulamc.plugin.commands.items.GiveItemTabCompleter;
+import org.nebulamc.plugin.features.customitems.CustomItemHandler;
+import org.nebulamc.plugin.features.customitems.ItemManager;
+import org.nebulamc.plugin.features.customitems.items.SlimeOrb;
 import org.nebulamc.plugin.features.haproxy.HAProxy;
-import org.nebulamc.plugin.features.items.ItemManager;
 import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.wager.WagerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
@@ -60,7 +62,7 @@ public final class Nebula extends JavaPlugin {
             getLogger().info("An exception occured hooking into HAProxyDetector, so it was disabled: " + e.getMessage());
         }
 
-        ItemManager.init();
+        ItemManager.registerItems(new SlimeOrb());
 
         meteorLoot = new LootTable.LootTableBuilder()
                 .add(new ItemStack(Material.AIR), 16)
@@ -101,6 +103,7 @@ public final class Nebula extends JavaPlugin {
     private void registerListeners() {
 
         pm.registerEvents(new PlayerListener(), this);
+        pm.registerEvents(new CustomItemHandler(), this);
 
         if (ConfigSettings.afksystem_enable) {
             // temp removed

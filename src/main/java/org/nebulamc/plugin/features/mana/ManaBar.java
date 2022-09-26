@@ -9,7 +9,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.nebulamc.plugin.Nebula;
 
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class ManaBar implements Listener {
 
@@ -23,6 +22,22 @@ public class ManaBar implements Listener {
         maxMana = 100;
         regenRate = 1;
     }
+
+    public int getMana() {
+        return mana;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+
+    public void setMana(int m){
+        mana = m;
+        if (mana < 0){
+            mana = 0;
+        }
+    }
+
     public void tickManaBar(){
         Player p = Bukkit.getPlayer(id);
         new BukkitRunnable(){
