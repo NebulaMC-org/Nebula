@@ -30,7 +30,13 @@ public class CustomItemHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerConsume(PlayerItemConsumeEvent event){
+        Player player = event.getPlayer();
+        ItemStack consumedItem = event.getItem();
 
+        if (isCustomItem(consumedItem)){
+            CustomItem customItem = ItemManager.items.get(getItemId(consumedItem));
+            customItem.handleConsumption(player, consumedItem, event);
+        }
     }
 
     private boolean isCustomItem(ItemStack itemStack){
