@@ -10,8 +10,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.nebulamc.plugin.features.customitems.CustomItem;
 
 import java.util.Arrays;
@@ -19,15 +17,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GoldenCookie extends CustomItem {
+public class TestItem extends CustomItem {
     @Override
     public String getName() {
-        return "&dGolden Cookie";
+        return "&dTe&bst &4It&cem";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.COOKIE;
+        return Material.LEATHER_CHESTPLATE;
     }
 
     @Override
@@ -37,22 +35,22 @@ public class GoldenCookie extends CustomItem {
 
     @Override
     public Map<Enchantment, Integer> getEnchants() {
-
         Map<Enchantment, Integer> enchants = new HashMap<>();
-        enchants.put(Enchantment.ARROW_INFINITE, 1);
+        enchants.put(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
+        enchants.put(Enchantment.DURABILITY, 2);
         return enchants;
     }
 
     @Override
     public List<ItemFlag> getFlags() {
-        return Arrays.asList(
-                ItemFlag.HIDE_ENCHANTS
-        );
+        return Arrays.asList(ItemFlag.HIDE_UNBREAKABLE);
     }
 
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
-        return null;
+        Map<Attribute, AttributeModifier> attributes = new HashMap<>();
+        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier("Armor", 1, AttributeModifier.Operation.ADD_NUMBER));
+        return attributes;
     }
 
     @Override
@@ -72,14 +70,6 @@ public class GoldenCookie extends CustomItem {
 
     @Override
     public void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event) {
-        player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
-        player.setFoodLevel(20);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 60*240, 6));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60*240, 1));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60*240, 0));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60*60, 2));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60*180, 0));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60*180, 0));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60*180, 1));
+
     }
 }

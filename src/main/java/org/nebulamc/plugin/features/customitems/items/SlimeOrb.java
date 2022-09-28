@@ -1,13 +1,13 @@
 package org.nebulamc.plugin.features.customitems.items;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.CustomItem;
@@ -16,6 +16,7 @@ import org.nebulamc.plugin.features.mana.ManaManager;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class SlimeOrb extends CustomItem {
     @Override
@@ -38,7 +39,22 @@ public class SlimeOrb extends CustomItem {
     }
 
     @Override
-    public List<Enchantment> getEnchants() {
+    public Map<Enchantment, Integer> getEnchants() {
+        return null;
+    }
+
+    @Override
+    public List<ItemFlag> getFlags() {
+        return null;
+    }
+
+    @Override
+    public Map<Attribute, AttributeModifier> getAttributes() {
+        return null;
+    }
+
+    @Override
+    public Color getColor() {
         return null;
     }
 
