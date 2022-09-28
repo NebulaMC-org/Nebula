@@ -18,6 +18,7 @@ import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.GoldenCookie;
 import org.nebulamc.plugin.features.customitems.items.SlimeOrb;
+import org.nebulamc.plugin.features.customitems.items.TestItem;
 import org.nebulamc.plugin.features.haproxy.HAProxy;
 import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.wager.WagerManager;
@@ -65,7 +66,8 @@ public final class Nebula extends JavaPlugin {
 
         ItemManager.registerItems(
                 new SlimeOrb(),
-                new GoldenCookie()
+                new GoldenCookie(),
+                new TestItem()
         );
 
         meteorLoot = new LootTable.LootTableBuilder()

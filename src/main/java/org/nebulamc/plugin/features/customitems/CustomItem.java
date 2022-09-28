@@ -69,17 +69,25 @@ public abstract class CustomItem {
         }
 
         //set enchants
-        for (Enchantment e : getEnchants().keySet()){
-            itemMeta.addEnchant(e, getEnchants().get(e), true);
+        if (getEnchants() != null){
+            for (Enchantment e : getEnchants().keySet()){
+                itemMeta.addEnchant(e, getEnchants().get(e), true);
+            }
         }
+
 
         //set attributes/attribute modifiers
-        for (Attribute a : getAttributes().keySet()){
-            itemMeta.addAttributeModifier(a, getAttributes().get(a));
+        if (getAttributes() != null){
+            for (Attribute a : getAttributes().keySet()){
+                itemMeta.addAttributeModifier(a, getAttributes().get(a));
+            }
         }
 
+
         //set item flags
-        getFlags().forEach(f-> itemMeta.addItemFlags(f));
+        if (getFlags() != null){
+            getFlags().forEach(f-> itemMeta.addItemFlags(f));
+        }
 
         container.set(ItemManager.customItemKey, PersistentDataType.STRING, getId());
         itemStack.setItemMeta(itemMeta);
