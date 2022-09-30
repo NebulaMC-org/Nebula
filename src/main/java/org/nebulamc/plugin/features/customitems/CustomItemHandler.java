@@ -41,11 +41,24 @@ public class CustomItemHandler implements Listener {
         }
     }
 
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onDamage(EntityDamageByEntityEvent event){
         if (event.getDamager().getType().equals(EntityType.PLAYER)){
             Player player = (Player) event.getDamager();
+            ItemStack heldItem = player.getInventory().getItemInMainHand();
+            if (isCustomItem(heldItem)){
+                CustomItem customItem = ItemManager.items.get(getItemId(heldItem));
+                customItem.handleAttack(player, heldItem, event);
+            }
+
         } else if (event.getEntity().getType().equals(EntityType.PLAYER)){
             Player player = (Player) event.getEntity();
+            for (ItemStack i : player.getInventory().getArmorContents()){
+                if (isCustomItem(i)){
+                    CustomItem customItem = ItemManager.items.get(getItemId(i));
+                    customItem.handleDamaged(player, i, event);
+                }
+            }
         }
     }
 

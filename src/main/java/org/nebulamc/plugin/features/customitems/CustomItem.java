@@ -6,6 +6,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -43,6 +44,10 @@ public abstract class CustomItem {
     public abstract void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
 
     public abstract void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event);
+
+    public abstract void handleDamaged(Player player, ItemStack itemStack, EntityDamageByEntityEvent event);
+
+    public abstract void handleAttack(Player player, ItemStack itemStack, EntityDamageByEntityEvent event);
 
     public String getId(){
         return getClass().getSimpleName();

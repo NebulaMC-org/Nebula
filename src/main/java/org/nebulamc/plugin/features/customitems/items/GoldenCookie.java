@@ -6,6 +6,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -86,5 +87,15 @@ public class GoldenCookie extends CustomItem {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20*180, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*180, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20*180, 1));
+    }
+
+    @Override
+    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
+
+    }
+
+    @Override
+    public void handleAttack(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
+
     }
 }
