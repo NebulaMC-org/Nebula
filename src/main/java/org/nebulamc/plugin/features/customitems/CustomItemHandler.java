@@ -1,10 +1,12 @@
 package org.nebulamc.plugin.features.customitems;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -36,6 +38,14 @@ public class CustomItemHandler implements Listener {
         if (isCustomItem(consumedItem)){
             CustomItem customItem = ItemManager.items.get(getItemId(consumedItem));
             customItem.handleConsumption(player, consumedItem, event);
+        }
+    }
+
+    public void onDamage(EntityDamageByEntityEvent event){
+        if (event.getDamager().getType().equals(EntityType.PLAYER)){
+            Player player = (Player) event.getDamager();
+        } else if (event.getEntity().getType().equals(EntityType.PLAYER)){
+            Player player = (Player) event.getEntity();
         }
     }
 

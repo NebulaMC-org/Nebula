@@ -56,6 +56,11 @@ public class GoldenCookie extends CustomItem {
     }
 
     @Override
+    public int getModelData() {
+        return 1;
+    }
+
+    @Override
     public Color getColor() {
         return null;
     }
@@ -74,12 +79,12 @@ public class GoldenCookie extends CustomItem {
     public void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event) {
         player.setHealth(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
         player.setFoodLevel(20);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 60*240, 6));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 60*240, 1));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 60*240, 0));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60*60, 2));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 60*180, 0));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 60*180, 0));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 60*180, 1));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 20*240, 5));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20*240, 1));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE,  20*240, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 20*40, 2));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20*180, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*180, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20*180, 1));
     }
 }

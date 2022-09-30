@@ -21,7 +21,7 @@ import java.util.Map;
 public class SlimeOrb extends CustomItem {
     @Override
     public String getName() {
-        return "&fSlime Orb";
+        return "&eSlime Orb";
     }
 
     @Override
@@ -31,8 +31,7 @@ public class SlimeOrb extends CustomItem {
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Type: &5Magic",
-                "&7Mana Use: &b25",
+        return Arrays.asList("&7Mana Use: &b25",
                 "\n",
                 "&eRight-click to launch yourself",
                 "&eoff the ground!");
@@ -51,6 +50,11 @@ public class SlimeOrb extends CustomItem {
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
         return null;
+    }
+
+    @Override
+    public int getModelData() {
+        return 0;
     }
 
     @Override

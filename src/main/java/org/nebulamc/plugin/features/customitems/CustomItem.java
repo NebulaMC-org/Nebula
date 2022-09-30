@@ -34,6 +34,8 @@ public abstract class CustomItem {
 
     public abstract Map<Attribute, AttributeModifier> getAttributes();
 
+    public abstract int getModelData();
+
     public abstract Color getColor();
 
     public abstract void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
@@ -88,6 +90,8 @@ public abstract class CustomItem {
         if (getFlags() != null){
             getFlags().forEach(f-> itemMeta.addItemFlags(f));
         }
+
+        itemMeta.setCustomModelData(getModelData());
 
         container.set(ItemManager.customItemKey, PersistentDataType.STRING, getId());
         itemStack.setItemMeta(itemMeta);
