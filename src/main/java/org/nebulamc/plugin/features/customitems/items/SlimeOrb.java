@@ -75,7 +75,7 @@ public class SlimeOrb extends CustomItem {
             Location location = player.getLocation();
             Vector direction = location.getDirection();
 
-            player.playSound(location, Sound.ENTITY_SLIME_JUMP, 1f, 1f);
+            player.playSound(location, Sound.ENTITY_SLIME_JUMP, 2.5f, 1f);
             player.getWorld().spawnParticle(Particle.ITEM_CRACK, location, 10, 0.4, 0.1, 0.4, 0, new ItemStack(Material.SLIME_BALL));
             player.setVelocity(direction.setY(0.5).multiply(2.5));
 

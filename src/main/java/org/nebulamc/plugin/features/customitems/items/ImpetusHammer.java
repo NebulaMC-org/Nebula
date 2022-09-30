@@ -3,9 +3,12 @@ package org.nebulamc.plugin.features.customitems.items;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -14,8 +17,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.CustomItem;
-import org.nebulamc.plugin.features.mana.ManaBar;
-import org.nebulamc.plugin.features.mana.ManaManager;
+import org.nebulamc.plugin.utils.Common;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,10 +36,8 @@ public class ImpetusHammer extends CustomItem {
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b40",
-                "\n",
-                "&eDeal more damage at higher velocities.",
-                "&eRight-click to launch forward!");
+        return Arrays.asList("\n",
+                "&eDeal more damage at higher velocities!");
     }
 
     @Override
@@ -72,14 +72,7 @@ public class ImpetusHammer extends CustomItem {
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        ManaBar manaBar = ManaManager.manaBars.get(player.getUniqueId());
-        if (manaBar.getMana() >= 40){
-            Location location = player.getLocation();
-            Vector direction = location.getDirection();
 
-            player.setVelocity(direction.multiply(4));
-            manaBar.setMana(manaBar.getMaxMana() - 40);
-        }
     }
 
     @Override
@@ -94,6 +87,36 @@ public class ImpetusHammer extends CustomItem {
 
     @Override
     public void handleAttack(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
-        player.sendMessage("Angle: " + player.getVelocity().angle(event.getEntity().getVelocity()));
+        if (event.getDamage() >= 9){
+            Vector direction = player.getLocation().getDirection();
+            Vector velocity = player.getVelocity();
+            Entity entity = event.getEntity();
+
+            double xDamage = velocity.getX() * direction.getX() * 10;
+            double yDamage = velocity.getY() * direction.getY() * 10;
+            double zDamage = velocity.getZ() * direction.getZ() * 10;
+            int addedDamage = (int) Math.abs(xDamage + yDamage + zDamage);
+
+            if (addedDamage >= 5 && entity instanceof LivingEntity){
+                Location location = player.getLocation();
+                event.setDamage(event.getDamage() + addedDamage);
+                entity.setVelocity(velocity.multiply(
+                        Common.absoluteVector(direction)).
+                        multiply(5).setY(entity.getVelocity().
+                        getY() + 0.2));
+
+                if (addedDamage >= 20) {
+                    player.playSound(location, Sound.BLOCK_ANVIL_PLACE, 1.5f, 0f);
+                    player.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 1.5f, 2f);
+                } else if (addedDamage >= 15){
+                    player.playSound(location, Sound.BLOCK_ANVIL_PLACE, 1.5f, 0f);
+                } else if (addedDamage >= 10){
+                    player.playSound(location, Sound.BLOCK_ANVIL_PLACE, 1.5f, 1f);
+                } else {
+                    player.playSound(location, Sound.BLOCK_ANVIL_PLACE, 1.5f, 2f);
+                }
+
+            }
+        }
     }
 }

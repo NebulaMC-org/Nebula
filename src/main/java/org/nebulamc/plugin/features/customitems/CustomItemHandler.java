@@ -19,12 +19,12 @@ public class CustomItemHandler implements Listener {
         Player player = event.getPlayer();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR) && isCustomItem(heldItem)){
+        if ((event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) && isCustomItem(heldItem)){
             CustomItem customItem = ItemManager.items.get(getItemId(heldItem));
             customItem.handleRightClick(player, heldItem, event);
         }
 
-        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_AIR) && isCustomItem(heldItem)){
+        if ((event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_AIR)) && isCustomItem(heldItem)){
             CustomItem customItem = ItemManager.items.get(getItemId(heldItem));
             customItem.handleLeftClick(player, heldItem, event);
         }

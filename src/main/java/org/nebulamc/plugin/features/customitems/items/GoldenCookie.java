@@ -2,6 +2,7 @@ package org.nebulamc.plugin.features.customitems.items;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -87,6 +88,7 @@ public class GoldenCookie extends CustomItem {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 20*180, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 20*180, 0));
         player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 20*180, 1));
+        player.playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 1f, 1f);
     }
 
     @Override
