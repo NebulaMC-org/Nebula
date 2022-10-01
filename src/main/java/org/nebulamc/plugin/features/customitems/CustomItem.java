@@ -7,6 +7,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -22,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class CustomItem {
+
+    public long cooldownTime;
 
     public abstract String getName();
 
@@ -39,15 +42,30 @@ public abstract class CustomItem {
 
     public abstract Color getColor();
 
+    public abstract boolean isUnbreakable();
+
     public abstract void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
 
     public abstract void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
 
     public abstract void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event);
 
-    public abstract void handleDamaged(Player player, ItemStack itemStack, EntityDamageByEntityEvent event);
+    public abstract void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event);
 
-    public abstract void handleAttack(Player player, ItemStack itemStack, EntityDamageByEntityEvent event);
+    public abstract void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event);
+
+    public abstract void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event);
+
+    public void setCooldown(double seconds){
+        cooldownTime = System.currentTimeMillis() + (long) (1000 * seconds);
+    }
+
+    public boolean cooldownOver(){
+        if (System.currentTimeMillis() >= cooldownTime){
+            return true;
+        }
+        return false;
+    }
 
     public String getId(){
         return getClass().getSimpleName();
@@ -94,6 +112,10 @@ public abstract class CustomItem {
         //set item flags
         if (getFlags() != null){
             getFlags().forEach(f-> itemMeta.addItemFlags(f));
+        }
+
+        if (isUnbreakable()){
+            itemMeta.setUnbreakable(true);
         }
 
         itemMeta.setCustomModelData(getModelData());

@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -42,16 +43,29 @@ public class CustomItemHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onDamage(EntityDamageByEntityEvent event){
+    public void onEntityDamage(EntityDamageByEntityEvent event){
         if (event.getDamager().getType().equals(EntityType.PLAYER)){
             Player player = (Player) event.getDamager();
             ItemStack heldItem = player.getInventory().getItemInMainHand();
             if (isCustomItem(heldItem)){
                 CustomItem customItem = ItemManager.items.get(getItemId(heldItem));
-                customItem.handleAttack(player, heldItem, event);
+                customItem.handleAttackEntity(player, heldItem, event);
             }
 
-        } else if (event.getEntity().getType().equals(EntityType.PLAYER)){
+        } if (event.getEntity().getType().equals(EntityType.PLAYER)){
+            Player player = (Player) event.getEntity();
+            for (ItemStack i : player.getInventory().getArmorContents()){
+                if (isCustomItem(i)){
+                    CustomItem customItem = ItemManager.items.get(getItemId(i));
+                    customItem.handleDamagedByEntity(player, i, event);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onOtherDamage(EntityDamageEvent event){
+        if (event.getEntity() instanceof Player){
             Player player = (Player) event.getEntity();
             for (ItemStack i : player.getInventory().getArmorContents()){
                 if (isCustomItem(i)){
@@ -63,7 +77,7 @@ public class CustomItemHandler implements Listener {
     }
 
     private boolean isCustomItem(ItemStack itemStack){
-        if (itemStack.hasItemMeta()){
+        if (itemStack != null && itemStack.hasItemMeta()){
             return (itemStack.getItemMeta().getPersistentDataContainer().has(ItemManager.customItemKey, PersistentDataType.STRING));
         }
         return false;

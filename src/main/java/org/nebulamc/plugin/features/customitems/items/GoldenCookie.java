@@ -8,6 +8,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -30,6 +31,16 @@ public class GoldenCookie extends CustomItem {
     @Override
     public Material getMaterial() {
         return Material.COOKIE;
+    }
+
+    @Override
+    public boolean isUnbreakable() {
+        return false;
+    }
+
+    @Override
+    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
+
     }
 
     @Override
@@ -92,12 +103,12 @@ public class GoldenCookie extends CustomItem {
     }
 
     @Override
-    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
+    public void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
 
     }
 
     @Override
-    public void handleAttack(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
+    public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
 
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -27,6 +28,11 @@ public class ImpetusHammer extends CustomItem {
     @Override
     public String getName() {
         return "&dImpetus Hammer";
+    }
+
+    @Override
+    public boolean isUnbreakable() {
+        return false;
     }
 
     @Override
@@ -57,7 +63,7 @@ public class ImpetusHammer extends CustomItem {
 
     @Override
     public int getModelData() {
-        return 0;
+        return 2;
     }
 
     @Override
@@ -81,12 +87,12 @@ public class ImpetusHammer extends CustomItem {
     }
 
     @Override
-    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
+    public void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
 
     }
 
     @Override
-    public void handleAttack(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
+    public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
         if (event.getDamage() >= 9){
             Vector direction = player.getLocation().getDirection();
             Vector velocity = player.getVelocity();
@@ -97,7 +103,7 @@ public class ImpetusHammer extends CustomItem {
             double zDamage = velocity.getZ() * direction.getZ() * 10;
             int addedDamage = (int) Math.abs(xDamage + yDamage + zDamage);
 
-            if (addedDamage >= 5 && entity instanceof LivingEntity){
+            if (addedDamage >= 2 && entity instanceof LivingEntity){
                 Location location = player.getLocation();
                 event.setDamage(event.getDamage() + addedDamage);
                 entity.setVelocity(velocity.multiply(
@@ -118,5 +124,10 @@ public class ImpetusHammer extends CustomItem {
 
             }
         }
+    }
+
+    @Override
+    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
+
     }
 }
