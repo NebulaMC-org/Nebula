@@ -81,6 +81,11 @@ public class NoFallBoots extends CustomItem {
     }
 
     @Override
+    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
+
+    }
+
+    @Override
     public void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
 
     }

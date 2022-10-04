@@ -48,6 +48,8 @@ public abstract class CustomItem {
 
     public abstract void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
 
+    public abstract void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
+
     public abstract void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event);
 
     public abstract void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event);

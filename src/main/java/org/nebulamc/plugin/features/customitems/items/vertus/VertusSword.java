@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems.items;
+package org.nebulamc.plugin.features.customitems.items.vertus;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -17,25 +17,15 @@ import org.nebulamc.plugin.features.customitems.CustomItem;
 
 import java.util.*;
 
-public class TestItem extends CustomItem {
-    @Override
-    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
-    }
-
+public class VertusSword extends CustomItem {
     @Override
     public String getName() {
-        return "&dTe&bst &4It&cem";
-    }
-
-    @Override
-    public boolean isUnbreakable() {
-        return false;
+        return "&fVertus Sword";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.LEATHER_CHESTPLATE;
+        return Material.NETHERITE_SWORD;
     }
 
     @Override
@@ -45,32 +35,34 @@ public class TestItem extends CustomItem {
 
     @Override
     public Map<Enchantment, Integer> getEnchants() {
-        Map<Enchantment, Integer> enchants = new HashMap<>();
-        enchants.put(Enchantment.PROTECTION_ENVIRONMENTAL, 3);
-        enchants.put(Enchantment.DURABILITY, 2);
-        return enchants;
+        return null;
     }
 
     @Override
     public List<ItemFlag> getFlags() {
-        return Arrays.asList(ItemFlag.HIDE_UNBREAKABLE);
+        return Arrays.asList(ItemFlag.HIDE_ATTRIBUTES);
     }
 
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
         Map<Attribute, AttributeModifier> attributes = new HashMap<>();
-        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 4, AttributeModifier.Operation.ADD_SCALAR, EquipmentSlot.CHEST));
+        attributes.put(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 1, AttributeModifier.Operation.ADD_SCALAR, EquipmentSlot.HAND));
         return attributes;
     }
 
     @Override
     public int getModelData() {
-        return 0;
+        return 1;
     }
 
     @Override
     public Color getColor() {
-        return Color.RED;
+        return null;
+    }
+
+    @Override
+    public boolean isUnbreakable() {
+        return true;
     }
 
     @Override
@@ -84,12 +76,12 @@ public class TestItem extends CustomItem {
     }
 
     @Override
-    public void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event) {
+    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
 
     }
 
     @Override
-    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
+    public void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event) {
 
     }
 
@@ -100,6 +92,11 @@ public class TestItem extends CustomItem {
 
     @Override
     public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
+
+    }
+
+    @Override
+    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
 
     }
 }

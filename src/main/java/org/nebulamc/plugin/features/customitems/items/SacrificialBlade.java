@@ -11,32 +11,28 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.CustomItem;
-import org.nebulamc.plugin.features.mana.ManaBar;
-import org.nebulamc.plugin.features.mana.ManaManager;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SlimeOrb extends CustomItem {
+public class SacrificialBlade extends CustomItem {
     @Override
     public String getName() {
-        return "&eSlime Orb";
+        return "&dSacrificial Blade";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.SLIME_BALL;
+        return Material.NETHERITE_SWORD;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b25",
-                "\n",
-                "&eRight-click to launch yourself",
-                "&eoff the ground!");
+        return Arrays.asList("\n",
+                "&eDeal higher damage at lower health.",
+                "&eRight-click to sacrifice.");
     }
 
     @Override
@@ -48,6 +44,7 @@ public class SlimeOrb extends CustomItem {
     public List<ItemFlag> getFlags() {
         return null;
     }
+
 
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
@@ -65,29 +62,28 @@ public class SlimeOrb extends CustomItem {
     }
 
     @Override
+    public boolean isUnbreakable() {
+        return true;
+    }
+
+    @Override
     public void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
 
     }
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        ManaBar manaBar = ManaManager.manaBars.get(player.getUniqueId());
-        if (manaBar.getMana() >= 25 && player.isOnGround() && cooldownOver()) {
-            Location location = player.getLocation();
-            Vector direction = location.getDirection();
-
-            player.playSound(location, Sound.ENTITY_SLIME_JUMP, 2.5f, 1f);
-            player.getWorld().spawnParticle(Particle.ITEM_CRACK, location, 10, 0.4, 0.1, 0.4, 0, new ItemStack(Material.SLIME_BALL));
-            player.setVelocity(direction.setY(0.8).multiply(2.5));
-
-            manaBar.setMana(manaBar.getMana() - 25);
-            setCooldown(0.25);
+        if (player.getHealth() > 4){
+            player.damage(0.1);
+            player.setHealth(player.getHealth() - 4);
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, 1.0f, 0f);
+            setCooldown(0.4);
         }
     }
 
     @Override
     public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        handleRightClick(player, itemStack, event);
+
     }
 
     @Override
@@ -101,17 +97,24 @@ public class SlimeOrb extends CustomItem {
     }
 
     @Override
-    public boolean isUnbreakable() {
-        return false;
+    public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
+        double health = player.getHealth();
+        Location entityLocation = event.getEntity().getLocation().add(0, 1.2, 0);
+
+        if (health <= 2){
+            event.setDamage(event.getDamage() + 10);
+            player.getWorld().spawnParticle(Particle.ITEM_CRACK, entityLocation, 10, 0.1, 0.2, 0.1, 0, new ItemStack(Material.REDSTONE_BLOCK));
+        } else if (health <= 4){
+            event.setDamage(event.getDamage() + 5);
+            player.getWorld().spawnParticle(Particle.ITEM_CRACK, entityLocation, 5, 0.1, 0.2, 0.1, 0, new ItemStack(Material.REDSTONE_BLOCK));
+        } else if (health <= 6){
+            event.setDamage(event.getDamage() + 2);
+            player.getWorld().spawnParticle(Particle.ITEM_CRACK, entityLocation, 2, 0.1, 0.2, 0.1, 0, new ItemStack(Material.REDSTONE_BLOCK));
+        }
     }
 
     @Override
     public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
-
-    }
-
-    @Override
-    public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
-
+        player.sendMessage("Cause: " + event.getCause() + ", Damage: " + event.getDamage());
     }
 }

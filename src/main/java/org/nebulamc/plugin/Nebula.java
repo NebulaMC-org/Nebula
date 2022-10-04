@@ -67,7 +67,8 @@ public final class Nebula extends JavaPlugin {
                 new GoldenCookie(),
                 new TestItem(),
                 new ImpetusHammer(),
-                new NoFallBoots()
+                new NoFallBoots(),
+                new SacrificialBlade()
         );
 
         meteorLoot = new LootTable.LootTableBuilder()

@@ -47,6 +47,11 @@ public class ImpetusHammer extends CustomItem {
     }
 
     @Override
+    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
+
+    }
+
+    @Override
     public Map<Enchantment, Integer> getEnchants() {
         return null;
     }

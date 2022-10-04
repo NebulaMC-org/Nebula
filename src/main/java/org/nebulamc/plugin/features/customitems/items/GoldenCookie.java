@@ -29,6 +29,11 @@ public class GoldenCookie extends CustomItem {
     }
 
     @Override
+    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
+
+    }
+
+    @Override
     public Material getMaterial() {
         return Material.COOKIE;
     }

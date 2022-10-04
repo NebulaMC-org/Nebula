@@ -19,16 +19,25 @@ public class CustomItemHandler implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
+        ItemStack offHandItem = player.getInventory().getItemInOffHand();
 
-        if ((event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) && isCustomItem(heldItem)){
-            CustomItem customItem = ItemManager.items.get(getItemId(heldItem));
-            customItem.handleRightClick(player, heldItem, event);
+        if ((event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR))){
+            if (isCustomItem(heldItem)){
+                CustomItem customItem = ItemManager.items.get(getItemId(heldItem));
+                customItem.handleRightClick(player, heldItem, event);
+            }
+            if (isCustomItem(offHandItem)){
+                CustomItem customItem = ItemManager.items.get(getItemId(offHandItem));
+                customItem.handleOffHandClick(player, offHandItem, event);
+            }
+
         }
 
         if ((event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_AIR)) && isCustomItem(heldItem)){
             CustomItem customItem = ItemManager.items.get(getItemId(heldItem));
             customItem.handleLeftClick(player, heldItem, event);
         }
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
