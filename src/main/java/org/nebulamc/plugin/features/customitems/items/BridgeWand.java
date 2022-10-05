@@ -1,8 +1,10 @@
 package org.nebulamc.plugin.features.customitems.items;
 
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -13,27 +15,28 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.CustomItem;
+import org.nebulamc.plugin.utils.Common;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SacrificialBlade extends CustomItem {
+public class BridgeWand extends CustomItem {
     @Override
     public String getName() {
-        return "&dSacrificial Blade";
+        return "&eBridge Wand";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.NETHERITE_SWORD;
+        return Material.STICK;
     }
 
     @Override
     public List<String> getLore() {
         return Arrays.asList("\n",
-                "&eDeal higher damage at lower health.",
-                "&eRight-click to sacrifice yourself.");
+                "&eRight-click the top of a block to",
+                "&ebridge out with the item in your offhand.");
     }
 
     @Override
@@ -46,7 +49,6 @@ public class SacrificialBlade extends CustomItem {
         return null;
     }
 
-
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
         return null;
@@ -54,7 +56,7 @@ public class SacrificialBlade extends CustomItem {
 
     @Override
     public int getModelData() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -64,7 +66,7 @@ public class SacrificialBlade extends CustomItem {
 
     @Override
     public boolean isUnbreakable() {
-        return true;
+        return false;
     }
 
     @Override
@@ -73,12 +75,21 @@ public class SacrificialBlade extends CustomItem {
     }
 
     @Override
+    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
+        event.setCancelled(true);
+    }
+
+    @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        if (player.getHealth() > 4 && cooldownOver()){
-            player.damage(0.1);
-            player.setHealth(player.getHealth() - 4);
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, 1.0f, 0f);
-            setCooldown(0.25);
+        ItemStack offHand = player.getInventory().getItemInOffHand();
+        Block clickedBlock = event.getClickedBlock();
+
+        if (offHand.getType().isBlock() && clickedBlock != null && clickedBlock.getRelative(player.getFacing(), 1).getType().equals(Material.AIR)){
+            Block newBlock = clickedBlock.getRelative(player.getFacing(), 1);
+            if (Common.canPlace(player, newBlock.getLocation(), offHand)){
+                newBlock.setType(offHand.getType(), true);
+                offHand.subtract();
+            }
         }
     }
 
@@ -93,35 +104,13 @@ public class SacrificialBlade extends CustomItem {
     }
 
     @Override
-    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
-
-    }
-
-    @Override
     public void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
 
     }
 
     @Override
     public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
-        if (event.getDamage() >= 8){
-            double health = player.getHealth();
-            Location entityLocation = event.getEntity().getLocation().add(0, 1.2, 0);
 
-            if (health <= 2){
-                event.setDamage(event.getDamage() + 10);
-                player.getWorld().spawnParticle(Particle.ITEM_CRACK, entityLocation, 10, 0.5, 0.5, 0.5, 0, new ItemStack(Material.REDSTONE_BLOCK));
-                player.playSound(entityLocation, Sound.BLOCK_WOOD_BREAK, 3f, 0.5f);
-            } else if (health <= 4){
-                event.setDamage(event.getDamage() + 5);
-                player.getWorld().spawnParticle(Particle.ITEM_CRACK, entityLocation, 5, 0.5, 0.5, 0.5, 0, new ItemStack(Material.REDSTONE_BLOCK));
-                player.playSound(entityLocation, Sound.BLOCK_WOOD_BREAK, 3f, 0.7f);
-            } else if (health <= 6){
-                event.setDamage(event.getDamage() + 2);
-                player.getWorld().spawnParticle(Particle.ITEM_CRACK, entityLocation, 2, 0.5, 0.5, 0.5, 0, new ItemStack(Material.REDSTONE_BLOCK));
-                player.playSound(entityLocation, Sound.BLOCK_WOOD_BREAK, 3f, 0.9f);
-            }
-        }
     }
 
     @Override

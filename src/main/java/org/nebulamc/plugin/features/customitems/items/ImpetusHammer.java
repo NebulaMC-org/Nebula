@@ -10,6 +10,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -25,6 +26,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ImpetusHammer extends CustomItem {
+    @Override
+    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
+
+    }
+
     @Override
     public String getName() {
         return "&dImpetus Hammer";

@@ -17,6 +17,9 @@ import org.nebulamc.plugin.commands.items.GiveItemTabCompleter;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.*;
+import org.nebulamc.plugin.features.customitems.items.vertus.VertusCrystal;
+import org.nebulamc.plugin.features.customitems.items.vertus.VertusShard;
+import org.nebulamc.plugin.features.customitems.items.vertus.VertusSword;
 import org.nebulamc.plugin.features.haproxy.HAProxy;
 import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.wager.WagerManager;
@@ -68,7 +71,11 @@ public final class Nebula extends JavaPlugin {
                 new TestItem(),
                 new ImpetusHammer(),
                 new NoFallBoots(),
-                new SacrificialBlade()
+                new SacrificialBlade(),
+                new BridgeWand(),
+                new VertusCrystal(),
+                new VertusShard(),
+                new VertusSword()
         );
 
         meteorLoot = new LootTable.LootTableBuilder()

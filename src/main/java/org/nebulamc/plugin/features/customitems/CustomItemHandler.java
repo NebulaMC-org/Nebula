@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -82,6 +83,16 @@ public class CustomItemHandler implements Listener {
                     customItem.handleDamaged(player, i, event);
                 }
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlaceBlock(BlockPlaceEvent event){
+        Player player = event.getPlayer();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
+        if (isCustomItem(heldItem)){
+            CustomItem customItem = ItemManager.items.get(getItemId(heldItem));
+            customItem.handlePlaceBlock(player, heldItem, event);
         }
     }
 

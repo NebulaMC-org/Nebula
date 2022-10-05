@@ -6,6 +6,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -57,6 +58,8 @@ public abstract class CustomItem {
     public abstract void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event);
 
     public abstract void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event);
+
+    public abstract void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event);
 
     public void setCooldown(double seconds){
         cooldownTime = System.currentTimeMillis() + (long) (1000 * seconds);

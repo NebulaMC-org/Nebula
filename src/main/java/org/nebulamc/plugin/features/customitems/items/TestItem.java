@@ -6,6 +6,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -90,6 +91,11 @@ public class TestItem extends CustomItem {
 
     @Override
     public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
+        player.sendMessage("Cause: " + event.getCause() + ", Damage: " + event.getDamage());
+    }
+
+    @Override
+    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
 
     }
 

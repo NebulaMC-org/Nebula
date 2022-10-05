@@ -1,6 +1,7 @@
-package org.nebulamc.plugin.features.customitems.items;
+package org.nebulamc.plugin.features.customitems.items.vertus;
 
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -12,42 +13,39 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.CustomItem;
-import org.nebulamc.plugin.features.mana.ManaBar;
-import org.nebulamc.plugin.features.mana.ManaManager;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SlimeOrb extends CustomItem {
+public class VertusCrystal extends CustomItem {
     @Override
     public String getName() {
-        return "&eSlime Orb";
+        return "&fVertus Crystal";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.SLIME_BALL;
+        return Material.RED_DYE;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b25",
-                "\n",
-                "&eRight-click to launch yourself",
-                "&eoff the ground!");
+        return null;
     }
 
     @Override
     public Map<Enchantment, Integer> getEnchants() {
-        return null;
+        Map<Enchantment, Integer> enchants = new HashMap<>();
+        enchants.put(Enchantment.ARROW_INFINITE, 1);
+        return enchants;
     }
 
     @Override
     public List<ItemFlag> getFlags() {
-        return null;
+        return Arrays.asList(ItemFlag.HIDE_ENCHANTS);
     }
 
     @Override
@@ -57,7 +55,7 @@ public class SlimeOrb extends CustomItem {
 
     @Override
     public int getModelData() {
-        return 0;
+        return 2;
     }
 
     @Override
@@ -66,34 +64,23 @@ public class SlimeOrb extends CustomItem {
     }
 
     @Override
+    public boolean isUnbreakable() {
+        return false;
+    }
+
+    @Override
     public void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
 
     }
 
     @Override
-    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
-
-    }
-
-    @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        ManaBar manaBar = ManaManager.manaBars.get(player.getUniqueId());
-        if (manaBar.getMana() >= 25 && player.isOnGround() && cooldownOver()) {
-            Location location = player.getLocation();
-            Vector direction = location.getDirection();
 
-            player.playSound(location, Sound.ENTITY_SLIME_JUMP, 2.5f, 1f);
-            player.getWorld().spawnParticle(Particle.ITEM_CRACK, location, 10, 0.4, 0.1, 0.4, 0, new ItemStack(Material.SLIME_BALL));
-            player.setVelocity(direction.setY(0.8).multiply(2.5));
-
-            manaBar.setMana(manaBar.getMana() - 25);
-            setCooldown(5);
-        }
     }
 
     @Override
     public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        handleRightClick(player, itemStack, event);
+
     }
 
     @Override
@@ -107,8 +94,8 @@ public class SlimeOrb extends CustomItem {
     }
 
     @Override
-    public boolean isUnbreakable() {
-        return false;
+    public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
+
     }
 
     @Override
@@ -117,7 +104,7 @@ public class SlimeOrb extends CustomItem {
     }
 
     @Override
-    public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
+    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
 
     }
 }
