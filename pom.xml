@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>spectromeda</groupId>
+    <groupId>org.nebulamc.plugin</groupId>
     <artifactId>Nebula</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
@@ -71,6 +71,10 @@
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
         <repository>
+            <id>essentials-releases</id>
+            <url>https://repo.essentialsx.net/releases/</url>
+        </repository>
+        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -85,6 +89,18 @@
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>1.18.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.essentialsx</groupId>
+            <artifactId>EssentialsX</artifactId>
+            <version>2.19.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.luckperms</groupId>
+            <artifactId>api</artifactId>
+            <version>5.4</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
