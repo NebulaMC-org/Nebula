@@ -58,6 +58,5 @@ public class ManaBar implements Listener {
         }.runTaskTimer(Nebula.getInstance(), 0 ,5);
     }
 
-
 }
 

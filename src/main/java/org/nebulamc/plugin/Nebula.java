@@ -12,15 +12,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.nebulamc.plugin.commands.SetPronounsCommand;
 import org.nebulamc.plugin.commands.SpawnChestCommand;
 import org.nebulamc.plugin.commands.WagerCommand;
-import org.nebulamc.plugin.commands.items.GiveItemCommand;
-import org.nebulamc.plugin.commands.items.GiveItemTabCompleter;
+import org.nebulamc.plugin.commands.GiveItemCommand;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.*;
 import org.nebulamc.plugin.features.customitems.items.vertus.VertusCrystal;
 import org.nebulamc.plugin.features.customitems.items.vertus.VertusShard;
 import org.nebulamc.plugin.features.customitems.items.vertus.VertusSword;
-import org.nebulamc.plugin.features.haproxy.HAProxy;
 import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.wager.WagerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
@@ -33,8 +31,6 @@ public final class Nebula extends JavaPlugin {
 
     @Getter
     private static Nebula instance;
-    @Getter
-    private HAProxy HAProxy;
     @Getter
     private ConfigManager configManager;
     @Getter
@@ -51,20 +47,30 @@ public final class Nebula extends JavaPlugin {
 
         instance = this;
         this.configManager = new ConfigManager(this);
-        this.landsIntegration = new LandsIntegration(this);
         this.wagerManager = new WagerManager();
 
         configManager.createDefaults();
         checkDependencies();
         registerListeners();
         registerCommands();
+        registerCustomItems();
+        buildMeteorLootTable();
+        runMeteorSpawnLoop();
 
-        try {
-            this.HAProxy = new HAProxy();
-        } catch (ClassNotFoundException | NoSuchFieldException | NoSuchMethodException | IllegalAccessException e) {
-            getLogger().info("An exception occured hooking into HAProxyDetector, so it was disabled: " + e.getMessage());
-        }
+        getLogger().info("Successfully enabled Nebula plugin.");
 
+    }
+
+    @Override
+    public void onDisable() {
+        HandlerList.unregisterAll();
+    }
+
+    public MiniMessage miniMessage() {
+        return MiniMessage.miniMessage();
+    }
+
+    public void registerCustomItems() {
         ItemManager.registerItems(
                 new SlimeOrb(),
                 new GoldenCookie(),
@@ -77,7 +83,9 @@ public final class Nebula extends JavaPlugin {
                 new VertusShard(),
                 new VertusSword()
         );
+    }
 
+    private void buildMeteorLootTable() {
         meteorLoot = new LootTable.LootTableBuilder()
                 .add(new ItemStack(Material.AIR), 16)
                 .add(new ItemStack(Material.GOLD_BLOCK, 2), 12)
@@ -92,26 +100,6 @@ public final class Nebula extends JavaPlugin {
                 .add(new ItemStack(Material.EXPERIENCE_BOTTLE, 12), 6)
                 .add(new ItemStack(Material.ELYTRA, 1), 1)
                 .build();
-
-        new BukkitRunnable() {
-            int times = 1;
-            public void run() {
-                if (times % 6 == 0) {
-                    getServer().dispatchCommand(getServer().getConsoleSender(), "spawnchest");
-                }
-                times++;
-            }
-        }.runTaskTimer(this, 0, 10 * 60 * 20);
-
-    }
-
-    @Override
-    public void onDisable() {
-        HandlerList.unregisterAll();
-    }
-
-    public MiniMessage miniMessage() {
-        return MiniMessage.miniMessage();
     }
 
     private void registerListeners() {
@@ -135,7 +123,7 @@ public final class Nebula extends JavaPlugin {
         this.getCommand("setpronouns").setExecutor(new SetPronounsCommand());
 
         this.getCommand("giveitem").setExecutor(new GiveItemCommand());
-        this.getCommand("giveitem").setTabCompleter(new GiveItemTabCompleter());
+        this.getCommand("giveitem").setTabCompleter(new GiveItemCommand());
 
         this.getCommand("wager").setTabCompleter(new WagerCommand());
         this.getCommand("wager").setExecutor(new WagerCommand());
@@ -143,6 +131,18 @@ public final class Nebula extends JavaPlugin {
 
     private void checkDependencies() {
         // Will be re-implemented once dependencies are needed.
+    }
+
+    private void runMeteorSpawnLoop() {
+        new BukkitRunnable() {
+            int times = 1;
+            public void run() {
+                if (times % 6 == 0) {
+                    getServer().dispatchCommand(getServer().getConsoleSender(), "spawnchest");
+                }
+                times++;
+            }
+        }.runTaskTimer(this, 0, 10 * 60 * 20);
     }
 
 }

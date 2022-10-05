@@ -10,8 +10,6 @@ import java.util.logging.Logger;
 
 public class ManaManager implements Listener {
 
-    private static final Logger log = Nebula.getInstance().getLogger();
-
     public static HashMap<UUID, ManaBar> manaBars = new HashMap<>();
 
     public static void createManaBar(Player p){
