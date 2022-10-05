@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.nebulamc.plugin.utils.Common;
+import org.nebulamc.plugin.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,12 +89,12 @@ public abstract class CustomItem {
         }
 
         //set name
-        itemMeta.setDisplayName(Common.colorize(getName()));
+        itemMeta.setDisplayName(Utils.colorize(getName()));
 
         //set lore
         if (getLore() != null){
             List<String> lore = new ArrayList<>();
-            getLore().forEach(l-> lore.add(Common.colorize(l)));
+            getLore().forEach(l-> lore.add(Utils.colorize(l)));
             itemMeta.setLore(lore);
         }
 

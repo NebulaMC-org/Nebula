@@ -15,7 +15,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.CustomItem;
-import org.nebulamc.plugin.utils.Common;
+import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +86,7 @@ public class BridgeWand extends CustomItem {
 
         if (offHand.getType().isBlock() && clickedBlock != null && clickedBlock.getRelative(player.getFacing(), 1).getType().equals(Material.AIR)){
             Block newBlock = clickedBlock.getRelative(player.getFacing(), 1);
-            if (Common.canPlace(player, newBlock.getLocation(), offHand)){
+            if (Utils.canPlace(player, newBlock.getLocation(), offHand)){
                 newBlock.setType(offHand.getType(), true);
                 offHand.subtract();
             }

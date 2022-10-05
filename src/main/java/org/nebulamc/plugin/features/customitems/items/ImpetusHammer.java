@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.CustomItem;
-import org.nebulamc.plugin.utils.Common;
+import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -118,7 +118,7 @@ public class ImpetusHammer extends CustomItem {
                 Location location = player.getLocation();
                 event.setDamage(event.getDamage() + addedDamage);
                 entity.setVelocity(velocity.multiply(
-                        Common.absoluteVector(direction)).
+                        Utils.absoluteVector(direction)).
                         multiply(5).setY(entity.getVelocity().
                         getY() + 0.2));
 

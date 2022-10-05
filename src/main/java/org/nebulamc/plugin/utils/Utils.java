@@ -10,8 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.Nebula;
 
-public final class Common {
-    private Common(){}
+public final class Utils {
+    private Utils(){}
 
     private static LandsIntegration lands = Nebula.getInstance().getLandsIntegration();
 
