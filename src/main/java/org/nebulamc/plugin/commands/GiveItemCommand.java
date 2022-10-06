@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 
 public class GiveItemCommand implements CommandExecutor, TabCompleter {
 
-
     private static List<String> arguments = new ArrayList<>();
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
         if (!(sender instanceof Player)) {
