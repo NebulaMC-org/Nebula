@@ -49,7 +49,7 @@ public class SpawnChestCommand implements CommandExecutor {
                     }
 
                     for (int i = 0; i < chestInv.getSize(); i++) {
-                        chestInv.setItem(i, plugin.getMeteorLoot().getRandom());
+                        chestInv.setItem(i, plugin.meteorLoot.getRandom());
                     }
 
                     log.info("Spawned a chest at " + loc);

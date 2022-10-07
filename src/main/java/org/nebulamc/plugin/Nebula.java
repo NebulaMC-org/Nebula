@@ -48,7 +48,7 @@ public final class Nebula extends JavaPlugin {
     private AdminEventManager adminEventManager;
 
     private LandsIntegration landsIntegration;
-    private static LootTable meteorLoot;
+    public static LootTable meteorLoot;
 
     @Getter(AccessLevel.NONE)
     private final PluginManager pm = this.getServer().getPluginManager();
@@ -69,7 +69,6 @@ public final class Nebula extends JavaPlugin {
         this.adminEventManager = new AdminEventManager();
 
         configManager.createDefaults();
-        // checkDependencies(); Unused & un-needed
         registerListeners();
         registerCommands();
         registerHooks();
@@ -169,8 +168,8 @@ public final class Nebula extends JavaPlugin {
         this.getCommand("runevent").setExecutor(new RunEventCommand());
     }
 
-    private void checkDependencies() {
-        // Will be re-implemented once dependencies are needed.
+    private void registerDependencies() {
+        this.landsIntegration = new LandsIntegration(this);
     }
 
     private void runMeteorSpawnLoop() {

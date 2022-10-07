@@ -25,7 +25,7 @@ public class RunEventCommand implements CommandExecutor {
                 case "ffa" -> {
                     long timerLength = args.length == 2 && p.hasPermission("events.override-timer") ? Long.parseLong(args[1]) : 5;
                     FFAAdminEvent e = Nebula.getInstance().getAdminEventManager().startEvent(p, FFAAdminEvent.class, timerLength);
-                    if (e == null) {
+                    if (e != null) {
                         p.sendMessage(
                                 Component.text("Started an FFA admin event.")
                                         .color(NamedTextColor.YELLOW)
