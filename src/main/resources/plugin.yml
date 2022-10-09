@@ -17,7 +17,17 @@ commands:
     aliases: [ homosex, getbitches ]
     description: Wagers an item with a player.
     usage: /<command> [<player>]
+    permission: nebula.wager
   giveitem:
     description: Gives a custom item to the player.
     usage: /<command> [<player>] [<item>]
     permission: nebula.giveitem
+  joinevent:
+    description: Joins an admin event
+    usage: /<command> [<code>]
+    permission: nebula.adminevents.join
+  runevent:
+    aliases: [ hostevent ]
+    description: Hosts an admin event
+    usage: /<command> [<type>]
+    permission: nebula.adminevents.host

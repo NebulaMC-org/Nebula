@@ -17,8 +17,7 @@ public class SmeltingListener implements Listener {
 
     @EventHandler
     private void onSmelt(BlockCookEvent e) {
-        Material smeltMat = (Material.NETHER_GOLD_ORE);
-        if (e.getSource().getType().equals(smeltMat)) {
+        if (e.getSource().getType() == Material.NETHER_GOLD_ORE) {
             ItemStack output = new ItemStack(Material.GOLD_NUGGET, 2);
             e.setResult(output);
         }
