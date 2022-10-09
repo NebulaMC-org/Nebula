@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.mana;
+package org.nebulamc.plugin.features.playerdata;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -25,10 +25,6 @@ public class ManaBar implements Listener {
 
     public int getMana() {
         return mana;
-    }
-
-    public int getMaxMana() {
-        return maxMana;
     }
 
     public void setMana(int m){

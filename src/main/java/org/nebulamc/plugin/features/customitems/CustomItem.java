@@ -61,17 +61,6 @@ public abstract class CustomItem {
 
     public abstract void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event);
 
-    public void setCooldown(double seconds){
-        cooldownTime = System.currentTimeMillis() + (long) (1000 * seconds);
-    }
-
-    public boolean cooldownOver(){
-        if (System.currentTimeMillis() >= cooldownTime){
-            return true;
-        }
-        return false;
-    }
-
     public String getId(){
         return getClass().getSimpleName();
     }

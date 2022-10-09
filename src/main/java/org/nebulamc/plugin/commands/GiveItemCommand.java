@@ -9,12 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.Nebula;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class GiveItemCommand implements CommandExecutor, TabCompleter {
 
@@ -36,7 +34,7 @@ public class GiveItemCommand implements CommandExecutor, TabCompleter {
             if (args.length >= 0 && Bukkit.getPlayer(args[0]) != null){
                 if(ItemManager.items.containsKey(args[1])){
                     ItemStack item = ItemManager.items.get(args[1]).getItem();
-                    player.getInventory().addItem(item);
+                    Bukkit.getPlayer(args[0]).getInventory().addItem(item);
                 } else {
                     sender.sendMessage(
                             Component.text("That is not a valid item name!").color(NamedTextColor.RED));

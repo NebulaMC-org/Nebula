@@ -48,6 +48,7 @@ public final class Nebula extends JavaPlugin {
         instance = this;
         this.configManager = new ConfigManager(this);
         this.wagerManager = new WagerManager();
+        this.landsIntegration = new LandsIntegration(this);
 
         configManager.createDefaults();
         checkDependencies();

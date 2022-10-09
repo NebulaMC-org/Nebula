@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.CustomItem;
+import org.nebulamc.plugin.features.playerdata.PlayerData;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -74,11 +76,14 @@ public class SacrificialBlade extends CustomItem {
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        if (player.getHealth() > 4 && cooldownOver()){
+        PlayerData playerData = PlayerManager.playerData.get(player.getUniqueId());
+        String name = getClass().getSimpleName();
+
+        if (player.getHealth() > 4 && playerData.cooldownOver(name)){
             player.damage(0.1);
             player.setHealth(player.getHealth() - 4);
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, 1.0f, 0f);
-            setCooldown(0.25);
+            playerData.setItemCooldown(name, 0.25);
         }
     }
 
