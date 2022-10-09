@@ -13,7 +13,7 @@ import org.nebulamc.plugin.Nebula;
 public final class Utils {
     private Utils(){}
 
-    private static LandsIntegration lands = Nebula.getInstance().getLandsIntegration();
+    public static LandsIntegration lands = Nebula.getInstance().getLandsIntegration();
 
     public static String colorize(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
@@ -27,6 +27,7 @@ public final class Utils {
     }
 
     public static boolean canPlace(Player player, Location loc, ItemStack itemStack) {
+
         LandWorld landWorld = lands.getLandWorld(player.getWorld());
 
         if (!(player.getWorld().getName().equals("nebula")) && !(player.getWorld().getName().equals("admin")))
@@ -35,4 +36,21 @@ public final class Utils {
             }
         return false;
     }
+
+    /* temporarily disabled
+    public void rayCast(Player player, int distance, Action tickAction, Action startAction, Action endAction){
+        startAction.execute(player, player.getLocation());
+        BlockIterator rayBlocks = new BlockIterator(player.getEyeLocation(), 1, distance);
+        while (rayBlocks.hasNext()){
+            Location loc = rayBlocks.next().getLocation();
+            if (loc.getBlock().getType().isSolid()){
+                endAction.execute(player, loc);
+                break;
+            } else {
+                tickAction.execute(player, loc);
+            }
+        }
+
+    }
+  */
 }

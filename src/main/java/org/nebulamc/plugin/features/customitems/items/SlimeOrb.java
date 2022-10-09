@@ -14,8 +14,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.CustomItem;
-import org.nebulamc.plugin.features.mana.ManaBar;
-import org.nebulamc.plugin.features.mana.ManaManager;
+import org.nebulamc.plugin.features.playerdata.ManaBar;
+import org.nebulamc.plugin.features.playerdata.PlayerData;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -77,8 +78,11 @@ public class SlimeOrb extends CustomItem {
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        ManaBar manaBar = ManaManager.manaBars.get(player.getUniqueId());
-        if (manaBar.getMana() >= 25 && player.isOnGround() && cooldownOver()) {
+        PlayerData playerData = PlayerManager.playerData.get(player.getUniqueId());
+        ManaBar manaBar = playerData.getManaBar();
+        String name = getClass().getSimpleName();
+
+        if (manaBar.getMana() >= 25 && player.isOnGround() && playerData.cooldownOver(name)) {
             Location location = player.getLocation();
             Vector direction = location.getDirection();
 
@@ -87,7 +91,7 @@ public class SlimeOrb extends CustomItem {
             player.setVelocity(direction.setY(0.8).multiply(2.5));
 
             manaBar.setMana(manaBar.getMana() - 25);
-            setCooldown(5);
+            playerData.setItemCooldown(name, 0.5);
         }
     }
 
