@@ -9,6 +9,9 @@ public class PlayerData {
     private ManaBar manaBar;
     public HashMap<String, Double> itemCooldowns = new HashMap<>();
 
+    private int jetpackFuel;
+    private int maxJetpackFuel = 100;
+
     public PlayerData(UUID i){
         id = i;
         manaBar = new ManaBar(i);
@@ -31,5 +34,17 @@ public class PlayerData {
             return true;
         }
         return false;
+    }
+
+    public int getJetpackFuel(){
+        return jetpackFuel;
+    }
+
+    public int getJetpackMaxFuel(){
+        return maxJetpackFuel;
+    }
+
+    public void setJetpackFuel(int fuel){
+        jetpackFuel = fuel;
     }
 }

@@ -18,4 +18,8 @@ public class PlayerManager implements Listener {
         playerData.get(p.getUniqueId()).getManaBar().tickManaBar();
     }
 
+    public static PlayerData getPlayerData(Player p){
+        return playerData.get(p.getUniqueId());
+    }
+
 }
