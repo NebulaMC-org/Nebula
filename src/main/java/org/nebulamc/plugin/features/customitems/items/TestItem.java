@@ -30,6 +30,26 @@ public class TestItem extends CustomItem {
     }
 
     @Override
+    public int getTimerPeriod() {
+        return 20;
+    }
+
+    @Override
+    public void doTimerAction(Player player) {
+        player.sendMessage("This should send every second.");
+    }
+
+    @Override
+    public boolean hasTimerAction() {
+        return true;
+    }
+
+    @Override
+    public int getTimerDelay() {
+        return 5;
+    }
+
+    @Override
     public boolean isUnbreakable() {
         return false;
     }
@@ -42,6 +62,11 @@ public class TestItem extends CustomItem {
     @Override
     public List<String> getLore() {
         return null;
+    }
+
+    @Override
+    public List<EquipmentSlot> activeSlots() {
+        return Arrays.asList(EquipmentSlot.CHEST);
     }
 
     @Override

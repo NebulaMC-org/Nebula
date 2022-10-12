@@ -20,6 +20,11 @@ import java.util.*;
 
 public class VertusSword extends CustomItem {
     @Override
+    public List<EquipmentSlot> activeSlots() {
+        return null;
+    }
+
+    @Override
     public String getName() {
         return "&fVertus Sword";
     }
@@ -32,6 +37,26 @@ public class VertusSword extends CustomItem {
     @Override
     public List<String> getLore() {
         return null;
+    }
+
+    @Override
+    public void doTimerAction(Player player) {
+
+    }
+
+    @Override
+    public boolean hasTimerAction() {
+        return false;
+    }
+
+    @Override
+    public int getTimerPeriod() {
+        return 0;
+    }
+
+    @Override
+    public int getTimerDelay() {
+        return 0;
     }
 
     @Override

@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.CustomItem;
@@ -37,6 +38,11 @@ public class VertusShard extends CustomItem {
     }
 
     @Override
+    public List<EquipmentSlot> activeSlots() {
+        return null;
+    }
+
+    @Override
     public Map<Enchantment, Integer> getEnchants() {
         Map<Enchantment, Integer> enchants = new HashMap<>();
         enchants.put(Enchantment.ARROW_INFINITE, 1);
@@ -51,6 +57,26 @@ public class VertusShard extends CustomItem {
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
         return null;
+    }
+
+    @Override
+    public void doTimerAction(Player player) {
+
+    }
+
+    @Override
+    public boolean hasTimerAction() {
+        return false;
+    }
+
+    @Override
+    public int getTimerPeriod() {
+        return 0;
+    }
+
+    @Override
+    public int getTimerDelay() {
+        return 0;
     }
 
     @Override

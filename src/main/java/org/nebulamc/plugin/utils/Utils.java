@@ -27,7 +27,6 @@ public final class Utils {
     }
 
     public static boolean canPlace(Player player, Location loc, ItemStack itemStack) {
-
         LandWorld landWorld = lands.getLandWorld(player.getWorld());
 
         if (!(player.getWorld().getName().equals("nebula")) && !(player.getWorld().getName().equals("admin")))
@@ -36,7 +35,34 @@ public final class Utils {
             }
         return false;
     }
+/*
+    public static List<ItemStack> getEntityItems(LivingEntity e) {
+        EntityEquipment equipment = e.getEquipment();
 
+        if (equipment == null) {
+            return Lists.newArrayList();
+        }
+
+        List<ItemStack> list = Lists.newArrayList();
+        list.add(equipment.getItemInMainHand());
+        list.add(equipment.getItemInOffHand());
+        list.add(equipment.getBoots());
+        list.add(equipment.getLeggings());
+        list.add(equipment.getChestplate());
+        list.add(equipment.getHelmet());
+
+        Skill.additionalSlots.forEach(slot -> {
+            if (e instanceof Player) {
+                Player p = (Player) e;
+                list.add(p.getInventory().getItem(slot));
+            } else {
+                list.add(null);
+            }
+        });
+
+        return list;
+    }
+*/
     /* temporarily disabled
     public void rayCast(Player player, int distance, Action tickAction, Action startAction, Action endAction){
         startAction.execute(player, player.getLocation());

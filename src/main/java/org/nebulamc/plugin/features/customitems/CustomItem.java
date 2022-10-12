@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -24,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class CustomItem {
-
-    public long cooldownTime;
 
     public abstract String getName();
 
@@ -45,6 +44,8 @@ public abstract class CustomItem {
 
     public abstract boolean isUnbreakable();
 
+    public abstract List<EquipmentSlot> activeSlots();
+
     public abstract void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
 
     public abstract void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
@@ -60,6 +61,14 @@ public abstract class CustomItem {
     public abstract void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event);
 
     public abstract void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event);
+
+    public abstract void doTimerAction(Player player);
+
+    public abstract boolean hasTimerAction();
+
+    public abstract int getTimerPeriod();
+
+    public abstract int getTimerDelay();
 
     public String getId(){
         return getClass().getSimpleName();

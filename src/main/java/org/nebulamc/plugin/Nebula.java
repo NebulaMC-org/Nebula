@@ -84,6 +84,7 @@ public final class Nebula extends JavaPlugin {
                 new VertusShard(),
                 new VertusSword()
         );
+        ItemManager.registerTimers();
     }
 
     private void buildMeteorLootTable() {

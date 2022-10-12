@@ -7,7 +7,7 @@ public class PlayerData {
 
     private final UUID id;
     private ManaBar manaBar;
-    private HashMap<String, Double> itemCooldowns = new HashMap<>();
+    public HashMap<String, Double> itemCooldowns = new HashMap<>();
 
     public PlayerData(UUID i){
         id = i;
@@ -16,10 +16,6 @@ public class PlayerData {
 
     public ManaBar getManaBar() {
         return manaBar;
-    }
-
-    public HashMap<String, Double> getCooldowns(){
-        return itemCooldowns;
     }
 
     public void setItemCooldown(String name, double seconds){
