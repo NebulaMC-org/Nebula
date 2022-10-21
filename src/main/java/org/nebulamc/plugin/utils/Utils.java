@@ -7,8 +7,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.Nebula;
+import org.nebulamc.plugin.features.customitems.Action;
 
 public final class Utils {
     private Utils(){}
@@ -31,6 +33,16 @@ public final class Utils {
 
         if (!(player.getWorld().getName().equals("nebula")) && !(player.getWorld().getName().equals("admin")))
             if (landWorld.hasFlag(player, loc, itemStack.getType(), Flags.BLOCK_PLACE, true)){
+                return true;
+            }
+        return false;
+    }
+
+    public static boolean canBreak(Player player, Location loc, ItemStack itemStack) {
+        LandWorld landWorld = lands.getLandWorld(player.getWorld());
+
+        if (!(player.getWorld().getName().equals("nebula")) && !(player.getWorld().getName().equals("admin")))
+            if (landWorld.hasFlag(player, loc, itemStack.getType(), Flags.BLOCK_BREAK, true)){
                 return true;
             }
         return false;
@@ -63,20 +75,19 @@ public final class Utils {
         return list;
     }
 */
-    /* temporarily disabled
-    public void rayCast(Player player, int distance, Action tickAction, Action startAction, Action endAction){
-        startAction.execute(player, player.getLocation());
-        BlockIterator rayBlocks = new BlockIterator(player.getEyeLocation(), 1, distance);
+    public static void rayCast(Player player, int distance, Action tickAction, Action startAction, Action endAction){
+        startAction.execute(player, player.getLocation(), null);
+        BlockIterator rayBlocks = new BlockIterator(player.getEyeLocation(), 0, distance);
         while (rayBlocks.hasNext()){
             Location loc = rayBlocks.next().getLocation();
             if (loc.getBlock().getType().isSolid()){
-                endAction.execute(player, loc);
-                break;
+                endAction.execute(player, loc, null);
+                return;
             } else {
-                tickAction.execute(player, loc);
+                tickAction.execute(player, loc, null);
             }
         }
+        endAction.execute(player, player.getLocation().add(player.getLocation().getDirection().multiply(distance)), null);
 
     }
-  */
 }

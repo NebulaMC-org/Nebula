@@ -10,6 +10,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
@@ -147,6 +148,14 @@ public class CustomItemHandler implements Listener {
         addAllInventoryTimers(event.getPlayer());
     }
 
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBowShoot(EntityShootBowEvent event){
+        if (event.getEntity() instanceof Player && isCustomItem(event.getBow())){
+            CustomItem customItem = ItemManager.items.get(getItemId(event.getBow()));
+            customItem.handleShootBow((Player) event.getEntity(), event.getBow(), event);
+        }
+    }
+
     public static boolean isCustomItem(ItemStack itemStack){
         if (itemStack != null && itemStack.hasItemMeta()){
             return (itemStack.getItemMeta().getPersistentDataContainer().has(ItemManager.customItemKey, PersistentDataType.STRING));
@@ -179,11 +188,11 @@ public class CustomItemHandler implements Listener {
     }
 
     public static void changeSlotTimers(Player player, ItemStack oldItem, ItemStack newItem){
-        if (isCustomItem(oldItem)){
+        if (oldItem != null && isCustomItem(oldItem) && ItemManager.items.get(getItemId(newItem)).hasTimerAction()){
             CustomItem item = ItemManager.items.get(getItemId(oldItem));
             ItemManager.removePlayerFromTimer(player, item);
         }
-        if (isCustomItem(newItem)){
+        if (newItem != null && isCustomItem(newItem) && ItemManager.items.get(getItemId(newItem)).hasTimerAction()){
             CustomItem item = ItemManager.items.get(getItemId(newItem));
             ItemManager.addPlayerToTimer(player, item);
         }
@@ -191,8 +200,10 @@ public class CustomItemHandler implements Listener {
 
     public static void addAllInventoryTimers(Player player){
         for (ItemStack i : getCustomItems(player)){
-            CustomItem item = ItemManager.items.get(getItemId(i));
-            ItemManager.addPlayerToTimer(player, item);
+            if (ItemManager.items.get(getItemId(i)).hasTimerAction()){
+                CustomItem item = ItemManager.items.get(getItemId(i));
+                ItemManager.addPlayerToTimer(player, item);
+            }
         }
     }
 }

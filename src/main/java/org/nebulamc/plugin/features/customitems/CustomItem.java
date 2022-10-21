@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -61,6 +62,8 @@ public abstract class CustomItem {
     public abstract void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event);
 
     public abstract void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event);
+
+    public abstract void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event);
 
     public abstract void doTimerAction(Player player);
 

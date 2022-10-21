@@ -1,7 +1,9 @@
-package org.nebulamc.plugin.features.customitems.items.vertus;
+package org.nebulamc.plugin.features.customitems.items;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -16,58 +18,47 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.CustomItem;
+import org.nebulamc.plugin.features.customitems.actions.*;
+import org.nebulamc.plugin.features.playerdata.PlayerData;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
+import org.nebulamc.plugin.utils.Utils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-public class VertusSword extends CustomItem {
+public class SolarEclipse extends CustomItem {
     @Override
     public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+        PlayerData data = PlayerManager.getPlayerData(player);
+        if (data.getManaBar().getMana() >= 80){
+            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_BURN, 3f, 0f);
+            Utils.rayCast(player, 200,
+                    new ListAction(new ParticleAction(Particle.FLAME, 2, 0.05, 0.05, 0.05, 0.1),
+                            new EntitiesInAreaAction(1,
+                                    new ListAction(new DamageAction(6), new SetOnFireAction(120)))),
+                    new NullAction(),
+                    new ExplosionAction(14, 1, 180));
+            event.setCancelled(true);
+            data.getManaBar().setMana(data.getManaBar().getMana()-80);
+        } else {
 
-    }
-
-    @Override
-    public List<EquipmentSlot> activeSlots() {
-        return null;
+        }
     }
 
     @Override
     public String getName() {
-        return "&fVertus Sword";
+        return "&dSolar Eclipse";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.NETHERITE_SWORD;
+        return Material.BOW;
     }
 
     @Override
     public List<String> getLore() {
-        return null;
-    }
-
-    @Override
-    public void doTimerAction(Player player) {
-
-    }
-
-    @Override
-    public boolean hasTimerAction() {
-        return false;
-    }
-
-    @Override
-    public int getTimerPeriod() {
-        return 0;
-    }
-
-    @Override
-    public int getTimerDelay() {
-        return 0;
-    }
-
-    @Override
-    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
-
+        return Arrays.asList("&7Mana Use: &b80", "\n", "&eRelease a scorching beam of fire", "&ewhen fully charged!");
     }
 
     @Override
@@ -77,19 +68,17 @@ public class VertusSword extends CustomItem {
 
     @Override
     public List<ItemFlag> getFlags() {
-        return Arrays.asList(ItemFlag.HIDE_ATTRIBUTES);
+        return null;
     }
 
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
-        Map<Attribute, AttributeModifier> attributes = new HashMap<>();
-        attributes.put(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 1, AttributeModifier.Operation.ADD_SCALAR, EquipmentSlot.HAND));
-        return attributes;
+        return null;
     }
 
     @Override
     public int getModelData() {
-        return 1;
+        return 0;
     }
 
     @Override
@@ -99,7 +88,12 @@ public class VertusSword extends CustomItem {
 
     @Override
     public boolean isUnbreakable() {
-        return true;
+        return false;
+    }
+
+    @Override
+    public List<EquipmentSlot> activeSlots() {
+        return null;
     }
 
     @Override
@@ -135,5 +129,30 @@ public class VertusSword extends CustomItem {
     @Override
     public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
 
+    }
+
+    @Override
+    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
+
+    }
+
+    @Override
+    public void doTimerAction(Player player) {
+
+    }
+
+    @Override
+    public boolean hasTimerAction() {
+        return false;
+    }
+
+    @Override
+    public int getTimerPeriod() {
+        return 0;
+    }
+
+    @Override
+    public int getTimerDelay() {
+        return 0;
     }
 }

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -35,6 +36,11 @@ public class VertusShard extends CustomItem {
     @Override
     public List<String> getLore() {
         return null;
+    }
+
+    @Override
+    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+
     }
 
     @Override

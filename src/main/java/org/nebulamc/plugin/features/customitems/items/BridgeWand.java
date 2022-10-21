@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -25,7 +26,7 @@ import java.util.Map;
 public class BridgeWand extends CustomItem {
     @Override
     public String getName() {
-        return "&eBridge Wand";
+        return "&fBridge Wand";
     }
 
     @Override
@@ -78,6 +79,11 @@ public class BridgeWand extends CustomItem {
     @Override
     public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
         event.setCancelled(true);
+    }
+
+    @Override
+    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+
     }
 
     @Override

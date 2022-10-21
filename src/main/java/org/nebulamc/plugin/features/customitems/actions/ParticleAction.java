@@ -2,39 +2,41 @@ package org.nebulamc.plugin.features.customitems.actions;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.Action;
 
 public class ParticleAction extends Action {
 
     Particle particle;
-    Location location;
     int count;
     double xOffset;
     double yOffset;
     double zOffset;
+    double speed;
     ItemStack item;
 
-    public ParticleAction(org.bukkit.Particle part, Location loc, int cnt, double xOff, double yOff, double zOff){
+    public ParticleAction(org.bukkit.Particle part, int count, double xOff, double yOff, double zOff, double speed){
         particle = part;
-        location = loc;
-        count = cnt;
+        this.count = count;
+        this.speed = speed;
         xOffset = xOff;
         yOffset = yOff;
         zOffset = zOff;
     }
 
-    public ParticleAction(org.bukkit.Particle part, Location loc, int cnt, double xOff, double yOff, double zOff, ItemStack i){
+    public ParticleAction(org.bukkit.Particle part, int count, double xOff, double yOff, double zOff, double speed, ItemStack i){
         particle = part;
-        location = loc;
-        count = cnt;
+        this.count = count;
+        this.speed = speed;
         xOffset = xOff;
         yOffset = yOff;
         zOffset = zOff;
         item = i;
     }
     @Override
-    public void execute() {
-        location.getWorld().spawnParticle(particle, location, count, xOffset, yOffset, zOffset, 0, item);
+    public void execute(Player player, Location location, Entity entity) {
+        location.getWorld().spawnParticle(particle, location, count, xOffset, yOffset, zOffset, speed, item, true);
     }
 }

@@ -3,6 +3,7 @@ package org.nebulamc.plugin.features.customitems.items;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -120,6 +122,7 @@ public class Jetpack extends CustomItem {
     @Override
     public void doTimerAction(Player player) {
         PlayerData data = PlayerManager.getPlayerData(player);
+        int fuel = data.getJetpackFuel();
         if (player.isOnGround()){
             data.setJetpackFuel(data.getJetpackMaxFuel());
         }
@@ -132,13 +135,27 @@ public class Jetpack extends CustomItem {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 , 0, false, false,false));
             player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(0, -0.2, 0), 2, 0, 0, 0, 0.2);
             player.getWorld().spawnParticle(Particle.SMOKE_LARGE, player.getLocation().add(0, 0, 0), 1, 0, 0, 0, 0);
-            data.setJetpackFuel(data.getJetpackFuel()-2);
+
+            if (fuel >= 60){
+                player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_SHOOT, 1f, 1.2f);
+            } else if (fuel >= 20){
+                player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_SHOOT, 1f, 0.8f);
+            } else {
+                player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_SHOOT, 1f, 0.4f);
+            }
+
+            data.setJetpackFuel(fuel-3);
         }
     }
 
     @Override
     public boolean hasTimerAction() {
         return true;
+    }
+
+    @Override
+    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+
     }
 
     @Override

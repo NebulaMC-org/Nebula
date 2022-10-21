@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -26,7 +27,7 @@ import java.util.Map;
 public class SlimeOrb extends CustomItem {
     @Override
     public String getName() {
-        return "&eSlime Orb";
+        return "&fSlime Orb";
     }
 
     @Override
@@ -79,6 +80,11 @@ public class SlimeOrb extends CustomItem {
 
     @Override
     public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
+
+    }
+
+    @Override
+    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
 
     }
 
