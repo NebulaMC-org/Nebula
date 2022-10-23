@@ -3,15 +3,16 @@ package org.nebulamc.plugin.features.customitems.actions;
 import me.angeschossen.lands.api.flags.Flags;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
+import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.Action;
 import org.nebulamc.plugin.utils.Utils;
 
-public class DamageAction extends Action {
+public class PushAction extends Action {
 
-    double damage;
+    double power;
 
-    public DamageAction(double damage){
-        this.damage = damage;
+    public PushAction(double power){
+        this.power = power;
     }
 
     @Override
@@ -29,8 +30,8 @@ public class DamageAction extends Action {
                 if (!Utils.hasFlag(player, location, null, Flags.ATTACK_ANIMAL))
                     return;
             }
-            ((LivingEntity) target).damage(damage, player);
-
+            Vector velocity = target.getLocation().subtract(location).toVector().normalize();
+            target.setVelocity(velocity.multiply(power).setY(power/2));
         }
     }
 }

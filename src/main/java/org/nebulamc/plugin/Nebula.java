@@ -85,7 +85,7 @@ public final class Nebula extends JavaPlugin {
                 new VertusSword(),
                 new ShadowBoots(),
                 new Jetpack(),
-                new SolarEclipse()
+                new SolarFlare()
         );
         ItemManager.registerTimers();
     }

@@ -27,20 +27,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SolarEclipse extends CustomItem {
+public class SolarFlare extends CustomItem {
     @Override
     public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
         PlayerData data = PlayerManager.getPlayerData(player);
-        if (data.getManaBar().getMana() >= 80){
+        if (data.getManaBar().getMana() >= 50){
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_BURN, 3f, 0f);
+            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GHAST_SHOOT, 3f, 0f);
             Utils.rayCast(player, 200,
                     new ListAction(new ParticleAction(Particle.FLAME, 2, 0.05, 0.05, 0.05, 0.1),
                             new EntitiesInAreaAction(1,
                                     new ListAction(new DamageAction(6), new SetOnFireAction(120)))),
                     new NullAction(),
-                    new ExplosionAction(14, 1, 180));
+                    new ListAction(new ExplosionAction(14, 1.5, 180), new ParticleAction(Particle.FLAME, 15, 0, 0, 0, 0.4)));
             event.setCancelled(true);
-            data.getManaBar().setMana(data.getManaBar().getMana()-80);
+            data.getManaBar().setMana(data.getManaBar().getMana()-50);
         } else {
 
         }
@@ -48,7 +49,7 @@ public class SolarEclipse extends CustomItem {
 
     @Override
     public String getName() {
-        return "&dSolar Eclipse";
+        return "&dSolar Flare";
     }
 
     @Override
@@ -58,7 +59,7 @@ public class SolarEclipse extends CustomItem {
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b80", "\n", "&eRelease a scorching beam of fire", "&ewhen fully charged!");
+        return Arrays.asList("&7Mana Use: &b50", "\n", "&eRelease a scorching beam of fire", "&ewhen you have enough mana!");
     }
 
     @Override
@@ -78,7 +79,7 @@ public class SolarEclipse extends CustomItem {
 
     @Override
     public int getModelData() {
-        return 0;
+        return 1;
     }
 
     @Override

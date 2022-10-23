@@ -1,5 +1,6 @@
 package org.nebulamc.plugin.features.customitems.items;
 
+import me.angeschossen.lands.api.flags.Flags;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -93,7 +94,7 @@ public class BridgeWand extends CustomItem {
 
         if (offHand.getType().isBlock() && clickedBlock != null && clickedBlock.getRelative(player.getFacing(), 1).getType().equals(Material.AIR)){
             Block newBlock = clickedBlock.getRelative(player.getFacing(), 1);
-            if (Utils.canPlace(player, newBlock.getLocation(), offHand)){
+            if (Utils.hasFlag(player, newBlock.getLocation(), offHand, Flags.BLOCK_PLACE)){
                 newBlock.setType(offHand.getType(), true);
                 offHand.subtract();
             }

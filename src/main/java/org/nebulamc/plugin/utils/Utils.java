@@ -1,10 +1,11 @@
 package org.nebulamc.plugin.utils;
 
-import me.angeschossen.lands.api.flags.Flags;
+import me.angeschossen.lands.api.flags.types.RoleFlag;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.LandWorld;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
@@ -28,21 +29,15 @@ public final class Utils {
         return new Vector(absX, absY, absZ);
     }
 
-    public static boolean canPlace(Player player, Location loc, ItemStack itemStack) {
+    public static boolean hasFlag(Player player, Location loc, ItemStack itemStack, RoleFlag flag){
         LandWorld landWorld = lands.getLandWorld(player.getWorld());
 
-        if (!(player.getWorld().getName().equals("nebula")) && !(player.getWorld().getName().equals("admin")))
-            if (landWorld.hasFlag(player, loc, itemStack.getType(), Flags.BLOCK_PLACE, true)){
-                return true;
-            }
-        return false;
-    }
-
-    public static boolean canBreak(Player player, Location loc, ItemStack itemStack) {
-        LandWorld landWorld = lands.getLandWorld(player.getWorld());
+        if (itemStack == null){
+            itemStack = new ItemStack(Material.AIR);
+        }
 
         if (!(player.getWorld().getName().equals("nebula")) && !(player.getWorld().getName().equals("admin")))
-            if (landWorld.hasFlag(player, loc, itemStack.getType(), Flags.BLOCK_BREAK, true)){
+            if (landWorld.hasFlag(player, loc, itemStack.getType(), flag, true)){
                 return true;
             }
         return false;

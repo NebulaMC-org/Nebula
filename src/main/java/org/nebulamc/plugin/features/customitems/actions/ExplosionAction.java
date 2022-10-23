@@ -23,6 +23,6 @@ public class ExplosionAction extends Action {
     public void execute(Player player, Location location, Entity entity) {
         location.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, location, 1, 0, 0, 0, 0, null, true);
         location.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 6f, 1f);
-        new EntitiesInAreaAction(4, new ListAction(new DamageAction(damage), new SetOnFireAction(fireTicks))).execute(player, location, entity);
+        new EntitiesInAreaAction(6, new ListAction(new DamageAction(damage), new SetOnFireAction(fireTicks), new PushAction(power))).execute(player, location, entity);
     }
 }
