@@ -1,18 +1,16 @@
 package org.nebulamc.plugin.features.customitems.actions;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.nebulamc.plugin.features.customitems.Action;
+import org.nebulamc.plugin.features.customitems.source.Source;
+import org.nebulamc.plugin.features.customitems.targeter.Target;
 
 public class ListAction extends Action {
 
     Action[] actionList;
 
     @Override
-    public void execute(Player player, Location location, Entity entity) {
+    public void execute(Target target, Source source) {
         for (Action a : actionList){
-            a.execute(player, location, entity);
+            a.execute(target, source);
         }
     }
 

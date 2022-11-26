@@ -20,13 +20,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
-import org.nebulamc.plugin.features.customitems.CustomItem;
 import org.nebulamc.plugin.features.playerdata.PlayerData;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Jetpack extends CustomItem {
     @Override
@@ -36,7 +33,7 @@ public class Jetpack extends CustomItem {
 
     @Override
     public Material getMaterial() {
-        return Material.NETHERITE_CHESTPLATE;
+        return Material.LEATHER_CHESTPLATE;
     }
 
     @Override
@@ -51,12 +48,14 @@ public class Jetpack extends CustomItem {
 
     @Override
     public List<ItemFlag> getFlags() {
-        return null;
+        return Arrays.asList(ItemFlag.HIDE_DYE);
     }
 
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
-        return null;
+        Map<Attribute, AttributeModifier> attributes = new HashMap<>();
+        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+        return attributes;
     }
 
     @Override
@@ -66,7 +65,7 @@ public class Jetpack extends CustomItem {
 
     @Override
     public Color getColor() {
-        return null;
+        return Color.fromRGB(190, 202, 207);
     }
 
     @Override
@@ -76,7 +75,7 @@ public class Jetpack extends CustomItem {
 
     @Override
     public List<EquipmentSlot> activeSlots() {
-        return null;
+        return Arrays.asList(EquipmentSlot.CHEST);
     }
 
     @Override

@@ -1,17 +1,23 @@
 package org.nebulamc.plugin.utils;
 
+import me.angeschossen.lands.api.flags.Flags;
 import me.angeschossen.lands.api.flags.types.RoleFlag;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.LandWorld;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.Nebula;
-import org.nebulamc.plugin.features.customitems.Action;
+import org.nebulamc.plugin.features.customitems.actions.Action;
+import org.nebulamc.plugin.features.customitems.source.EntitySource;
+import org.nebulamc.plugin.features.customitems.source.Source;
+import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
+import org.nebulamc.plugin.features.customitems.targeter.LocationTarget;
+import org.nebulamc.plugin.features.customitems.targeter.Target;
 
 public final class Utils {
     private Utils(){}
@@ -42,6 +48,38 @@ public final class Utils {
             }
         return false;
     }
+
+    public static boolean canDamage(Player player, Entity target){
+        Location location = target.getLocation();
+        if (target instanceof LivingEntity) {
+            if (target instanceof Player) {
+                if (Utils.hasFlag(player, location, null, Flags.ATTACK_PLAYER))
+                    return true;
+            }
+            if (target instanceof Monster) {
+                if (Utils.hasFlag(player, location, null, Flags.ATTACK_MONSTER))
+                    return true;
+            }
+            if (target instanceof Animals) {
+                if (Utils.hasFlag(player, location, null, Flags.ATTACK_ANIMAL))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean canDamage(Target target, Source source){
+        if (target instanceof EntityTarget){
+            if (source instanceof EntitySource && source.getCaster() instanceof Player){
+                Player playerSource = ((Player) source.getCaster()).getPlayer();
+                LivingEntity entityTarget = ((EntityTarget) target).getTarget();
+                if (Utils.canDamage(playerSource, entityTarget)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 /*
     public static List<ItemStack> getEntityItems(LivingEntity e) {
         EntityEquipment equipment = e.getEquipment();
@@ -70,19 +108,20 @@ public final class Utils {
         return list;
     }
 */
-    public static void rayCast(Player player, int distance, Action tickAction, Action startAction, Action endAction){
-        startAction.execute(player, player.getLocation(), null);
-        BlockIterator rayBlocks = new BlockIterator(player.getEyeLocation(), 0, distance);
+    public static void rayCast(Player player, int distance, int forwardOffset, Action tickAction, Action startAction, Action endAction){
+        EntitySource playerSource = new EntitySource(player);
+        startAction.execute(new LocationTarget(player.getLocation()),playerSource);
+        BlockIterator rayBlocks = new BlockIterator(player.getEyeLocation().add(player.getLocation().getDirection().multiply(forwardOffset)), 0, distance);
         while (rayBlocks.hasNext()){
             Location loc = rayBlocks.next().getLocation();
             if (loc.getBlock().getType().isSolid()){
-                endAction.execute(player, loc, null);
+                endAction.execute(new LocationTarget(loc), playerSource);
                 return;
             } else {
-                tickAction.execute(player, loc, null);
+                tickAction.execute(new LocationTarget(loc), playerSource);
             }
         }
-        endAction.execute(player, player.getLocation().add(player.getLocation().getDirection().multiply(distance)), null);
+        endAction.execute(new LocationTarget(player.getLocation().add(player.getLocation().getDirection().multiply(distance))), playerSource);
 
     }
 }

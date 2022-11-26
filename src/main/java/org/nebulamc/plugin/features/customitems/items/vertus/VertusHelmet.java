@@ -17,20 +17,17 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.items.CustomItem;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class VertusShard extends CustomItem {
+public class VertusHelmet extends CustomItem {
     @Override
     public String getName() {
-        return "&fVertus Shard";
+        return "&fVertus Helmet";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.RED_DYE;
+        return Material.LEATHER_HELMET;
     }
 
     @Override
@@ -39,65 +36,42 @@ public class VertusShard extends CustomItem {
     }
 
     @Override
-    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+    public Map<Enchantment, Integer> getEnchants() {
+        return null;
+    }
 
+    @Override
+    public List<ItemFlag> getFlags() {
+        return Arrays.asList(ItemFlag.HIDE_DYE);
+    }
+
+    @Override
+    public Map<Attribute, AttributeModifier> getAttributes() {
+        Map<Attribute, AttributeModifier> attributes = new HashMap<>();
+        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD));
+        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD));
+        attributes.put(Attribute.GENERIC_KNOCKBACK_RESISTANCE, new AttributeModifier(UUID.randomUUID(), "generic.knockbackResistance", 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD));
+        return attributes;
+    }
+
+    @Override
+    public int getModelData() {
+        return 0;
+    }
+
+    @Override
+    public Color getColor() {
+        return Color.fromRGB(155, 49, 84);
+    }
+
+    @Override
+    public boolean isUnbreakable() {
+        return true;
     }
 
     @Override
     public List<EquipmentSlot> activeSlots() {
         return null;
-    }
-
-    @Override
-    public Map<Enchantment, Integer> getEnchants() {
-        Map<Enchantment, Integer> enchants = new HashMap<>();
-        enchants.put(Enchantment.ARROW_INFINITE, 1);
-        return enchants;
-    }
-
-    @Override
-    public List<ItemFlag> getFlags() {
-        return Arrays.asList(ItemFlag.HIDE_ENCHANTS);
-    }
-
-    @Override
-    public Map<Attribute, AttributeModifier> getAttributes() {
-        return null;
-    }
-
-    @Override
-    public void doTimerAction(Player player) {
-
-    }
-
-    @Override
-    public boolean hasTimerAction() {
-        return false;
-    }
-
-    @Override
-    public int getTimerPeriod() {
-        return 0;
-    }
-
-    @Override
-    public int getTimerDelay() {
-        return 0;
-    }
-
-    @Override
-    public int getModelData() {
-        return 1;
-    }
-
-    @Override
-    public Color getColor() {
-        return null;
-    }
-
-    @Override
-    public boolean isUnbreakable() {
-        return false;
     }
 
     @Override
@@ -138,5 +112,30 @@ public class VertusShard extends CustomItem {
     @Override
     public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
 
+    }
+
+    @Override
+    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+
+    }
+
+    @Override
+    public void doTimerAction(Player player) {
+
+    }
+
+    @Override
+    public boolean hasTimerAction() {
+        return false;
+    }
+
+    @Override
+    public int getTimerPeriod() {
+        return 0;
+    }
+
+    @Override
+    public int getTimerDelay() {
+        return 0;
     }
 }

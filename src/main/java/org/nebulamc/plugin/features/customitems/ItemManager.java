@@ -3,6 +3,7 @@ package org.nebulamc.plugin.features.customitems;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.nebulamc.plugin.Nebula;
+import org.nebulamc.plugin.features.customitems.items.CustomItem;
 
 import java.util.Arrays;
 import java.util.HashMap;

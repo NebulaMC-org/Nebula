@@ -13,9 +13,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
+import org.nebulamc.plugin.features.customitems.items.CustomItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,15 +186,18 @@ public class CustomItemHandler implements Listener {
     }
 
     public static String getItemId(ItemStack itemStack){
+        if (itemStack == null || itemStack.getItemMeta() == null){
+            return "null";
+        }
         return itemStack.getItemMeta().getPersistentDataContainer().get(ItemManager.customItemKey, PersistentDataType.STRING);
     }
 
     public static void changeSlotTimers(Player player, ItemStack oldItem, ItemStack newItem){
-        if (oldItem != null && isCustomItem(oldItem) && ItemManager.items.get(getItemId(newItem)).hasTimerAction()){
+        if (oldItem != null && isCustomItem(oldItem) && ItemManager.items.get(getItemId(oldItem)).hasTimerAction() && inActiveSlot(player, oldItem)){
             CustomItem item = ItemManager.items.get(getItemId(oldItem));
             ItemManager.removePlayerFromTimer(player, item);
         }
-        if (newItem != null && isCustomItem(newItem) && ItemManager.items.get(getItemId(newItem)).hasTimerAction()){
+        if (newItem != null && isCustomItem(newItem) && ItemManager.items.get(getItemId(newItem)).hasTimerAction() && inActiveSlot(player, newItem)){
             CustomItem item = ItemManager.items.get(getItemId(newItem));
             ItemManager.addPlayerToTimer(player, item);
         }
@@ -200,10 +205,20 @@ public class CustomItemHandler implements Listener {
 
     public static void addAllInventoryTimers(Player player){
         for (ItemStack i : getCustomItems(player)){
-            if (ItemManager.items.get(getItemId(i)).hasTimerAction()){
+            if (ItemManager.items.get(getItemId(i)).hasTimerAction() && inActiveSlot(player, i)){
                 CustomItem item = ItemManager.items.get(getItemId(i));
                 ItemManager.addPlayerToTimer(player, item);
             }
         }
+    }
+
+    public static boolean inActiveSlot(Player player, ItemStack itemStack){
+        CustomItem item = ItemManager.items.get(getItemId(itemStack));
+        for (EquipmentSlot slot : item.activeSlots()){
+            if (getItemId(player.getInventory().getItem(slot)).equals(item.getId())){
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems;
+package org.nebulamc.plugin.features.customitems.items;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.utils.Utils;
 
 import java.util.ArrayList;

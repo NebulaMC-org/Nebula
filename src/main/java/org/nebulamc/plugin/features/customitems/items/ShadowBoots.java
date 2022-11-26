@@ -18,7 +18,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.nebulamc.plugin.features.customitems.CustomItem;
 
 import java.util.Arrays;
 import java.util.List;
@@ -77,7 +76,7 @@ public class ShadowBoots extends CustomItem {
 
     @Override
     public List<EquipmentSlot> activeSlots() {
-        return null;
+        return Arrays.asList(EquipmentSlot.FEET);
     }
 
     @Override

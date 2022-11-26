@@ -18,7 +18,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.nebulamc.plugin.features.customitems.CustomItem;
 
 import java.util.Arrays;
 import java.util.HashMap;

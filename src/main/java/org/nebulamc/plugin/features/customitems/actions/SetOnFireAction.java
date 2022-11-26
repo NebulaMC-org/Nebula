@@ -1,10 +1,8 @@
 package org.nebulamc.plugin.features.customitems.actions;
 
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.nebulamc.plugin.features.customitems.Action;
+import org.nebulamc.plugin.features.customitems.source.Source;
+import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
+import org.nebulamc.plugin.features.customitems.targeter.Target;
 
 public class SetOnFireAction extends Action {
 
@@ -16,9 +14,9 @@ public class SetOnFireAction extends Action {
     }
 
     @Override
-    public void execute(Player player, Location location, Entity target) {
-        if (target instanceof LivingEntity){
-            target.setFireTicks(ticks);
+    public void execute(Target target, Source source) {
+        if (target instanceof EntityTarget){
+            ((EntityTarget) target).getTarget().setFireTicks(ticks);
         }
     }
 }

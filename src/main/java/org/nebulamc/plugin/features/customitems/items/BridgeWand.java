@@ -17,7 +17,6 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.CustomItem;
 import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;

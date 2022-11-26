@@ -16,9 +16,7 @@ import org.nebulamc.plugin.commands.GiveItemCommand;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.*;
-import org.nebulamc.plugin.features.customitems.items.vertus.VertusCrystal;
-import org.nebulamc.plugin.features.customitems.items.vertus.VertusShard;
-import org.nebulamc.plugin.features.customitems.items.vertus.VertusSword;
+import org.nebulamc.plugin.features.customitems.items.vertus.*;
 import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.wager.WagerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
@@ -85,7 +83,16 @@ public final class Nebula extends JavaPlugin {
                 new VertusSword(),
                 new ShadowBoots(),
                 new Jetpack(),
-                new SolarFlare()
+                new SolarFlare(),
+                new VertusAxe(),
+                new VertusPickaxe(),
+                new VertusShovel(),
+                new VertusHoe(),
+                new VertusChestplate(),
+                new VertusLeggings(),
+                new VertusHelmet(),
+                new VertusBoots(),
+                new ArrowStick()
         );
         ItemManager.registerTimers();
     }

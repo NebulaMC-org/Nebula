@@ -15,7 +15,6 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.CustomItem;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,7 +49,7 @@ public class NoFallBoots extends CustomItem {
 
     @Override
     public List<ItemFlag> getFlags() {
-        return null;
+        return Arrays.asList(ItemFlag.HIDE_DYE);
     }
 
     @Override
@@ -90,7 +89,7 @@ public class NoFallBoots extends CustomItem {
 
     @Override
     public List<EquipmentSlot> activeSlots() {
-        return null;
+        return Arrays.asList(EquipmentSlot.FEET);
     }
 
     @Override

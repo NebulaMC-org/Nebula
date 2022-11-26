@@ -2,10 +2,9 @@ package org.nebulamc.plugin.features.customitems.actions;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.Action;
+import org.nebulamc.plugin.features.customitems.source.Source;
+import org.nebulamc.plugin.features.customitems.targeter.Target;
 
 public class ParticleAction extends Action {
 
@@ -36,7 +35,8 @@ public class ParticleAction extends Action {
         item = i;
     }
     @Override
-    public void execute(Player player, Location location, Entity entity) {
+    public void execute(Target target, Source source) {
+        Location location = target.getLocation();
         location.getWorld().spawnParticle(particle, location, count, xOffset, yOffset, zOffset, speed, item, true);
     }
 }
