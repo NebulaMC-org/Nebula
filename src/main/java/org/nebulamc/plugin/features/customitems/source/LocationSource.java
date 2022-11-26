@@ -19,7 +19,7 @@ public class LocationSource implements Source {
 
     @Override
     public LivingEntity getCaster() {
-        return null;
+        return originalCaster;
     }
 
     @Override

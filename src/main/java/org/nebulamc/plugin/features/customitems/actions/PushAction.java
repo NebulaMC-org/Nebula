@@ -18,7 +18,7 @@ public class PushAction extends Action {
 
     @Override
     public void execute(Target target, Source source) {
-        if (Utils.canDamage(target, source) && target instanceof EntityTarget){
+        if (Utils.canDamage(target, source)){
             Vector velocity = target.getLocation().subtract(source.getLocation()).toVector().normalize();
             ((EntityTarget) target).getTarget().setVelocity(velocity.multiply(power).setY(yPower));
         }

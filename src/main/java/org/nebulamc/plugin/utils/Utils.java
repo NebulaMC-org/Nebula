@@ -70,7 +70,7 @@ public final class Utils {
 
     public static boolean canDamage(Target target, Source source){
         if (target instanceof EntityTarget){
-            if (source instanceof EntitySource && source.getCaster() instanceof Player){
+            if (source.getCaster() instanceof Player){
                 Player playerSource = ((Player) source.getCaster()).getPlayer();
                 LivingEntity entityTarget = ((EntityTarget) target).getTarget();
                 if (Utils.canDamage(playerSource, entityTarget)){

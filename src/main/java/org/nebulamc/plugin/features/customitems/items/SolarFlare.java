@@ -32,7 +32,9 @@ public class SolarFlare extends CustomItem {
             new EntitiesInAreaAction(1,
                     new ListAction(new DamageAction(6), new SetOnFireAction(120))));
 
-    ListAction endActions = new ListAction(new ExplosionAction(14, 1.5, 180), new ParticleAction(Particle.FLAME, 15, 0, 0, 0, 0.4));
+    ListAction endActions =
+            new ListAction(new ExplosionAction(14, 1.5, 180),
+            new ParticleAction(Particle.FLAME, 15, 0, 0, 0, 0.4));
 
     @Override
     public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {

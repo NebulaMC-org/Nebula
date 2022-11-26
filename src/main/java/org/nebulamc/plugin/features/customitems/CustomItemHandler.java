@@ -193,7 +193,7 @@ public class CustomItemHandler implements Listener {
     }
 
     public static void changeSlotTimers(Player player, ItemStack oldItem, ItemStack newItem){
-        if (oldItem != null && isCustomItem(oldItem) && ItemManager.items.get(getItemId(oldItem)).hasTimerAction() && inActiveSlot(player, oldItem)){
+        if (oldItem != null && isCustomItem(oldItem) && ItemManager.items.get(getItemId(oldItem)).hasTimerAction() && !inActiveSlot(player, oldItem)){
             CustomItem item = ItemManager.items.get(getItemId(oldItem));
             ItemManager.removePlayerFromTimer(player, item);
         }
