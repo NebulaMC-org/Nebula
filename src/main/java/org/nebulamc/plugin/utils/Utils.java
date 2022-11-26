@@ -80,35 +80,8 @@ public final class Utils {
         }
         return false;
     }
-/*
-    public static List<ItemStack> getEntityItems(LivingEntity e) {
-        EntityEquipment equipment = e.getEquipment();
 
-        if (equipment == null) {
-            return Lists.newArrayList();
-        }
-
-        List<ItemStack> list = Lists.newArrayList();
-        list.add(equipment.getItemInMainHand());
-        list.add(equipment.getItemInOffHand());
-        list.add(equipment.getBoots());
-        list.add(equipment.getLeggings());
-        list.add(equipment.getChestplate());
-        list.add(equipment.getHelmet());
-
-        Skill.additionalSlots.forEach(slot -> {
-            if (e instanceof Player) {
-                Player p = (Player) e;
-                list.add(p.getInventory().getItem(slot));
-            } else {
-                list.add(null);
-            }
-        });
-
-        return list;
-    }
-*/
-    public static void rayCast(Player player, int distance, int forwardOffset, Action tickAction, Action startAction, Action endAction){
+    public static void rayCast(Player player, int distance, int forwardOffset, boolean alwaysDoEndAction, Action tickAction, Action startAction, Action endAction){
         EntitySource playerSource = new EntitySource(player);
         startAction.execute(new LocationTarget(player.getLocation()),playerSource);
         BlockIterator rayBlocks = new BlockIterator(player.getEyeLocation().add(player.getLocation().getDirection().multiply(forwardOffset)), 0, distance);
@@ -121,7 +94,34 @@ public final class Utils {
                 tickAction.execute(new LocationTarget(loc), playerSource);
             }
         }
-        endAction.execute(new LocationTarget(player.getLocation().add(player.getLocation().getDirection().multiply(distance))), playerSource);
+        if (alwaysDoEndAction){
+            endAction.execute(new LocationTarget(player.getLocation().add(player.getLocation().getDirection().multiply(distance))), playerSource);
+        }
+    }
+
+    public static void straightRayCast(Player player, int distance, int forwardOffset, double stepSize, boolean alwaysDoEndAction, Action tickAction, Action startAction, Action endAction){
+        EntitySource playerSource = new EntitySource(player);
+        startAction.execute(new LocationTarget(player.getLocation()),playerSource);
+
+        Location loc = player.getEyeLocation().add(player.getLocation().getDirection().multiply(forwardOffset));
+        Vector direction = player.getEyeLocation().getDirection().multiply(stepSize);
+        int steps = 0;
+        distance /= stepSize;
+
+        while (steps < distance){
+            if (loc.getBlock().getType().isSolid()){
+                endAction.execute(new LocationTarget(loc), playerSource);
+                return;
+            } else {
+                tickAction.execute(new LocationTarget(loc), playerSource);
+            }
+            loc.add(direction);
+            steps++;
+        }
+        if (alwaysDoEndAction){
+            endAction.execute(new LocationTarget(player.getLocation().add(player.getLocation().getDirection().multiply(distance))), playerSource);
+        }
 
     }
+
 }

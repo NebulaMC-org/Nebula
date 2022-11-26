@@ -92,7 +92,8 @@ public final class Nebula extends JavaPlugin {
                 new VertusLeggings(),
                 new VertusHelmet(),
                 new VertusBoots(),
-                new ArrowStick()
+                new ArrowStick(),
+                new LaserDrill()
         );
         ItemManager.registerTimers();
     }

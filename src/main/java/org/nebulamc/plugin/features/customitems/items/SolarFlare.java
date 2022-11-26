@@ -42,7 +42,7 @@ public class SolarFlare extends CustomItem {
         if (data.getManaBar().getMana() >= 50){
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_BURN, 3f, 0f);
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GHAST_SHOOT, 3f, 0f);
-            Utils.rayCast(player, 200, 2,
+            Utils.rayCast(player, 200, 2, true,
                     tickActions,
                     new NullAction(),
                     endActions);

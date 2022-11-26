@@ -2,11 +2,10 @@ package org.nebulamc.plugin.features.customitems.items;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -17,32 +16,30 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
-import org.nebulamc.plugin.features.customitems.actions.*;
-import org.nebulamc.plugin.features.customitems.source.EntitySource;
-import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
-import org.nebulamc.plugin.features.customitems.targeter.LocationTarget;
-import org.nebulamc.plugin.features.playerdata.ManaBar;
+import org.nebulamc.plugin.features.customitems.actions.BreakBlockAction;
+import org.nebulamc.plugin.features.customitems.actions.NullAction;
+import org.nebulamc.plugin.features.customitems.actions.ParticleAction;
+import org.nebulamc.plugin.features.playerdata.PlayerData;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
+import org.nebulamc.plugin.utils.Utils;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SeismicHammer extends CustomItem {
+public class LaserDrill extends CustomItem{
     @Override
     public String getName() {
-        return "&eSeismic Hammer";
+        return "&dLaser Drill";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.NETHERITE_AXE;
+        return Material.BLAZE_ROD;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b40", "\n", "&eRight-click to slam enemies into the air!", "&eDeal more damage to airborne enemies.");
+        return null;
     }
 
     @Override
@@ -85,15 +82,27 @@ public class SeismicHammer extends CustomItem {
 
     }
 
-    Action slamAction = new EntitiesInAreaAction(4, new ListAction(new SetVelocityAction(new Vector(0, 1, 0))), true);
+    ParticleAction tickAction = new ParticleAction(Particle.REDSTONE, 1, 0, 0, 0, 0, new Particle.DustOptions(Color.RED, 1));
+    BreakBlockAction endAction = new BreakBlockAction(60, true, 0);
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
-        if (manaBar.getMana() >= 40){
-            slamAction.execute(new LocationTarget(player.getLocation()), new EntitySource(player));
-            manaBar.setMana(manaBar.getMana() - 40);
+        PlayerData playerData = PlayerManager.getPlayerData(player);
+        if (playerData.cooldownOver(player.getName()) && playerData.getManaBar().getMana() >= 5){
+            playerData.setItemCooldown(player.getName(), 0.33);
+            playerData.getManaBar().subtractMana(5);
+            Utils.straightRayCast(player, 12, 1, 0.5, false,
+                    tickAction,
+                    new NullAction(),
+                    new NullAction()
+            );
+            Utils.rayCast(player, 12, 1, false,
+                    new NullAction(),
+                    new NullAction(),
+                    endAction
+            );
         }
+
     }
 
     @Override
@@ -111,15 +120,9 @@ public class SeismicHammer extends CustomItem {
 
     }
 
-    Action pushAction = new PushAction(0.75, 0.1);
-
     @Override
     public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof LivingEntity && !entity.isInWater() && !entity.isOnGround() && event.getDamage() >= 10){
-            event.setDamage(event.getDamage() + 7);
-            pushAction.execute(new EntityTarget((LivingEntity) entity), new EntitySource(player));
-        }
+
     }
 
     @Override

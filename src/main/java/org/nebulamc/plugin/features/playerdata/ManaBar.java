@@ -34,6 +34,10 @@ public class ManaBar implements Listener {
         }
     }
 
+    public void subtractMana(int m){
+        setMana(mana - m);
+    }
+
     public void tickManaBar(){
         Player p = Bukkit.getPlayer(id);
         new BukkitRunnable(){
