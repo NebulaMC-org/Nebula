@@ -3,9 +3,11 @@ package org.nebulamc.plugin.features.customitems.items;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -16,31 +18,33 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.actions.BreakBlockAction;
+import org.nebulamc.plugin.features.customitems.actions.DamageAction;
 import org.nebulamc.plugin.features.customitems.actions.NullAction;
 import org.nebulamc.plugin.features.customitems.actions.ParticleAction;
-import org.nebulamc.plugin.features.playerdata.PlayerData;
-import org.nebulamc.plugin.features.playerdata.PlayerManager;
+import org.nebulamc.plugin.features.customitems.actions.ProjectileAction;
+import org.nebulamc.plugin.features.customitems.entity.GenericEntity;
+import org.nebulamc.plugin.features.customitems.source.EntitySource;
+import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class LaserDrill extends CustomItem{
+public class Shatterbow extends CustomItem{
     @Override
     public String getName() {
-        return "&dLaser Drill";
+        return "&fShatterbow";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.BLAZE_ROD;
+        return Material.BOW;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b15/sec", "\n", "&eRight-click to shoot out a mining laser!");
+        return Arrays.asList("\n", "&eShoot many arrows in a cone-shaped trajectory.");
     }
 
     @Override
@@ -83,26 +87,8 @@ public class LaserDrill extends CustomItem{
 
     }
 
-    ParticleAction tickAction = new ParticleAction(Particle.REDSTONE, 1, 0, 0, 0, 0, new Particle.DustOptions(Color.RED, 1));
-    BreakBlockAction endAction = new BreakBlockAction(60, true, 0);
-
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        PlayerData playerData = PlayerManager.getPlayerData(player);
-        if (playerData.cooldownOver(player.getName()) && playerData.getManaBar().getMana() >= 5){
-            playerData.setItemCooldown(player.getName(), 0.33);
-            playerData.getManaBar().subtractMana(5);
-            Utils.straightRayCast(player, 12, 1, 0.5, false,
-                    tickAction,
-                    new NullAction(),
-                    new NullAction()
-            );
-            Utils.rayCast(player, 12, 1, false,
-                    new NullAction(),
-                    new NullAction(),
-                    endAction
-            );
-        }
 
     }
 
@@ -138,6 +124,47 @@ public class LaserDrill extends CustomItem{
 
     @Override
     public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+        double speed;
+        double gravity;
+        float pitch;
+        double damage = Utils.calculateBowDamage(event);
+        double force = event.getForce();
+        if (force >= 1){
+            speed = 60;
+            gravity = 0.4;
+            pitch = 1.2f;
+        } else if (force >= 0.2){
+            speed = 30;
+            gravity = 1;
+            pitch = 1f;
+        } else {
+            speed = 10;
+            gravity = 3.8;
+            pitch = 0.8f;
+        }
+
+        ProjectileAction projAction = new ProjectileAction(speed, gravity,
+                new DamageAction(damage/2),
+                new NullAction(),
+                new NullAction(),
+                new NullAction(),
+                new GenericEntity(EntityType.ARROW), 0.5, 50, 20);
+        if (force >= 1){
+            projAction = new ProjectileAction(speed, gravity,
+                    new DamageAction(damage/2),
+                    new NullAction(),
+                    new NullAction(),
+                    new ParticleAction(Particle.CRIT, 1, 0, 0, 0, 0),
+                    new GenericEntity(EntityType.ARROW), 0.5, 50, 20);
+        }
+
+
+        event.setCancelled(true);
+        for (int i = 0; i < 10; i++){
+            projAction.execute(new EntityTarget(player), new EntitySource(player));
+        }
+        player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_SHOOT, 2.5f, pitch);
+
 
     }
 

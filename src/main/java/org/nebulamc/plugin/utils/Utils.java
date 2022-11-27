@@ -7,8 +7,11 @@ import me.angeschossen.lands.api.land.LandWorld;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.Nebula;
@@ -18,6 +21,8 @@ import org.nebulamc.plugin.features.customitems.source.Source;
 import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 import org.nebulamc.plugin.features.customitems.targeter.LocationTarget;
 import org.nebulamc.plugin.features.customitems.targeter.Target;
+
+import java.util.Random;
 
 public final class Utils {
     private Utils(){}
@@ -56,11 +61,11 @@ public final class Utils {
                 if (Utils.hasFlag(player, location, null, Flags.ATTACK_PLAYER))
                     return true;
             }
-            if (target instanceof Monster) {
+            if (target instanceof Monster || target instanceof Golem) {
                 if (Utils.hasFlag(player, location, null, Flags.ATTACK_MONSTER))
                     return true;
             }
-            if (target instanceof Animals) {
+            if (target instanceof Animals || target instanceof Ambient || target instanceof WaterMob || target instanceof NPC) {
                 if (Utils.hasFlag(player, location, null, Flags.ATTACK_ANIMAL))
                     return true;
             }
@@ -124,4 +129,24 @@ public final class Utils {
 
     }
 
+    public static double calculateBowDamage(EntityShootBowEvent event){
+        ItemMeta meta = event.getBow().getItemMeta();
+        Random generator = new Random();
+        double damage;
+
+        double force = event.getForce();
+        if (force >= 1){
+            damage = (8 + generator.nextInt(0, 3));
+        } else if (force >= 0.2){
+            damage = 5;
+        } else {
+            damage = 1;
+        }
+
+        if (meta.getEnchants().containsKey(Enchantment.ARROW_DAMAGE)){
+            damage *= 1 + (0.25 * (meta.getEnchantLevel(Enchantment.ARROW_DAMAGE) + 1));
+        }
+
+        return damage;
+    }
 }

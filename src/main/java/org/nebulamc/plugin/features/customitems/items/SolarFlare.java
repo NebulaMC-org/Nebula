@@ -30,10 +30,10 @@ public class SolarFlare extends CustomItem {
 
     ListAction tickActions = new ListAction(new ParticleAction(Particle.FLAME, 2, 0.05, 0.05, 0.05, 0.1),
             new EntitiesInAreaAction(1,
-                    new ListAction(new DamageAction(6), new SetOnFireAction(120))));
+                    new ListAction(new DamageAction(8), new SetOnFireAction(120))));
 
     ListAction endActions =
-            new ListAction(new ExplosionAction(14, 1.5, 180),
+            new ListAction(new ExplosionAction(22, 1.5, 180),
             new ParticleAction(Particle.FLAME, 15, 0, 0, 0, 0.4));
 
     @Override
@@ -41,7 +41,7 @@ public class SolarFlare extends CustomItem {
         PlayerData data = PlayerManager.getPlayerData(player);
         if (data.getManaBar().getMana() >= 50){
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_BURN, 3f, 0f);
-            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GHAST_SHOOT, 3f, 0f);
+            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.5f, 2f);
             Utils.rayCast(player, 200, 2, true,
                     tickActions,
                     new NullAction(),

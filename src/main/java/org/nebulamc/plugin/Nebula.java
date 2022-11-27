@@ -9,10 +9,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.nebulamc.plugin.commands.GiveItemCommand;
 import org.nebulamc.plugin.commands.SetPronounsCommand;
 import org.nebulamc.plugin.commands.SpawnChestCommand;
 import org.nebulamc.plugin.commands.WagerCommand;
-import org.nebulamc.plugin.commands.GiveItemCommand;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.*;
@@ -93,7 +93,9 @@ public final class Nebula extends JavaPlugin {
                 new VertusHelmet(),
                 new VertusBoots(),
                 new ArrowStick(),
-                new LaserDrill()
+                new LaserDrill(),
+                new Beezooka(),
+                new Shatterbow()
         );
         ItemManager.registerTimers();
     }

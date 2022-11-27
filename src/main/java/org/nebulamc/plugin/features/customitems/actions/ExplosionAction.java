@@ -27,7 +27,7 @@ public class ExplosionAction extends Action {
         new EntitiesInAreaAction(6,
                 new ListAction(new DamageAction(damage),
                         new SetOnFireAction(fireTicks),
-                        new PushAction(power, power/2)))
+                        new PushAction(power, power, true)))
                 .execute(target, new LocationSource(target.getLocation(), source.getCaster()));
     }
 }
