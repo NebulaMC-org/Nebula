@@ -18,10 +18,8 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.actions.DamageAction;
-import org.nebulamc.plugin.features.customitems.actions.NullAction;
-import org.nebulamc.plugin.features.customitems.actions.ParticleAction;
-import org.nebulamc.plugin.features.customitems.actions.ProjectileAction;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.nebulamc.plugin.features.customitems.actions.*;
 import org.nebulamc.plugin.features.customitems.entity.GenericEntity;
 import org.nebulamc.plugin.features.customitems.source.EntitySource;
 import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
@@ -127,12 +125,18 @@ public class Shatterbow extends CustomItem{
         double speed;
         double gravity;
         float pitch;
+        ItemMeta meta = event.getBow().getItemMeta();
+
+        ListAction tickActions = new ListAction();
+        ListAction damageActions = new ListAction();
+
         double damage = Utils.calculateBowDamage(event);
         double force = event.getForce();
         if (force >= 1){
             speed = 60;
             gravity = 0.4;
             pitch = 1.2f;
+            tickActions.addAction(new ParticleAction(Particle.CRIT, 1, 0, 0, 0, 0));
         } else if (force >= 0.2){
             speed = 30;
             gravity = 1;
@@ -143,20 +147,21 @@ public class Shatterbow extends CustomItem{
             pitch = 0.8f;
         }
 
-        ProjectileAction projAction = new ProjectileAction(speed, gravity,
-                new DamageAction(damage/2),
-                new NullAction(),
-                new NullAction(),
-                new NullAction(),
-                new GenericEntity(EntityType.ARROW), 0.5, 50, 20);
-        if (force >= 1){
-            projAction = new ProjectileAction(speed, gravity,
-                    new DamageAction(damage/2),
-                    new NullAction(),
-                    new NullAction(),
-                    new ParticleAction(Particle.CRIT, 1, 0, 0, 0, 0),
-                    new GenericEntity(EntityType.ARROW), 0.5, 50, 20);
+        damageActions.addAction(new DamageAction(damage/2));
+        if (meta.hasEnchant(Enchantment.ARROW_FIRE)){
+            tickActions.addAction(new ParticleAction(Particle.FLAME, 1, 0, 0, 0, 0));
+            damageActions.addAction(new SetOnFireAction(100));
         }
+        if (meta.hasEnchant(Enchantment.ARROW_KNOCKBACK)){
+            damageActions.addAction(new PushAction(1 * meta.getEnchantLevel(Enchantment.ARROW_KNOCKBACK), 0.25, true));
+        }
+
+        ProjectileAction projAction = new ProjectileAction(speed, gravity,
+                damageActions,
+                new NullAction(),
+                new NullAction(),
+                tickActions,
+                new GenericEntity(EntityType.ARROW), 0.5, 50, 20, false);
 
 
         event.setCancelled(true);

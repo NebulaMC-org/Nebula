@@ -95,7 +95,8 @@ public final class Nebula extends JavaPlugin {
                 new ArrowStick(),
                 new LaserDrill(),
                 new Beezooka(),
-                new Shatterbow()
+                new Shatterbow(),
+                new Flamethrower()
         );
         ItemManager.registerTimers();
     }

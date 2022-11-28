@@ -7,7 +7,6 @@ import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -16,26 +15,23 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.actions.ExplosionAction;
-import org.nebulamc.plugin.features.customitems.actions.NullAction;
-import org.nebulamc.plugin.features.customitems.actions.ParticleAction;
-import org.nebulamc.plugin.features.customitems.actions.ProjectileAction;
-import org.nebulamc.plugin.features.customitems.entity.GenericEntity;
+import org.nebulamc.plugin.features.customitems.actions.*;
+import org.nebulamc.plugin.features.customitems.entity.NoEntity;
 import org.nebulamc.plugin.features.customitems.source.EntitySource;
 import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
-import org.nebulamc.plugin.features.playerdata.PlayerData;
-import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Beezooka extends CustomItem{
+public class Flamethrower extends CustomItem {
     @Override
     public String getName() {
-        return "&eBeezooka";
+        return "&eFlamethrower";
     }
 
     @Override
@@ -45,7 +41,7 @@ public class Beezooka extends CustomItem{
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b30", "\n", "&eRight-click to shoot an explosive bee!");
+        return Arrays.asList("&7Fuel: &6Blaze Powder", "\n", "&eRight-click to spew flames!");
     }
 
     @Override
@@ -88,25 +84,31 @@ public class Beezooka extends CustomItem{
 
     }
 
-    ExplosionAction explosionAction = new ExplosionAction(10, 1, 0);
-    ParticleAction particleAction = new ParticleAction(Particle.SMOKE_NORMAL, 1, 0, 0 ,0, 0.2);
-    ProjectileAction beeProj = new ProjectileAction(55, 0, explosionAction,
+    ProjectileAction projAction = new ProjectileAction(70, 0,
+            new ListAction(new SetOnFireAction(100), new DamageAction(3)),
             new NullAction(),
-            explosionAction,
-            particleAction,
-            new GenericEntity(EntityType.BEE),
-            1, 200, 2, false);
+            new NullAction(),
+            new ParticleAction(Particle.FLAME, 10, 0.2, 0.2, 0.2, 0.1),
+            new NoEntity(),
+            1.5, 5, 0, true);
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        PlayerData playerData = PlayerManager.getPlayerData(player);
-        if (playerData.cooldownOver(player.getName()) && playerData.getManaBar().getMana() >= 30) {
-            playerData.setItemCooldown(player.getName(), 0.2);
-            playerData.getManaBar().subtractMana(30);
-            player.playSound(player.getLocation(), Sound.BLOCK_BEEHIVE_EXIT, 1.5f, 0f);
-            player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 2.5f, 1f);
-            beeProj.execute(new EntityTarget(player), new EntitySource(player));
+        Inventory inv = player.getInventory();
+        ItemStack fuel = new ItemStack(Material.BLAZE_POWDER, 1);
+        HashMap<Integer, ItemStack> result = inv.removeItem(fuel);
+        if (result.isEmpty()){
+
+            player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 1.5f, 0.8f);
+            player.playSound(player.getLocation(), Sound.BLOCK_FIRE_AMBIENT, 0.5f, 1f);
+            projAction.execute(new EntityTarget(player), new EntitySource(player));
+
+        } else {
+
+            player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 1.5f, 0f);
+
         }
+
     }
 
     @Override

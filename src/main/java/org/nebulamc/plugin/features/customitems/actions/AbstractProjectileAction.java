@@ -20,11 +20,12 @@ public abstract class AbstractProjectileAction extends Action {
     protected Entity entity;
     protected double hitBoxSize;
     protected int maxLife;
+    boolean pierceEntities;
 
     public AbstractProjectileAction(double initialSpeed, double gravity,
                                     Action onStartAction, Action onEntityHitAction, Action onBlockHitAction,
                                     Action onProjectileTickAction, Entity entity, double hitBoxSize,
-                                    int maxLife) {
+                                    int maxLife, boolean pierceEntities) {
 
         this.initialSpeed = initialSpeed;
         this.gravity = gravity;
@@ -35,6 +36,7 @@ public abstract class AbstractProjectileAction extends Action {
         this.entity = entity;
         this.hitBoxSize = hitBoxSize;
         this.maxLife = maxLife;
+        this.pierceEntities = pierceEntities;
     }
 
     protected Location getRightSide(Location location, double distance) {

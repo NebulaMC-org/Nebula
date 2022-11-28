@@ -51,11 +51,10 @@ public class BreakBlockAction extends Action{
                                 loc.getWorld().dropItem(player.getLocation(), i);
                             } else {
                                 player.getInventory().addItem(i);
+                                player.playSound(loc, Sound.ENTITY_ITEM_PICKUP, 0.5f, pickupPitch);
                             }
 
                         }
-                        player.playSound(loc, Sound.ENTITY_ITEM_PICKUP, 0.5f, pickupPitch);
-
                     } else {
                         for (ItemStack i : blockDrops){
                             loc.getWorld().dropItem(target.getLocation(), i);

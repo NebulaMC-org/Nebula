@@ -15,9 +15,9 @@ public class ProjectileAction extends AbstractProjectileAction {
 
     public ProjectileAction(double initialSpeed, double gravity, Action onEntityHitAction,
                             Action onStartAction, Action onBlockHitAction, Action onProjectileTickAction, Entity entity,
-                            double hitBoxSize, int maxDistance, int projectileSpread) {
+                            double hitBoxSize, int maxDistance, int projectileSpread, boolean pierceEntities) {
         super(initialSpeed, gravity, onStartAction, onEntityHitAction, onBlockHitAction, onProjectileTickAction, entity,
-                hitBoxSize, maxDistance);
+                hitBoxSize, maxDistance, pierceEntities);
         this.projectileSpread = projectileSpread;
     }
 
@@ -46,6 +46,6 @@ public class ProjectileAction extends AbstractProjectileAction {
         new Projectile(target, source, sourceLocation, gravity, initialSpeed,
                 onStartAction, onEntityHitAction, onBlockHitAction, onProjectileTickAction,
                 this.entity, this.hitBoxSize, maxLife,
-                projectileSpread).run();
+                projectileSpread, pierceEntities).run();
     }
 }

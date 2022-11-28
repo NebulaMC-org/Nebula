@@ -86,7 +86,7 @@ public class ArrowStick extends CustomItem{
 
     ProjectileAction projAction = new ProjectileAction(50, 2.5,
             new DamageAction(5), new NullAction(), new NullAction(), new ParticleAction(Particle.CRIT, 1, 0, 0, 0, 0),
-            new GenericEntity(EntityType.ARROW), 1, 200, 25);
+            new GenericEntity(EntityType.ARROW), 1, 200, 25, false);
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {

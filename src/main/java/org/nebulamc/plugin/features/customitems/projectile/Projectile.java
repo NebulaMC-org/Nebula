@@ -18,9 +18,9 @@ public class Projectile extends AbstractProjectile {
     public Projectile(Target target, Source source, Location location, double gravity, double initialSpeed,
                       Action onStartAction, Action onEntityHitAction, Action onBlockHitAction,
                       Action onProjectileTickAction, Entity entity, double hitBoxSize, int maxDistance,
-                      int projectileSpread) {
+                      int projectileSpread, boolean pierceEntities) {
         super(target, source, location, gravity, initialSpeed, onStartAction, onEntityHitAction, onBlockHitAction,
-                onProjectileTickAction, entity, hitBoxSize, maxDistance);
+                onProjectileTickAction, entity, hitBoxSize, maxDistance, pierceEntities);
         this.projectileSpread = projectileSpread;
     }
 

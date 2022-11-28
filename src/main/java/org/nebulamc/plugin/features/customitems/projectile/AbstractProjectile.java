@@ -45,6 +45,7 @@ public abstract class AbstractProjectile {
     protected Entity entity;
     protected double hitBoxSize;
     protected int maxLife;
+    boolean pierceEntities;
     protected int projectileLife;
     private Location oldLocation;
     private org.nebulamc.plugin.features.customitems.entity.Entity baseEntity;
@@ -52,7 +53,7 @@ public abstract class AbstractProjectile {
     public AbstractProjectile(Target target, Source source, Location location, double gravity, double speed,
                               Action onStartAction, Action onEntityHitAction, Action onBlockHitAction,
                               Action onProjectileTickAction, org.nebulamc.plugin.features.customitems.entity.Entity baseEntity,
-                              double hitBoxSize, int maxLife) {
+                              double hitBoxSize, int maxLife, boolean pierceEntities) {
         this.target = target;
         this.source = source;
         this.location = location;
@@ -64,6 +65,7 @@ public abstract class AbstractProjectile {
         this.onProjectileTickAction = onProjectileTickAction;
         this.hitBoxSize = hitBoxSize;
         this.maxLife = maxLife;
+        this.pierceEntities = pierceEntities;
         this.baseEntity = baseEntity;
 
         this.projectile = this;
@@ -100,7 +102,10 @@ public abstract class AbstractProjectile {
                 List<LivingEntity> hitEntities = getHitEntities();
                 if (!hitEntities.isEmpty()) {
                     hitEntities.forEach(livingEntity -> onEntityHitAction.execute(new EntityTarget(livingEntity), source));
-                    remove();
+                    if (!pierceEntities){
+                        remove();
+                    }
+
                 }
 
                 onProjectileTickAction.execute(new ProjectileTarget(projectile), source);
@@ -142,7 +147,7 @@ public abstract class AbstractProjectile {
 
     private boolean projectileHitBlock() {
         if (!location.getDirection().isNormalized()) {
-            return location.getBlock().getType().isSolid();
+            return location.getBlock().getType().isCollidable();
         }
         RayTraceResult result = oldLocation.getWorld().rayTraceBlocks(oldLocation, location.getDirection(),
                 location.distance(oldLocation));
