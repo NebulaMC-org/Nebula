@@ -3,6 +3,7 @@ package org.nebulamc.plugin.features.customitems.items;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -16,31 +17,31 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.actions.BreakBlockAction;
-import org.nebulamc.plugin.features.customitems.actions.NullAction;
-import org.nebulamc.plugin.features.customitems.actions.ParticleAction;
+import org.nebulamc.plugin.features.customitems.actions.*;
+import org.nebulamc.plugin.features.customitems.entity.NoEntity;
+import org.nebulamc.plugin.features.customitems.source.EntitySource;
+import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 import org.nebulamc.plugin.features.playerdata.PlayerData;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
-import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class LaserDrill extends CustomItem{
+public class GrapplingHook extends CustomItem {
     @Override
     public String getName() {
-        return "&dLaser Drill";
+        return "&eGrappling Hook";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.BLAZE_ROD;
+        return Material.LEATHER_HORSE_ARMOR;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &9/sec", "\n", "&eRight-click to shoot out a mining laser!");
+        return Arrays.asList("\n", "&eHook a block to pull yourself to it.", "&eHook an enemy to pull them towards you!");
     }
 
     @Override
@@ -83,27 +84,23 @@ public class LaserDrill extends CustomItem{
 
     }
 
-    ParticleAction tickAction = new ParticleAction(Particle.REDSTONE, 1, 0, 0, 0, 0, new Particle.DustOptions(Color.RED, 1));
-    BreakBlockAction endAction = new BreakBlockAction(60, true, 0);
+    ProjectileAction projAction = new ProjectileAction(60, 0.1,
+            new PullAction(false, 0.5),
+            new NullAction(),
+            new PullAction(true, 0.25),
+            new ListAction(
+                    new ParticleAction(Particle.CRIT, 1, 0, 0, 0 ,0),
+                    new SoundAction(Sound.BLOCK_CHAIN_PLACE, 1.5f, 1)
+            ), new NoEntity(), 1.25, 100, 0,false
+    );
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
         PlayerData playerData = PlayerManager.getPlayerData(player);
-        if (playerData.cooldownOver(player.getName()) && playerData.getManaBar().getMana() >= 3){
-            playerData.setItemCooldown(player.getName(), 0.33);
-            playerData.getManaBar().subtractMana(3);
-            Utils.straightRayCast(player, 12, 1, 0.5, false,
-                    tickAction,
-                    new NullAction(),
-                    new NullAction()
-            );
-            Utils.rayCast(player, 12, 1, false,
-                    new NullAction(),
-                    new NullAction(),
-                    endAction
-            );
+        if (playerData.cooldownOver(player.getName())) {
+            playerData.setItemCooldown(player.getName(), 0.7);
+            projAction.execute(new EntityTarget(player), new EntitySource(player));
         }
-
     }
 
     @Override

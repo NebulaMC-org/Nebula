@@ -78,12 +78,12 @@ public final class Utils {
             if (source.getCaster() instanceof Player){
                 Player playerSource = ((Player) source.getCaster()).getPlayer();
                 LivingEntity entityTarget = ((EntityTarget) target).getTarget();
-                if (Utils.canDamage(playerSource, entityTarget)){
-                    return true;
+                if (!Utils.canDamage(playerSource, entityTarget)){
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     public static void rayCast(Player player, int distance, int forwardOffset, boolean alwaysDoEndAction, Action tickAction, Action startAction, Action endAction){

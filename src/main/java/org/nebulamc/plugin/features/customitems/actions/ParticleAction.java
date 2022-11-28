@@ -52,7 +52,7 @@ public class ParticleAction extends Action {
         if (item != null){
             location.getWorld().spawnParticle(particle, location, count, xOffset, yOffset, zOffset, speed, item, true);
         } else {
-            location.getWorld().spawnParticle(particle, location, count, xOffset, yOffset, zOffset, speed, options);
+            location.getWorld().spawnParticle(particle, location, count, xOffset, yOffset, zOffset, speed, options, true);
         }
 
     }
