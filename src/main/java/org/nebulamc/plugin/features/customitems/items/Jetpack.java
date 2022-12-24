@@ -60,7 +60,7 @@ public class Jetpack extends CustomItem {
 
     @Override
     public int getModelData() {
-        return 0;
+        return 1;
     }
 
     @Override

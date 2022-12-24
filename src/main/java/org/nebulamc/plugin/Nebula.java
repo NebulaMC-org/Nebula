@@ -97,7 +97,14 @@ public final class Nebula extends JavaPlugin {
                 new Beezooka(),
                 new Shatterbow(),
                 new Flamethrower(),
-                new GrapplingHook()
+                new GrapplingHook(),
+                new WhirlwindBlade(),
+                new ThrowingKnife(),
+                new SawbladeLauncher(),
+                new FrostBow(),
+                new MeteorStaff(),
+                new InfernoShield(),
+                new DynamoBoots()
         );
         ItemManager.registerTimers();
     }

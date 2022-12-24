@@ -186,7 +186,7 @@ public class CustomItemHandler implements Listener {
     }
 
     public static String getItemId(ItemStack itemStack){
-        if (itemStack == null || itemStack.getItemMeta() == null){
+        if (itemStack == null || itemStack.getItemMeta() == null || !isCustomItem(itemStack)){
             return "null";
         }
         return itemStack.getItemMeta().getPersistentDataContainer().get(ItemManager.customItemKey, PersistentDataType.STRING);

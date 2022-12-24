@@ -18,57 +18,36 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.nebulamc.plugin.features.customitems.actions.*;
+import org.nebulamc.plugin.features.customitems.actions.BlocksInAreaAction;
+import org.nebulamc.plugin.features.customitems.actions.DamageAction;
+import org.nebulamc.plugin.features.customitems.actions.EntitiesInAreaAction;
+import org.nebulamc.plugin.features.customitems.actions.ParticleAction;
+import org.nebulamc.plugin.features.customitems.area.CylindricArea;
 import org.nebulamc.plugin.features.customitems.area.SphericArea;
+import org.nebulamc.plugin.features.customitems.source.EntitySource;
+import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
+import org.nebulamc.plugin.features.playerdata.ManaBar;
 import org.nebulamc.plugin.features.playerdata.PlayerData;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
-import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class SolarFlare extends CustomItem {
-
-    ListAction tickActions = new ListAction(new ParticleAction(Particle.FLAME, 2, 0.05, 0.05, 0.05, 0.1),
-            new EntitiesInAreaAction(
-                    new SphericArea(new Vector(), 6, false),
-                    new ListAction(new DamageAction(12), new SetOnFireAction(180))));
-
-    ListAction endActions =
-            new ListAction(new ExplosionAction(25, 1.5, 220),
-            new ParticleAction(Particle.FLAME, 15, 0, 0, 0, 0.4));
-
-    @Override
-    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
-        PlayerData data = PlayerManager.getPlayerData(player);
-        if (data.getManaBar().getMana() >= 50){
-            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_BURN, 3f, 0f);
-            player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.5f, 2f);
-            Utils.rayCast(player, 200, 2, true,
-                    tickActions,
-                    new NullAction(),
-                    endActions);
-            event.setCancelled(true);
-            data.getManaBar().setMana(data.getManaBar().getMana()-50);
-        } else {
-
-        }
-    }
-
+public class WhirlwindBlade extends CustomItem{
     @Override
     public String getName() {
-        return "&dSolar Flare";
+        return  "&fWhirlwind Blade";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.BOW;
+        return Material.DIAMOND_SWORD;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b50", "\n", "&eRelease a scorching beam of fire", "&ewhen you have enough mana!");
+        return Arrays.asList("&7Mana Use: &b30", "\n", "&eRight-click to slash in a circle", "&earound yourself!");
     }
 
     @Override
@@ -88,7 +67,7 @@ public class SolarFlare extends CustomItem {
 
     @Override
     public int getModelData() {
-        return 1;
+        return 0;
     }
 
     @Override
@@ -111,9 +90,27 @@ public class SolarFlare extends CustomItem {
 
     }
 
+    EntitiesInAreaAction slashAction = new EntitiesInAreaAction(
+            new SphericArea(new Vector(0, 0, 0), 5, false),
+            new DamageAction(7)
+    );
+    BlocksInAreaAction particleAction = new BlocksInAreaAction(
+            new CylindricArea(new Vector(0, 1, 0), 1, 4, true),
+            new ParticleAction(Particle.SWEEP_ATTACK, 1, 0 ,0, 0, 0)
+    );
+
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
+        PlayerData playerData = PlayerManager.getPlayerData(player);
+        ManaBar mana = playerData.getManaBar();
+        String name = getClass().getSimpleName();
+        if (mana.getMana() >= 30 && playerData.cooldownOver(name)){
+            mana.subtractMana(30);
+            playerData.setItemCooldown(name, 1);
+            slashAction.execute(new EntityTarget(player), new EntitySource(player));
+            particleAction.execute(new EntityTarget(player), new EntitySource(player));
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 2.5f, 0.8f);
+        }
     }
 
     @Override
@@ -143,6 +140,11 @@ public class SolarFlare extends CustomItem {
 
     @Override
     public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
+
+    }
+
+    @Override
+    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
 
     }
 

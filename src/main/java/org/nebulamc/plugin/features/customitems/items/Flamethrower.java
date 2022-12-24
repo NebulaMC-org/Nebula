@@ -61,7 +61,7 @@ public class Flamethrower extends CustomItem {
 
     @Override
     public int getModelData() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class Flamethrower extends CustomItem {
             new NullAction(),
             new ParticleAction(Particle.FLAME, 10, 0.2, 0.2, 0.2, 0.1),
             new NoEntity(),
-            1.5, 5, 0, true);
+            1.5, 5, 0, true, false);
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
@@ -113,7 +113,7 @@ public class Flamethrower extends CustomItem {
 
     @Override
     public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
+        handleRightClick(player, itemStack, event);
     }
 
     @Override

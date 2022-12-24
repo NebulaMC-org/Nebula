@@ -85,6 +85,11 @@ public class SacrificialBlade extends CustomItem {
             player.setHealth(player.getHealth() - 4);
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, 1.0f, 0f);
             playerData.setItemCooldown(name, 0.25);
+        } else if (player.getHealth() > 1  && playerData.cooldownOver(name)){
+            player.damage(0.1);
+            player.setHealth(player.getHealth() - (player.getHealth() - 1));
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, 1.0f, 0f);
+            playerData.setItemCooldown(name, 0.25);
         }
     }
 

@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Explosive;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -46,6 +47,7 @@ public abstract class AbstractProjectile {
     protected double hitBoxSize;
     protected int maxLife;
     boolean pierceEntities;
+    boolean dragOnGround;
     protected int projectileLife;
     private Location oldLocation;
     private org.nebulamc.plugin.features.customitems.entity.Entity baseEntity;
@@ -53,7 +55,7 @@ public abstract class AbstractProjectile {
     public AbstractProjectile(Target target, Source source, Location location, double gravity, double speed,
                               Action onStartAction, Action onEntityHitAction, Action onBlockHitAction,
                               Action onProjectileTickAction, org.nebulamc.plugin.features.customitems.entity.Entity baseEntity,
-                              double hitBoxSize, int maxLife, boolean pierceEntities) {
+                              double hitBoxSize, int maxLife, boolean pierceEntities, boolean dragOnGround) {
         this.target = target;
         this.source = source;
         this.location = location;
@@ -67,6 +69,7 @@ public abstract class AbstractProjectile {
         this.maxLife = maxLife;
         this.pierceEntities = pierceEntities;
         this.baseEntity = baseEntity;
+        this.dragOnGround = dragOnGround;
 
         this.projectile = this;
     }
@@ -93,10 +96,23 @@ public abstract class AbstractProjectile {
             public void run() {
                 Map<String, Object> map = new HashMap<>();
                 if (projectileHitBlock()) {
-                    onBlockHitAction.execute(new ProjectileTarget(projectile), source);
-                    if (!(boolean) map.getOrDefault("cancelled", false))
-                        remove();
-                    source.getCaster().removeMetadata("hitFace", Nebula.getInstance());
+                    if (dragOnGround && !source.getCaster().getMetadata("hitFace").equals("SOUTH")){
+                        if (!location.clone().add(new Vector(0, 1, 0)).getBlock().isSolid()){
+                            location.add(new Vector(0, 0.5, 0));
+                            location.getDirection().setY(0);
+                            location.getDirection().normalize();
+                        } else {
+                            onBlockHitAction.execute(new ProjectileTarget(projectile), source);
+                            if (!(boolean) map.getOrDefault("cancelled", false))
+                                remove();
+                            source.getCaster().removeMetadata("hitFace", Nebula.getInstance());
+                        }
+                    } else {
+                        onBlockHitAction.execute(new ProjectileTarget(projectile), source);
+                        if (!(boolean) map.getOrDefault("cancelled", false))
+                            remove();
+                        source.getCaster().removeMetadata("hitFace", Nebula.getInstance());
+                    }
                 }
 
                 List<LivingEntity> hitEntities = getHitEntities();
@@ -137,6 +153,9 @@ public abstract class AbstractProjectile {
 
     public Entity getEntity(org.nebulamc.plugin.features.customitems.entity.Entity entity) {
         Entity projectile = entity.spawnEntity(location);
+        if (projectile instanceof Explosive){
+            ((Explosive) projectile).setYield(0);
+        }
         if (projectile != null) {
             projectile.setMetadata("projectile", new FixedMetadataValue(Nebula.getInstance(),
                     true));
@@ -161,6 +180,7 @@ public abstract class AbstractProjectile {
             return true;
         }
         return false;
+
     }
 
     private List<LivingEntity> getHitEntities() {

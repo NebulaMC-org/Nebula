@@ -65,7 +65,7 @@ public class Beezooka extends CustomItem{
 
     @Override
     public int getModelData() {
-        return 0;
+        return 2;
     }
 
     @Override
@@ -95,13 +95,14 @@ public class Beezooka extends CustomItem{
             explosionAction,
             particleAction,
             new GenericEntity(EntityType.BEE),
-            1, 200, 2, false);
+            1, 200, 2, false, false);
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
         PlayerData playerData = PlayerManager.getPlayerData(player);
-        if (playerData.cooldownOver(player.getName()) && playerData.getManaBar().getMana() >= 30) {
-            playerData.setItemCooldown(player.getName(), 0.2);
+        String name = getClass().getSimpleName();
+        if (playerData.cooldownOver(name) && playerData.getManaBar().getMana() >= 30) {
+            playerData.setItemCooldown(name, 0.2);
             playerData.getManaBar().subtractMana(30);
             player.playSound(player.getLocation(), Sound.BLOCK_BEEHIVE_EXIT, 1.5f, 0f);
             player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 2.5f, 1f);
@@ -111,7 +112,7 @@ public class Beezooka extends CustomItem{
 
     @Override
     public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
+        handleRightClick(player, itemStack, event);
     }
 
     @Override

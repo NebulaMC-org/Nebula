@@ -86,7 +86,7 @@ public final class Utils {
         return true;
     }
 
-    public static void rayCast(Player player, int distance, int forwardOffset, boolean alwaysDoEndAction, Action tickAction, Action startAction, Action endAction){
+    public static Location rayCast(Player player, int distance, int forwardOffset, boolean alwaysDoEndAction, Action tickAction, Action startAction, Action endAction){
         EntitySource playerSource = new EntitySource(player);
         startAction.execute(new LocationTarget(player.getLocation()),playerSource);
         BlockIterator rayBlocks = new BlockIterator(player.getEyeLocation().add(player.getLocation().getDirection().multiply(forwardOffset)), 0, distance);
@@ -94,14 +94,16 @@ public final class Utils {
             Location loc = rayBlocks.next().getLocation();
             if (loc.getBlock().getType().isSolid()){
                 endAction.execute(new LocationTarget(loc), playerSource);
-                return;
+                return loc;
             } else {
                 tickAction.execute(new LocationTarget(loc), playerSource);
             }
         }
         if (alwaysDoEndAction){
             endAction.execute(new LocationTarget(player.getLocation().add(player.getLocation().getDirection().multiply(distance))), playerSource);
+            return player.getLocation().add(player.getLocation().getDirection().multiply(distance));
         }
+        return null;
     }
 
     public static void straightRayCast(Player player, int distance, int forwardOffset, double stepSize, boolean alwaysDoEndAction, Action tickAction, Action startAction, Action endAction){

@@ -7,6 +7,7 @@ import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -17,31 +18,35 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.actions.*;
-import org.nebulamc.plugin.features.customitems.entity.NoEntity;
+import org.nebulamc.plugin.features.customitems.area.SphericArea;
+import org.nebulamc.plugin.features.customitems.entity.GenericEntity;
 import org.nebulamc.plugin.features.customitems.source.EntitySource;
 import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 import org.nebulamc.plugin.features.playerdata.PlayerData;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
+import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class GrapplingHook extends CustomItem {
+public class FrostBow extends CustomItem{
     @Override
     public String getName() {
-        return "&eGrappling Hook";
+        return "&eFrost Bow";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.LEATHER_HORSE_ARMOR;
+        return Material.BOW;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("\n", "&eHook a block to pull yourself to it.", "&eHook an enemy to pull them towards you!");
+        return Arrays.asList("&7Mana Use: &b20", "\n", "&eArrows freeze nearby enemies!");
     }
 
     @Override
@@ -84,29 +89,14 @@ public class GrapplingHook extends CustomItem {
 
     }
 
-    ProjectileAction projAction = new ProjectileAction(60, 0,
-            new PullAction(false, 0.5),
-            new NullAction(),
-            new PullAction(true, 0.25),
-            new ListAction(
-                    new ParticleAction(Particle.CRIT, 1, 0, 0, 0 ,0),
-                    new SoundAction(Sound.BLOCK_CHAIN_PLACE, 1.5f, 1)
-            ), new NoEntity(), 1.25, 25, 0,false, false
-    );
-
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        PlayerData playerData = PlayerManager.getPlayerData(player);
-        String name = getClass().getSimpleName();
-        if (playerData.cooldownOver(name)) {
-            playerData.setItemCooldown(name, 0.7);
-            projAction.execute(new EntityTarget(player), new EntitySource(player));
-        }
+
     }
 
     @Override
     public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        handleRightClick(player, itemStack, event);
+
     }
 
     @Override
@@ -134,9 +124,72 @@ public class GrapplingHook extends CustomItem {
 
     }
 
+    ListAction frostOrb = new ListAction(
+            new BlocksInAreaAction(
+                    new SphericArea(new Vector(0, 0, 0), 6, true),
+                    new ParticleAction(Particle.REDSTONE, 1, 0, 0, 0, 0, new Particle.DustOptions(Color.fromRGB(183, 242, 245), 1f))
+            ),
+            new EntitiesInAreaAction(
+                    new SphericArea(new Vector(0, 0, 0), 6, false),
+                    new ListAction(
+                            new FreezeAction(320),
+                            new DamageAction(1)
+                    ), true
+            )
+    );
+
     @Override
     public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+        PlayerData data = PlayerManager.getPlayerData(player);
+        if (data.getManaBar().getMana() >= 20) {
+            data.getManaBar().subtractMana(20);
+            double speed;
+            double gravity;
+            float pitch;
+            ItemMeta meta = event.getBow().getItemMeta();
 
+            ListAction tickActions = new ListAction();
+            tickActions.addAction(new ParticleAction(Particle.REDSTONE, 1, 0, 0, 0, 0, new Particle.DustOptions(Color.fromRGB(183, 242, 245), 1f)));
+            ListAction damageActions = new ListAction();
+
+            double damage = Utils.calculateBowDamage(event);
+            double force = event.getForce();
+            if (force >= 1) {
+                speed = 60;
+                gravity = 0.4;
+                pitch = 1.2f;
+            } else if (force >= 0.2) {
+                speed = 30;
+                gravity = 1;
+                pitch = 1f;
+            } else {
+                speed = 10;
+                gravity = 3.8;
+                pitch = 0.8f;
+            }
+
+            damageActions.addAction(new DamageAction(damage));
+            if (meta.hasEnchant(Enchantment.ARROW_FIRE)) {
+                tickActions.addAction(new ParticleAction(Particle.FLAME, 1, 0, 0, 0, 0));
+                damageActions.addAction(new SetOnFireAction(100));
+            }
+            if (meta.hasEnchant(Enchantment.ARROW_KNOCKBACK)) {
+                damageActions.addAction(new PushAction(1 * meta.getEnchantLevel(Enchantment.ARROW_KNOCKBACK), 0.25, true));
+            }
+            damageActions.addAction(frostOrb);
+
+            ProjectileAction projAction = new ProjectileAction(speed, gravity,
+                    damageActions,
+                    new NullAction(),
+                    frostOrb,
+                    tickActions,
+                    new GenericEntity(EntityType.ARROW), 0.5, 50, 0, false, false);
+
+
+            event.setCancelled(true);
+            player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_SHOOT, 2.5f, pitch);
+            projAction.execute(new EntityTarget(player), new EntitySource(player));
+        }
     }
 
     @Override

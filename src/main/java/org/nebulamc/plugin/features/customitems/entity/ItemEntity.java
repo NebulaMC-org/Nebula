@@ -3,7 +3,6 @@ package org.nebulamc.plugin.features.customitems.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -16,29 +15,19 @@ import org.bukkit.util.Vector;
 @Setter
 public class ItemEntity extends Entity {
 
-    private final static int DEFAULT_PICKUP = 37687;
     private final static boolean DEFAULT_GRAVITY = false;
 
     private ItemStack item;
 
     private boolean gravity;
 
-    private int pickupDelay;
 
-    public ItemEntity() {
-        this(new ItemStack(Material.STONE), DEFAULT_GRAVITY, DEFAULT_PICKUP);
-    }
-
-    public ItemEntity(ItemStack item, boolean gravity, int pickupDelay) {
-        this.item = item;
-        this.gravity = gravity;
-        this.pickupDelay = pickupDelay;
-    }
+    private int pickupDelay = 37687;
 
     public ItemEntity(ItemStack item, boolean gravity) {
         this.item = item;
         this.gravity = gravity;
-        this.pickupDelay = DEFAULT_PICKUP;
+
     }
 
     @Override
@@ -56,7 +45,7 @@ public class ItemEntity extends Entity {
 
     @Override
     public Entity clone() {
-        return new ItemEntity(item, gravity, pickupDelay);
+        return new ItemEntity(item, gravity);
     }
 
     @Override

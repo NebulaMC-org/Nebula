@@ -161,7 +161,7 @@ public class Shatterbow extends CustomItem{
                 new NullAction(),
                 new NullAction(),
                 tickActions,
-                new GenericEntity(EntityType.ARROW), 0.5, 50, 20, false);
+                new GenericEntity(EntityType.ARROW), 0.5, 50, 20, false, false);
 
 
         event.setCancelled(true);

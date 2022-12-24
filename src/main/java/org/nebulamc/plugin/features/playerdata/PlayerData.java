@@ -11,6 +11,7 @@ public class PlayerData {
 
     private int jetpackFuel;
     private int maxJetpackFuel = 100;
+    private int momentum;
 
     public PlayerData(UUID i){
         id = i;
@@ -46,5 +47,13 @@ public class PlayerData {
 
     public void setJetpackFuel(int fuel){
         jetpackFuel = fuel;
+    }
+
+    public int getMomentum(){
+        return momentum;
+    }
+
+    public void setMomentum(int momentum){
+        this.momentum = momentum;
     }
 }

@@ -3,6 +3,8 @@ package org.nebulamc.plugin.features.customitems.actions;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.util.Vector;
+import org.nebulamc.plugin.features.customitems.area.SphericArea;
 import org.nebulamc.plugin.features.customitems.source.LocationSource;
 import org.nebulamc.plugin.features.customitems.source.Source;
 import org.nebulamc.plugin.features.customitems.targeter.Target;
@@ -24,7 +26,8 @@ public class ExplosionAction extends Action {
         Location location = target.getLocation();
         location.getWorld().spawnParticle(Particle.EXPLOSION_HUGE, location, 1, 0, 0, 0, 0, null, true);
         location.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 6f, 1f);
-        new EntitiesInAreaAction(6,
+        new EntitiesInAreaAction(
+                new SphericArea(new Vector(), 6, false),
                 new ListAction(new DamageAction(damage),
                         new SetOnFireAction(fireTicks),
                         new PushAction(power, power, true)))
