@@ -1,7 +1,7 @@
 package org.nebulamc.plugin.utils;
 
 import me.angeschossen.lands.api.flags.Flags;
-import me.angeschossen.lands.api.flags.types.RoleFlag;
+import me.angeschossen.lands.api.flags.type.RoleFlag;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.LandWorld;
 import org.bukkit.ChatColor;

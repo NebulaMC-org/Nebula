@@ -1,10 +1,12 @@
 package org.nebulamc.plugin.features.customitems.items;
 
-import org.bukkit.*;
+import org.bukkit.Color;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -13,36 +15,36 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.actions.*;
-import org.nebulamc.plugin.features.customitems.area.CylindricArea;
-import org.nebulamc.plugin.features.customitems.entity.GenericEntity;
+import org.nebulamc.plugin.features.customitems.entity.ItemEntity;
+import org.nebulamc.plugin.features.customitems.source.EntitySource;
 import org.nebulamc.plugin.features.customitems.source.LocationSource;
-import org.nebulamc.plugin.features.customitems.targeter.LocationTarget;
+import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 import org.nebulamc.plugin.features.playerdata.PlayerData;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
-import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MeteorStaff extends CustomItem{
+public class FlintlockPistol extends CustomItem{
     @Override
     public String getName() {
-        return "&dMeteor Staff";
+        return "&eFlintlock Pistol";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.BLAZE_ROD;
+        return Material.IRON_HORSE_ARMOR;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b40", "\n", "&eRight-click the ground to summon a meteor!");
+        return Arrays.asList("&7Ammo: &8Flint", "\n", "&eRight-click to shoot a powerful flint bullet!");
     }
 
     @Override
@@ -85,33 +87,37 @@ public class MeteorStaff extends CustomItem{
 
     }
 
-    ExplosionAction meteorExplosion = new ExplosionAction(30, 1, 60);
+    ProjectileAction flintShoot = new ProjectileAction(
+            60, 0,
+            new ListAction(
+                    new DamageAction(12),
+                    new PushAction(2, 0.5, false)
+            ),
+            new NullAction(),
+            new NullAction(),
+            new ParticleAction(Particle.SMOKE_NORMAL, 1, 0, 0, 0, 0.1),
+            new ItemEntity(new ItemStack(Material.FLINT), false),
+            0.75, 100, 1, false, false
+    );
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        PlayerData data = PlayerManager.getPlayerData(player);
-        if (data.getManaBar().getMana() >= 40) {
-            data.getManaBar().subtractMana(40);
-            Location endLocation =
-                    Utils.rayCast(player, 50, 1, false,
-                            new NullAction(),
-                            new NullAction(),
-                            new BlocksInAreaAction(
-                                    new CylindricArea(new Vector(0, 1.5, 0), 1, 4, true),
-                                    new ParticleAction(Particle.REDSTONE, 1, 0, 0, 0, 0, new Particle.DustOptions(Color.RED, 1.5f))
-                            )
-                    );
-
-            if (endLocation != null) {
-                new ProjectileAction(
-                        60, 50,
-                        meteorExplosion,
-                        new NullAction(),
-                        meteorExplosion,
-                        new ParticleAction(Particle.SMOKE_LARGE, 3, 0, 0, 0, 0.1),
-                        new GenericEntity(EntityType.FIREBALL), 2, 200, 360, false, false
-                ).execute(new LocationTarget(endLocation), new LocationSource(endLocation.add(0, 30, 0), player));
-                player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.5f, 0f);
+        PlayerData playerData = PlayerManager.getPlayerData(player);
+        String name = getClass().getSimpleName();
+        if (playerData.cooldownOver(name)) {
+            Inventory inv = player.getInventory();
+            ItemStack fuel = new ItemStack(Material.FLINT, 1);
+            HashMap<Integer, ItemStack> result = inv.removeItem(fuel);
+            if (result.isEmpty()) {
+                player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 2f);
+                playerData.setItemCooldown(name, 2);
+                flintShoot.execute(new EntityTarget(player), new EntitySource(player));
+                new PullAction(1, false).execute(
+                        new EntityTarget(player),
+                        new LocationSource(player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(-2)), player)
+                );
+            } else {
+                player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 1.5f, 0f);
             }
         }
     }

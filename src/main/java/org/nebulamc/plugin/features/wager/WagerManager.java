@@ -3,7 +3,6 @@ package org.nebulamc.plugin.features.wager;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -14,7 +13,8 @@ import org.nebulamc.plugin.features.wager.events.WagerAcceptEvent;
 import org.nebulamc.plugin.features.wager.events.WagerDeclineEvent;
 import org.nebulamc.plugin.features.wager.events.WagerGameEndEvent;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class WagerManager implements Listener {
 
@@ -32,14 +32,18 @@ public class WagerManager implements Listener {
     }
 
     public void createWager(Player p, Player t) {
-        String s = RandomStringUtils.random(6);
+        // String s = RandomStringUtils.random(6);
+        // commented out because it caused errors
+        String s = "";
         Wager w = activeWagers.put(s, new Wager(s, p, t));
         getInfoChannel().wagerCreate(w);
         w.sendInvite();
     }
 
     public void createHomosexWager(Player p, Player t) {
-        String s = RandomStringUtils.random(6);
+        // String s = RandomStringUtils.random(6);
+        // commented out because it caused errors
+        String s = "";
         Wager w = activeWagers.put(s, new HomosexWager(s, p, t));
         getInfoChannel().wagerCreate(w);
         w.sendInvite();

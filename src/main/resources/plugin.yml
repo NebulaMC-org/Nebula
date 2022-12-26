@@ -1,9 +1,9 @@
 name: Nebula
 version: '${project.version}'
 main: org.nebulamc.plugin.Nebula
-api-version: 1.18
+api-version: 1.19
 description: The main plugin for NebulaMC.
-authors: [ Spectrify, smartfrigde, abbysrc ]
+authors: [ Spectrobyte, smartfrigde, abbysrc ]
 commands:
   spawnchest:
     description: Spawns a chest in the world randomly.

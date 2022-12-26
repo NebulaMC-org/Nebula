@@ -16,6 +16,7 @@ import org.nebulamc.plugin.commands.WagerCommand;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.*;
+import org.nebulamc.plugin.features.customitems.items.summoning.SunSigil;
 import org.nebulamc.plugin.features.customitems.items.vertus.*;
 import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.wager.WagerManager;
@@ -104,7 +105,9 @@ public final class Nebula extends JavaPlugin {
                 new FrostBow(),
                 new MeteorStaff(),
                 new InfernoShield(),
-                new DynamoBoots()
+                new DynamoBoots(),
+                new FlintlockPistol(),
+                new SunSigil()
         );
         ItemManager.registerTimers();
     }

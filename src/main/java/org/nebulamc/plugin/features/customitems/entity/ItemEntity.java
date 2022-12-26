@@ -21,13 +21,17 @@ public class ItemEntity extends Entity {
 
     private boolean gravity;
 
-
     private int pickupDelay = 37687;
 
     public ItemEntity(ItemStack item, boolean gravity) {
         this.item = item;
         this.gravity = gravity;
+    }
 
+    public ItemEntity(ItemStack item, boolean gravity, int customModelData) {
+        this.item = item;
+        this.gravity = gravity;
+        this.item.getItemMeta().setCustomModelData(customModelData);
     }
 
     @Override
