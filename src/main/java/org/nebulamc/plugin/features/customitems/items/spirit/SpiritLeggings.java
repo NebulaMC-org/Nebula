@@ -21,15 +21,15 @@ import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.*;
 
-public class SpiritChestplate extends CustomItem {
+public class SpiritLeggings extends CustomItem {
     @Override
     public String getName() {
-        return "&fSpirit Chestplate";
+        return "&fSpirit Leggings";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.LEATHER_CHESTPLATE;
+        return Material.LEATHER_LEGGINGS;
     }
 
     @Override
@@ -50,8 +50,8 @@ public class SpiritChestplate extends CustomItem {
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
         Map<Attribute, AttributeModifier> attributes = new HashMap<>();
-        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
         return attributes;
     }
 
@@ -72,7 +72,7 @@ public class SpiritChestplate extends CustomItem {
 
     @Override
     public List<EquipmentSlot> activeSlots() {
-        return Arrays.asList(EquipmentSlot.CHEST);
+        return Arrays.asList(EquipmentSlot.LEGS);
     }
 
     @Override

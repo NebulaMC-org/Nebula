@@ -25,6 +25,16 @@ public class TestItem extends CustomItem {
     }
 
     @Override
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
     public String getName() {
         return "&dTe&bst &4It&cem";
     }
@@ -42,11 +52,6 @@ public class TestItem extends CustomItem {
     @Override
     public boolean hasTimerAction() {
         return true;
-    }
-
-    @Override
-    public int getTimerDelay() {
-        return 5;
     }
 
     @Override

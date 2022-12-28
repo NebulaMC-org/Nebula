@@ -21,20 +21,20 @@ import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.*;
 
-public class SpiritChestplate extends CustomItem {
+public class SpiritBoots extends CustomItem {
     @Override
     public String getName() {
-        return "&fSpirit Chestplate";
+        return "&fSpirit Boots";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.LEATHER_CHESTPLATE;
+        return Material.LEATHER_BOOTS;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&a+30 &7Max Mana");
+        return Arrays.asList("&a+0.5 &7Mana Regen");
     }
 
     @Override
@@ -50,8 +50,8 @@ public class SpiritChestplate extends CustomItem {
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
         Map<Attribute, AttributeModifier> attributes = new HashMap<>();
-        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
         return attributes;
     }
 
@@ -72,7 +72,7 @@ public class SpiritChestplate extends CustomItem {
 
     @Override
     public List<EquipmentSlot> activeSlots() {
-        return Arrays.asList(EquipmentSlot.CHEST);
+        return Arrays.asList(EquipmentSlot.FEET);
     }
 
     @Override
@@ -123,13 +123,13 @@ public class SpiritChestplate extends CustomItem {
     @Override
     public void handleEquip(Player player, ItemStack itemStack) {
         ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
-        manaBar.setMaxMana(manaBar.getMaxMana() + 30);
+        manaBar.setRegenRate(manaBar.getRegenRate() + 0.5f);
     }
 
     @Override
     public void handleUnequip(Player player, ItemStack itemStack) {
         ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
-        manaBar.setMaxMana(manaBar.getMaxMana() - 30);
+        manaBar.setRegenRate(manaBar.getRegenRate() - 0.5f);
     }
 
     @Override

@@ -29,6 +29,14 @@ public class ManaBar implements Listener {
         return mana;
     }
 
+    public float getMaxMana(){
+        return maxMana;
+    }
+
+    public float getRegenRate(){
+        return regenRate;
+    }
+
     public void setMana(float m){
         mana = m;
         if (mana < 0){
@@ -45,10 +53,13 @@ public class ManaBar implements Listener {
         setMana(mana + m);
     }
 
-    public void setMaxMana(int m){
+    public void setMaxMana(float m){
         maxMana = m;
         if (maxMana < 0){
             maxMana = 0;
+        }
+        if (mana > maxMana){
+            mana = maxMana;
         }
     }
 

@@ -16,6 +16,10 @@ import org.nebulamc.plugin.commands.WagerCommand;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.*;
+import org.nebulamc.plugin.features.customitems.items.spirit.SpiritBoots;
+import org.nebulamc.plugin.features.customitems.items.spirit.SpiritChestplate;
+import org.nebulamc.plugin.features.customitems.items.spirit.SpiritHelmet;
+import org.nebulamc.plugin.features.customitems.items.spirit.SpiritLeggings;
 import org.nebulamc.plugin.features.customitems.items.summoning.SunSigil;
 import org.nebulamc.plugin.features.customitems.items.vertus.*;
 import org.nebulamc.plugin.features.loottable.LootTable;
@@ -107,7 +111,11 @@ public final class Nebula extends JavaPlugin {
                 new InfernoShield(),
                 new DynamoBoots(),
                 new FlintlockPistol(),
-                new SunSigil()
+                new SunSigil(),
+                new SpiritChestplate(),
+                new SpiritBoots(),
+                new SpiritHelmet(),
+                new SpiritLeggings()
         );
         ItemManager.registerTimers();
     }
