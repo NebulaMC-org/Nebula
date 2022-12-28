@@ -34,6 +34,16 @@ public class VertusCrystal extends CustomItem {
     }
 
     @Override
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
     public String getName() {
         return "&fVertus Crystal";
     }
@@ -55,11 +65,6 @@ public class VertusCrystal extends CustomItem {
 
     @Override
     public int getTimerPeriod() {
-        return 0;
-    }
-
-    @Override
-    public int getTimerDelay() {
         return 0;
     }
 

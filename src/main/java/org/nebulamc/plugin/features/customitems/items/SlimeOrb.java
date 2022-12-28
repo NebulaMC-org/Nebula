@@ -103,8 +103,13 @@ public class SlimeOrb extends CustomItem {
     }
 
     @Override
-    public int getTimerDelay() {
-        return 0;
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
     }
 
     @Override
@@ -121,7 +126,7 @@ public class SlimeOrb extends CustomItem {
             player.getWorld().spawnParticle(Particle.ITEM_CRACK, location, 10, 0.4, 0.1, 0.4, 0, new ItemStack(Material.SLIME_BALL));
             player.setVelocity(direction.setY(0.8).multiply(2.5));
 
-            manaBar.setMana(manaBar.getMana() - 25);
+            manaBar.subtractMana(25);
             playerData.setItemCooldown(name, 0.5);
         }
     }

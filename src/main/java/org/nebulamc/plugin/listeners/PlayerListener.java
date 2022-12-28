@@ -7,9 +7,6 @@ import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 public class PlayerListener implements Listener {
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        PlayerManager.createPlayerData(e.getPlayer());
-    }
+
 
 }

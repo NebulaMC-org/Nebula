@@ -50,7 +50,7 @@ public class SolarFlare extends CustomItem {
                     new NullAction(),
                     endActions);
             event.setCancelled(true);
-            data.getManaBar().setMana(data.getManaBar().getMana()-50);
+            data.getManaBar().subtractMana(50);
         } else {
 
         }
@@ -162,7 +162,12 @@ public class SolarFlare extends CustomItem {
     }
 
     @Override
-    public int getTimerDelay() {
-        return 0;
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
     }
 }

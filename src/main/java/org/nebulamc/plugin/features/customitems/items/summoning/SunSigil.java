@@ -99,7 +99,10 @@ public class SunSigil extends CustomItem {
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
         Location loc = player.getLocation();
         sigilProj.execute(new EntityTarget(player), new EntitySource(player));
-        ambientSoundAction.execute(new LocationTarget(loc), new EntitySource(player));
+        new TimedAction(
+                0, 60, 2,
+                new SoundAction(Sound.BLOCK_BEACON_AMBIENT, 4, 2)
+        ).execute(new LocationTarget(loc), new EntitySource(player));
         new DelayedAction(
                 60,
                 new ListAction(
@@ -185,7 +188,12 @@ public class SunSigil extends CustomItem {
     }
 
     @Override
-    public int getTimerDelay() {
-        return 0;
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
     }
 }

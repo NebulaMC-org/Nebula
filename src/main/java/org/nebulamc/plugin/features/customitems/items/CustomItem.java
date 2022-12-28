@@ -66,13 +66,15 @@ public abstract class CustomItem {
 
     public abstract void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event);
 
+    public abstract void handleEquip(Player player, ItemStack itemStack);
+
+    public abstract void handleUnequip(Player player, ItemStack itemStack);
+
     public abstract void doTimerAction(Player player);
 
     public abstract boolean hasTimerAction();
 
     public abstract int getTimerPeriod();
-
-    public abstract int getTimerDelay();
 
     public String getId(){
         return getClass().getSimpleName();

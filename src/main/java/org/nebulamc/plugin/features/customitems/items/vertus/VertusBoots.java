@@ -120,6 +120,16 @@ public class VertusBoots extends CustomItem {
     }
 
     @Override
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
     public void doTimerAction(Player player) {
 
     }
@@ -134,8 +144,4 @@ public class VertusBoots extends CustomItem {
         return 0;
     }
 
-    @Override
-    public int getTimerDelay() {
-        return 0;
-    }
 }

@@ -100,54 +100,43 @@ public class CustomItemHandler implements Listener {
         Player player = event.getPlayer();
         ItemStack oldItem = player.getInventory().getItem(event.getPreviousSlot());
         ItemStack newItem = player.getInventory().getItem(event.getNewSlot());
-
         changeSlotTimers(player, oldItem, newItem);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onArmorChange(PlayerArmorChangeEvent event){
-        Player player = event.getPlayer();
-
-        changeSlotTimers(player, event.getOldItem(), event.getNewItem());
+        changeSlotTimers(event.getPlayer(), event.getOldItem(), event.getNewItem());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event){
-        addAllInventoryTimers(event.getPlayer());
+        equipAllItems(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onQuit(PlayerQuitEvent event){
-        Player player = event.getPlayer();
-        ItemManager.removeFromAllTimers(player);
+        unequipAllItems(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onItemDrop(PlayerDropItemEvent event){
         ItemStack item = event.getItemDrop().getItemStack();
-        if (isCustomItem(item)){
-            CustomItem customItem = ItemManager.items.get(getItemId(item));
-            ItemManager.removePlayerFromTimer(event.getPlayer(), customItem);
-        }
+        unequipItem(event.getPlayer(), item);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onItemBreak(PlayerItemBreakEvent event){
-        ItemStack item = event.getBrokenItem();
-        if (isCustomItem(item)){
-            CustomItem customItem = ItemManager.items.get(getItemId(item));
-            ItemManager.removePlayerFromTimer(event.getPlayer(), customItem);
-        }
+        unequipItem(event.getPlayer(), event.getBrokenItem());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onDeath(PlayerDeathEvent event){
-        ItemManager.removeFromAllTimers(event.getPlayer());
+        unequipAllItems(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onRespawn(PlayerRespawnEvent event){
-        addAllInventoryTimers(event.getPlayer());
+        equipAllItems(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -193,22 +182,23 @@ public class CustomItemHandler implements Listener {
     }
 
     public static void changeSlotTimers(Player player, ItemStack oldItem, ItemStack newItem){
-        if (oldItem != null && isCustomItem(oldItem) && ItemManager.items.get(getItemId(oldItem)).hasTimerAction() && !inActiveSlot(player, oldItem)){
-            CustomItem item = ItemManager.items.get(getItemId(oldItem));
-            ItemManager.removePlayerFromTimer(player, item);
+        if (oldItem != null){
+            unequipItem(player, oldItem);
         }
-        if (newItem != null && isCustomItem(newItem) && ItemManager.items.get(getItemId(newItem)).hasTimerAction() && inActiveSlot(player, newItem)){
-            CustomItem item = ItemManager.items.get(getItemId(newItem));
-            ItemManager.addPlayerToTimer(player, item);
+        if (newItem != null){
+            equipItem(player, newItem);
         }
     }
 
-    public static void addAllInventoryTimers(Player player){
+    public static void equipAllItems(Player player){
         for (ItemStack i : getCustomItems(player)){
-            if (ItemManager.items.get(getItemId(i)).hasTimerAction() && inActiveSlot(player, i)){
-                CustomItem item = ItemManager.items.get(getItemId(i));
-                ItemManager.addPlayerToTimer(player, item);
-            }
+            equipItem(player, i);
+        }
+    }
+
+    public static void unequipAllItems(Player player){
+        for (ItemStack i : getCustomItems(player)){
+            unequipItem(player, i);
         }
     }
 
@@ -220,5 +210,25 @@ public class CustomItemHandler implements Listener {
             }
         }
         return false;
+    }
+
+    public static void unequipItem(Player player, ItemStack item){
+        if (isCustomItem(item) && !inActiveSlot(player, item)){
+            CustomItem customItem = ItemManager.items.get(getItemId(item));
+            if (customItem.hasTimerAction()){
+                ItemManager.removePlayerFromTimer(player, customItem);
+            }
+            customItem.handleUnequip(player, item);
+        }
+    }
+
+    public static void equipItem(Player player, ItemStack item){
+        if (isCustomItem(item) && inActiveSlot(player, item)){
+            CustomItem customItem = ItemManager.items.get(getItemId(item));
+            if (customItem.hasTimerAction()){
+                ItemManager.addPlayerToTimer(player, customItem);
+            }
+            customItem.handleEquip(player, item);
+        }
     }
 }

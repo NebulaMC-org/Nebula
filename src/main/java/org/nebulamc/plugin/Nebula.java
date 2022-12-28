@@ -19,9 +19,9 @@ import org.nebulamc.plugin.features.customitems.items.*;
 import org.nebulamc.plugin.features.customitems.items.summoning.SunSigil;
 import org.nebulamc.plugin.features.customitems.items.vertus.*;
 import org.nebulamc.plugin.features.loottable.LootTable;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
 import org.nebulamc.plugin.features.wager.WagerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
-import org.nebulamc.plugin.listeners.PlayerListener;
 import org.nebulamc.plugin.listeners.SmeltingListener;
 import org.nebulamc.plugin.utils.config.ConfigManager;
 import org.nebulamc.plugin.utils.config.ConfigSettings;
@@ -131,7 +131,7 @@ public final class Nebula extends JavaPlugin {
 
     private void registerListeners() {
 
-        pm.registerEvents(new PlayerListener(), this);
+        pm.registerEvents(new PlayerManager(), this);
         pm.registerEvents(new CustomItemHandler(), this);
 
         if (ConfigSettings.afksystem_enable) {

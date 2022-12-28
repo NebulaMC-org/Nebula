@@ -8,14 +8,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.nebulamc.plugin.Nebula;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public class ManaBar implements Listener {
 
     private final UUID id;
-    private int maxMana;
-    private int mana;
-    private int regenRate; //mana regenerated per 0.25s
+    private float maxMana;
+    private float mana;
+    private float regenRate; //mana regenerated per 0.25s
+    private long lastManaUse = Instant.now().getEpochSecond();
 
     public ManaBar(UUID i){
         id = i;
@@ -23,19 +25,35 @@ public class ManaBar implements Listener {
         regenRate = 1;
     }
 
-    public int getMana() {
+    public float getMana() {
         return mana;
     }
 
-    public void setMana(int m){
+    public void setMana(float m){
         mana = m;
         if (mana < 0){
             mana = 0;
         }
+        lastManaUse = Instant.now().getEpochSecond();
     }
 
-    public void subtractMana(int m){
+    public void subtractMana(float m){
         setMana(mana - m);
+    }
+
+    public void addMana(float m){
+        setMana(mana + m);
+    }
+
+    public void setMaxMana(int m){
+        maxMana = m;
+        if (maxMana < 0){
+            maxMana = 0;
+        }
+    }
+
+    public void setRegenRate(float r){
+        regenRate = r;
     }
 
     public void tickManaBar(){
@@ -45,7 +63,7 @@ public class ManaBar implements Listener {
                 if (!p.isOnline()){
                     cancel();
                 }
-                if (mana < maxMana){
+                if (mana < maxMana && Instant.now().getEpochSecond() - lastManaUse >= 2){
                     mana += regenRate;
                     if (mana > maxMana){
                         mana = maxMana;
@@ -53,7 +71,7 @@ public class ManaBar implements Listener {
                 }
 
                 p.sendActionBar(Component.text("Mana: ").color(NamedTextColor.GRAY)
-                        .append(Component.text(mana + "/" + maxMana).color(NamedTextColor.AQUA)));
+                        .append(Component.text((int) mana + "/" + (int) maxMana).color(NamedTextColor.AQUA)));
             }
         }.runTaskTimer(Nebula.getInstance(), 0 ,5);
     }

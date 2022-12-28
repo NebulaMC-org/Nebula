@@ -98,8 +98,13 @@ public class NoFallBoots extends CustomItem {
     }
 
     @Override
-    public int getTimerDelay() {
-        return 0;
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
     }
 
     @Override

@@ -29,6 +29,16 @@ public class VertusAxe extends CustomItem {
     }
 
     @Override
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
     public List<EquipmentSlot> activeSlots() {
         return null;
     }
@@ -60,11 +70,6 @@ public class VertusAxe extends CustomItem {
 
     @Override
     public int getTimerPeriod() {
-        return 0;
-    }
-
-    @Override
-    public int getTimerDelay() {
         return 0;
     }
 
