@@ -152,7 +152,7 @@ public class SacrificialBlade extends CustomItem {
 
     @Override
     public List<EquipmentSlot> activeSlots() {
-        return null;
+        return Arrays.asList(EquipmentSlot.HAND);
     }
 
     @Override

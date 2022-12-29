@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems.items.vertus;
+package org.nebulamc.plugin.features.customitems.items.sets.vertus;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -19,15 +19,15 @@ import org.nebulamc.plugin.features.customitems.items.CustomItem;
 
 import java.util.*;
 
-public class VertusLeggings extends CustomItem {
+public class VertusBoots extends CustomItem {
     @Override
     public String getName() {
-        return "&fVertus Leggings";
+        return "&fVertus Boots";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.LEATHER_LEGGINGS;
+        return Material.LEATHER_BOOTS;
     }
 
     @Override
@@ -48,9 +48,9 @@ public class VertusLeggings extends CustomItem {
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
         Map<Attribute, AttributeModifier> attributes = new HashMap<>();
-        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
-        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
-        attributes.put(Attribute.GENERIC_KNOCKBACK_RESISTANCE, new AttributeModifier(UUID.randomUUID(), "generic.knockbackResistance", 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.LEGS));
+        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 7, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+        attributes.put(Attribute.GENERIC_KNOCKBACK_RESISTANCE, new AttributeModifier(UUID.randomUUID(), "generic.knockbackResistance", 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
         return attributes;
     }
 
@@ -120,6 +120,16 @@ public class VertusLeggings extends CustomItem {
     }
 
     @Override
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
     public void doTimerAction(Player player) {
 
     }
@@ -134,13 +144,4 @@ public class VertusLeggings extends CustomItem {
         return 0;
     }
 
-    @Override
-    public void handleEquip(Player player, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void handleUnequip(Player player, ItemStack itemStack) {
-
-    }
 }

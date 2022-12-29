@@ -1,6 +1,8 @@
 package org.nebulamc.plugin.features.playerdata;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class PlayerData {
@@ -8,6 +10,7 @@ public class PlayerData {
     private final UUID id;
     private ManaBar manaBar;
     public HashMap<String, Double> itemCooldowns = new HashMap<>();
+    public List<String> activeItems = new ArrayList<>();
 
     private int jetpackFuel;
     private int maxJetpackFuel = 100;
@@ -55,5 +58,17 @@ public class PlayerData {
 
     public void setMomentum(int momentum){
         this.momentum = momentum;
+    }
+
+    public void addActiveItem(String item){
+        if (!activeItems.contains(item)){
+            activeItems.add(item);
+        }
+    }
+
+    public void removeActiveItem(String item){
+        if (activeItems.contains(item)){
+            activeItems.remove(item);
+        }
     }
 }

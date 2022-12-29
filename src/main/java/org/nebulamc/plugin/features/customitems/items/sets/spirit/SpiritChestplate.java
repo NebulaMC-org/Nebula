@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems.items.vertus;
+package org.nebulamc.plugin.features.customitems.items.sets.spirit;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -16,93 +16,63 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.items.CustomItem;
+import org.nebulamc.plugin.features.playerdata.ManaBar;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class VertusCrystal extends CustomItem {
-    @Override
-    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
-
-    }
-
-    @Override
-    public List<EquipmentSlot> activeSlots() {
-        return null;
-    }
-
-    @Override
-    public void handleEquip(Player player, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void handleUnequip(Player player, ItemStack itemStack) {
-
-    }
-
+public class SpiritChestplate extends CustomItem {
     @Override
     public String getName() {
-        return "&fVertus Crystal";
+        return "&fSpirit Chestplate";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.RED_DYE;
-    }
-
-    @Override
-    public void doTimerAction(Player player) {
-
-    }
-
-    @Override
-    public boolean hasTimerAction() {
-        return false;
-    }
-
-    @Override
-    public int getTimerPeriod() {
-        return 0;
+        return Material.LEATHER_CHESTPLATE;
     }
 
     @Override
     public List<String> getLore() {
-        return null;
+        return Arrays.asList("&a+30 &7Max Mana");
     }
 
     @Override
     public Map<Enchantment, Integer> getEnchants() {
-        Map<Enchantment, Integer> enchants = new HashMap<>();
-        enchants.put(Enchantment.ARROW_INFINITE, 1);
-        return enchants;
+        return null;
     }
 
     @Override
     public List<ItemFlag> getFlags() {
-        return Arrays.asList(ItemFlag.HIDE_ENCHANTS);
+        return Arrays.asList(ItemFlag.HIDE_DYE);
     }
 
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
-        return null;
+        Map<Attribute, AttributeModifier> attributes = new HashMap<>();
+        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+        return attributes;
     }
 
     @Override
     public int getModelData() {
-        return 2;
+        return 0;
     }
 
     @Override
     public Color getColor() {
-        return null;
+        return Color.fromRGB(87, 151, 233);
     }
 
     @Override
     public boolean isUnbreakable() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public List<EquipmentSlot> activeSlots() {
+        return Arrays.asList(EquipmentSlot.CHEST);
     }
 
     @Override
@@ -143,5 +113,37 @@ public class VertusCrystal extends CustomItem {
     @Override
     public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
 
+    }
+
+    @Override
+    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+
+    }
+
+    @Override
+    public void handleEquip(Player player, ItemStack itemStack) {
+        ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
+        manaBar.setMaxMana(manaBar.getMaxMana() + 30);
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+        ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
+        manaBar.setMaxMana(manaBar.getMaxMana() - 30);
+    }
+
+    @Override
+    public void doTimerAction(Player player) {
+
+    }
+
+    @Override
+    public boolean hasTimerAction() {
+        return false;
+    }
+
+    @Override
+    public int getTimerPeriod() {
+        return 0;
     }
 }

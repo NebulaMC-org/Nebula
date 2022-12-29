@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems.items.spirit;
+package org.nebulamc.plugin.features.customitems.items.sets.catalyst;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -16,25 +16,23 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.items.CustomItem;
-import org.nebulamc.plugin.features.playerdata.ManaBar;
-import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.*;
 
-public class SpiritChestplate extends CustomItem {
+public class CatalystHelmet extends CustomItem {
     @Override
     public String getName() {
-        return "&fSpirit Chestplate";
+        return "&fCatalyst Helmet";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.LEATHER_CHESTPLATE;
+        return Material.LEATHER_HELMET;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&a+30 &7Max Mana");
+        return Arrays.asList("&a+10% &7Attack Damage");
     }
 
     @Override
@@ -50,8 +48,8 @@ public class SpiritChestplate extends CustomItem {
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
         Map<Attribute, AttributeModifier> attributes = new HashMap<>();
-        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD));
+        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HEAD));
         return attributes;
     }
 
@@ -62,7 +60,7 @@ public class SpiritChestplate extends CustomItem {
 
     @Override
     public Color getColor() {
-        return Color.fromRGB(87, 151, 233);
+        return Color.fromRGB(117, 18, 171);
     }
 
     @Override
@@ -72,7 +70,7 @@ public class SpiritChestplate extends CustomItem {
 
     @Override
     public List<EquipmentSlot> activeSlots() {
-        return Arrays.asList(EquipmentSlot.CHEST);
+        return Arrays.asList(EquipmentSlot.HEAD);
     }
 
     @Override
@@ -102,7 +100,7 @@ public class SpiritChestplate extends CustomItem {
 
     @Override
     public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
-
+        event.setDamage(event.getDamage() * 1.1);
     }
 
     @Override
@@ -122,14 +120,12 @@ public class SpiritChestplate extends CustomItem {
 
     @Override
     public void handleEquip(Player player, ItemStack itemStack) {
-        ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
-        manaBar.setMaxMana(manaBar.getMaxMana() + 30);
+
     }
 
     @Override
     public void handleUnequip(Player player, ItemStack itemStack) {
-        ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
-        manaBar.setMaxMana(manaBar.getMaxMana() - 30);
+
     }
 
     @Override

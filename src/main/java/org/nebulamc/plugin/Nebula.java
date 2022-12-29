@@ -16,12 +16,20 @@ import org.nebulamc.plugin.commands.WagerCommand;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.*;
-import org.nebulamc.plugin.features.customitems.items.spirit.SpiritBoots;
-import org.nebulamc.plugin.features.customitems.items.spirit.SpiritChestplate;
-import org.nebulamc.plugin.features.customitems.items.spirit.SpiritHelmet;
-import org.nebulamc.plugin.features.customitems.items.spirit.SpiritLeggings;
+import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystBoots;
+import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystChestplate;
+import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystHelmet;
+import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystLeggings;
+import org.nebulamc.plugin.features.customitems.items.sets.spirit.SpiritBoots;
+import org.nebulamc.plugin.features.customitems.items.sets.spirit.SpiritChestplate;
+import org.nebulamc.plugin.features.customitems.items.sets.spirit.SpiritHelmet;
+import org.nebulamc.plugin.features.customitems.items.sets.spirit.SpiritLeggings;
+import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelBoots;
+import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelChestplate;
+import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelHelmet;
+import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelLeggings;
+import org.nebulamc.plugin.features.customitems.items.sets.vertus.*;
 import org.nebulamc.plugin.features.customitems.items.summoning.SunSigil;
-import org.nebulamc.plugin.features.customitems.items.vertus.*;
 import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
 import org.nebulamc.plugin.features.wager.WagerManager;
@@ -115,7 +123,16 @@ public final class Nebula extends JavaPlugin {
                 new SpiritChestplate(),
                 new SpiritBoots(),
                 new SpiritHelmet(),
-                new SpiritLeggings()
+                new SpiritLeggings(),
+                new PoseidonsCrown(),
+                new TitanSteelChestplate(),
+                new TitanSteelHelmet(),
+                new TitanSteelLeggings(),
+                new TitanSteelBoots(),
+                new CatalystBoots(),
+                new CatalystChestplate(),
+                new CatalystLeggings(),
+                new CatalystHelmet()
         );
         ItemManager.registerTimers();
     }

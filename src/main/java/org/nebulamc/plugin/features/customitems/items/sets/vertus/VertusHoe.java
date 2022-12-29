@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems.items.vertus;
+package org.nebulamc.plugin.features.customitems.items.sets.vertus;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -20,7 +20,7 @@ import org.nebulamc.plugin.features.customitems.items.CustomItem;
 import java.util.List;
 import java.util.Map;
 
-public class VertusPickaxe extends CustomItem {
+public class VertusHoe extends CustomItem {
     @Override
     public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
 
@@ -33,12 +33,12 @@ public class VertusPickaxe extends CustomItem {
 
     @Override
     public String getName() {
-        return "&fVertus Pickaxe";
+        return "&fVertus Hoe";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.NETHERITE_PICKAXE;
+        return Material.NETHERITE_HOE;
     }
 
     @Override

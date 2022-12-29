@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems.items.vertus;
+package org.nebulamc.plugin.features.customitems.items.sets.vertus;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -17,10 +17,12 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.items.CustomItem;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VertusShovel extends CustomItem {
+public class VertusCrystal extends CustomItem {
     @Override
     public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
 
@@ -32,18 +34,23 @@ public class VertusShovel extends CustomItem {
     }
 
     @Override
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
     public String getName() {
-        return "&fVertus Shovel";
+        return "&fVertus Crystal";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.NETHERITE_SHOVEL;
-    }
-
-    @Override
-    public List<String> getLore() {
-        return null;
+        return Material.RED_DYE;
     }
 
     @Override
@@ -62,28 +69,20 @@ public class VertusShovel extends CustomItem {
     }
 
     @Override
-    public void handleEquip(Player player, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void handleUnequip(Player player, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
-
+    public List<String> getLore() {
+        return null;
     }
 
     @Override
     public Map<Enchantment, Integer> getEnchants() {
-        return null;
+        Map<Enchantment, Integer> enchants = new HashMap<>();
+        enchants.put(Enchantment.ARROW_INFINITE, 1);
+        return enchants;
     }
 
     @Override
     public List<ItemFlag> getFlags() {
-        return null;
+        return Arrays.asList(ItemFlag.HIDE_ENCHANTS);
     }
 
     @Override
@@ -93,7 +92,7 @@ public class VertusShovel extends CustomItem {
 
     @Override
     public int getModelData() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -103,7 +102,7 @@ public class VertusShovel extends CustomItem {
 
     @Override
     public boolean isUnbreakable() {
-        return true;
+        return false;
     }
 
     @Override
@@ -138,6 +137,11 @@ public class VertusShovel extends CustomItem {
 
     @Override
     public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
+
+    }
+
+    @Override
+    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
 
     }
 }

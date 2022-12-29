@@ -18,6 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
 import org.nebulamc.plugin.features.customitems.items.CustomItem;
+import org.nebulamc.plugin.features.playerdata.PlayerData;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,13 +67,17 @@ public class CustomItemHandler implements Listener {
         if (event.getDamager().getType().equals(EntityType.PLAYER)){
             Player player = (Player) event.getDamager();
             for (ItemStack i : getCustomItems(player)){
-                ItemManager.items.get(getItemId(i)).handleAttackEntity(player, i, event);
+                if (inActiveSlot(player, i)){
+                    ItemManager.items.get(getItemId(i)).handleAttackEntity(player, i, event);
+                }
             }
 
         } if (event.getEntity().getType().equals(EntityType.PLAYER)){
             Player player = (Player) event.getEntity();
             for (ItemStack i : getCustomItems(player)){
-                ItemManager.items.get(getItemId(i)).handleDamagedByEntity(player, i, event);
+                if (inActiveSlot(player, i)){
+                    ItemManager.items.get(getItemId(i)).handleDamagedByEntity(player, i, event);
+                }
             }
         }
     }
@@ -81,7 +87,9 @@ public class CustomItemHandler implements Listener {
         if (event.getEntity() instanceof Player){
             Player player = (Player) event.getEntity();
             for (ItemStack i : getCustomItems(player)){
-                ItemManager.items.get(getItemId(i)).handleDamaged(player, i, event);
+                if (inActiveSlot(player, i)){
+                    ItemManager.items.get(getItemId(i)).handleDamaged(player, i, event);
+                }
             }
         }
     }
@@ -100,12 +108,12 @@ public class CustomItemHandler implements Listener {
         Player player = event.getPlayer();
         ItemStack oldItem = player.getInventory().getItem(event.getPreviousSlot());
         ItemStack newItem = player.getInventory().getItem(event.getNewSlot());
-        changeSlotTimers(player, oldItem, newItem);
+        changeSlotTimers(player, oldItem, newItem, event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onArmorChange(PlayerArmorChangeEvent event){
-        changeSlotTimers(event.getPlayer(), event.getOldItem(), event.getNewItem());
+        changeSlotTimers(event.getPlayer(), event.getOldItem(), event.getNewItem(), event);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -122,6 +130,7 @@ public class CustomItemHandler implements Listener {
     public void onItemDrop(PlayerDropItemEvent event){
         ItemStack item = event.getItemDrop().getItemStack();
         unequipItem(event.getPlayer(), item);
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -181,7 +190,16 @@ public class CustomItemHandler implements Listener {
         return itemStack.getItemMeta().getPersistentDataContainer().get(ItemManager.customItemKey, PersistentDataType.STRING);
     }
 
-    public static void changeSlotTimers(Player player, ItemStack oldItem, ItemStack newItem){
+    public static void changeSlotTimers(Player player, ItemStack oldItem, ItemStack newItem, PlayerItemHeldEvent event){
+        if (oldItem != null){
+            unequipItem(player, oldItem);
+        }
+        if (newItem != null){
+            equipItem(player, newItem);
+        }
+    }
+
+    public static void changeSlotTimers(Player player, ItemStack oldItem, ItemStack newItem, PlayerArmorChangeEvent event){
         if (oldItem != null){
             unequipItem(player, oldItem);
         }
@@ -204,6 +222,9 @@ public class CustomItemHandler implements Listener {
 
     public static boolean inActiveSlot(Player player, ItemStack itemStack){
         CustomItem item = ItemManager.items.get(getItemId(itemStack));
+        if (item.activeSlots() == null){
+            return false;
+        }
         for (EquipmentSlot slot : item.activeSlots()){
             if (getItemId(player.getInventory().getItem(slot)).equals(item.getId())){
                 return true;
@@ -212,23 +233,36 @@ public class CustomItemHandler implements Listener {
         return false;
     }
 
+
     public static void unequipItem(Player player, ItemStack item){
-        if (isCustomItem(item) && !inActiveSlot(player, item)){
+        if (isCustomItem(item)){
             CustomItem customItem = ItemManager.items.get(getItemId(item));
-            if (customItem.hasTimerAction()){
-                ItemManager.removePlayerFromTimer(player, customItem);
+            if (customItem.activeSlots() != null && !inActiveSlot(player, item)){
+                PlayerData data = PlayerManager.getPlayerData(player);
+                if (customItem.hasTimerAction()){
+                    ItemManager.removePlayerFromTimer(player, customItem);
+                }
+                if (data.activeItems.contains(customItem.getId())){
+                    customItem.handleUnequip(player, item);
+                    data.removeActiveItem(customItem.getId());
+                }
             }
-            customItem.handleUnequip(player, item);
         }
     }
 
     public static void equipItem(Player player, ItemStack item){
-        if (isCustomItem(item) && inActiveSlot(player, item)){
+        if (isCustomItem(item)){
             CustomItem customItem = ItemManager.items.get(getItemId(item));
-            if (customItem.hasTimerAction()){
-                ItemManager.addPlayerToTimer(player, customItem);
+            if (customItem.activeSlots() != null && inActiveSlot(player, item)) {
+                PlayerData data = PlayerManager.getPlayerData(player);
+                if (customItem.hasTimerAction()) {
+                    ItemManager.addPlayerToTimer(player, customItem);
+                }
+                if (!data.activeItems.contains(customItem.getId())) {
+                    customItem.handleEquip(player, item);
+                    data.addActiveItem(customItem.getId());
+                }
             }
-            customItem.handleEquip(player, item);
         }
     }
 }

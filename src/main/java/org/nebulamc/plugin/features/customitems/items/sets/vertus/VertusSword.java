@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems.items.vertus;
+package org.nebulamc.plugin.features.customitems.items.sets.vertus;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -17,24 +17,11 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.items.CustomItem;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-public class VertusAxe extends CustomItem {
+public class VertusSword extends CustomItem {
     @Override
     public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
-
-    }
-
-    @Override
-    public void handleEquip(Player player, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void handleUnequip(Player player, ItemStack itemStack) {
 
     }
 
@@ -45,12 +32,12 @@ public class VertusAxe extends CustomItem {
 
     @Override
     public String getName() {
-        return "&fVertus Axe";
+        return "&fVertus Sword";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.NETHERITE_AXE;
+        return Material.NETHERITE_SWORD;
     }
 
     @Override
@@ -74,6 +61,16 @@ public class VertusAxe extends CustomItem {
     }
 
     @Override
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
     public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
 
     }
@@ -92,7 +89,7 @@ public class VertusAxe extends CustomItem {
     public Map<Attribute, AttributeModifier> getAttributes() {
         Map<Attribute, AttributeModifier> attributes = new HashMap<>();
         attributes.put(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
-        attributes.put(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.attackSpeed", -3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
+        attributes.put(Attribute.GENERIC_ATTACK_SPEED, new AttributeModifier(UUID.randomUUID(), "generic.attackSpeed", -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND));
         return attributes;
     }
 

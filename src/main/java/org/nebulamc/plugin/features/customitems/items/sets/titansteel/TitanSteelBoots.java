@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems.items.vertus;
+package org.nebulamc.plugin.features.customitems.items.sets.titansteel;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -16,13 +16,15 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.items.CustomItem;
+import org.nebulamc.plugin.features.playerdata.ManaBar;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.*;
 
-public class VertusBoots extends CustomItem {
+public class TitanSteelBoots extends CustomItem {
     @Override
     public String getName() {
-        return "&fVertus Boots";
+        return "&fTitan Steel Boots";
     }
 
     @Override
@@ -32,7 +34,7 @@ public class VertusBoots extends CustomItem {
 
     @Override
     public List<String> getLore() {
-        return null;
+        return Arrays.asList("&c-20 &7Max Mana");
     }
 
     @Override
@@ -49,8 +51,8 @@ public class VertusBoots extends CustomItem {
     public Map<Attribute, AttributeModifier> getAttributes() {
         Map<Attribute, AttributeModifier> attributes = new HashMap<>();
         attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
-        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
-        attributes.put(Attribute.GENERIC_KNOCKBACK_RESISTANCE, new AttributeModifier(UUID.randomUUID(), "generic.knockbackResistance", 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 13, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+        attributes.put(Attribute.GENERIC_KNOCKBACK_RESISTANCE, new AttributeModifier(UUID.randomUUID(), "generic.knockbackResistance", 0.25, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
         return attributes;
     }
 
@@ -61,7 +63,7 @@ public class VertusBoots extends CustomItem {
 
     @Override
     public Color getColor() {
-        return Color.fromRGB(155, 49, 84);
+        return Color.fromRGB(144, 149, 142);
     }
 
     @Override
@@ -71,7 +73,7 @@ public class VertusBoots extends CustomItem {
 
     @Override
     public List<EquipmentSlot> activeSlots() {
-        return null;
+        return Arrays.asList(EquipmentSlot.FEET);
     }
 
     @Override
@@ -121,12 +123,14 @@ public class VertusBoots extends CustomItem {
 
     @Override
     public void handleEquip(Player player, ItemStack itemStack) {
-
+        ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
+        manaBar.setMaxMana(manaBar.getMaxMana() - 20);
     }
 
     @Override
     public void handleUnequip(Player player, ItemStack itemStack) {
-
+        ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
+        manaBar.setMaxMana(manaBar.getMaxMana() + 20);
     }
 
     @Override
@@ -143,5 +147,4 @@ public class VertusBoots extends CustomItem {
     public int getTimerPeriod() {
         return 0;
     }
-
 }
