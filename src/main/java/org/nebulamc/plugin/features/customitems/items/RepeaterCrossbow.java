@@ -1,7 +1,9 @@
-package org.nebulamc.plugin.features.customitems.items.sets.catalyst;
+package org.nebulamc.plugin.features.customitems.items;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -15,26 +17,31 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.items.CustomItem;
-import org.nebulamc.plugin.features.playerdata.PlayerData;
-import org.nebulamc.plugin.features.playerdata.PlayerManager;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.nebulamc.plugin.features.customitems.actions.*;
+import org.nebulamc.plugin.features.customitems.entity.GenericEntity;
+import org.nebulamc.plugin.features.customitems.source.EntitySource;
+import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
+import org.nebulamc.plugin.utils.Utils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-public class CatalystChestplate extends CustomItem {
+public class RepeaterCrossbow extends CustomItem{
     @Override
     public String getName() {
-        return "&fCatalyst Chestplate";
+        return "&fRepeater Crossbow";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.LEATHER_CHESTPLATE;
+        return Material.CROSSBOW;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&a+10% &7Attack Damage");
+        return Arrays.asList("\n", "&eShoots 10 arrows in quick succession!");
     }
 
     @Override
@@ -44,15 +51,12 @@ public class CatalystChestplate extends CustomItem {
 
     @Override
     public List<ItemFlag> getFlags() {
-        return Arrays.asList(ItemFlag.HIDE_DYE);
+        return null;
     }
 
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
-        Map<Attribute, AttributeModifier> attributes = new HashMap<>();
-        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-        return attributes;
+        return null;
     }
 
     @Override
@@ -62,17 +66,17 @@ public class CatalystChestplate extends CustomItem {
 
     @Override
     public Color getColor() {
-        return Color.fromRGB(117, 18, 171);
+        return null;
     }
 
     @Override
     public boolean isUnbreakable() {
-        return true;
+        return false;
     }
 
     @Override
     public List<EquipmentSlot> activeSlots() {
-        return Arrays.asList(EquipmentSlot.CHEST);
+        return null;
     }
 
     @Override
@@ -117,19 +121,37 @@ public class CatalystChestplate extends CustomItem {
 
     @Override
     public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+        ItemMeta meta = event.getBow().getItemMeta();
 
+        double damage = Utils.calculateBowDamage(event);
+        boolean piercing = false;
+
+        ListAction tickActions = new ListAction(new ParticleAction(Particle.CRIT, 1, 0, 0, 0, 0));
+        ListAction damageActions = new ListAction(new DamageAction(damage/8), new SetNoDamageTicksAction(0));
+
+        if (meta.hasEnchant(Enchantment.PIERCING)){
+            piercing = true;
+        }
+
+        ProjectileAction projAction = new ProjectileAction(60, 0.4,
+                damageActions,
+                new SoundAction(Sound.ITEM_CROSSBOW_SHOOT, 2.5f, 1.1f),
+                new NullAction(),
+                tickActions,
+                new GenericEntity(event.getProjectile().getType()), 0.5, 200, 3, piercing, false);
+
+        new TimedAction(0, 1, 10, projAction).execute(new EntityTarget(player), new EntitySource(player));
+        event.setCancelled(true);
     }
 
     @Override
     public void handleEquip(Player player, ItemStack itemStack) {
-        PlayerData data = PlayerManager.getPlayerData(player);
-        data.setDamageModifier(data.getDamageModifier() + 0.1f);
+
     }
 
     @Override
     public void handleUnequip(Player player, ItemStack itemStack) {
-        PlayerData data = PlayerManager.getPlayerData(player);
-        data.setDamageModifier(data.getDamageModifier() - 0.1f);
+
     }
 
     @Override

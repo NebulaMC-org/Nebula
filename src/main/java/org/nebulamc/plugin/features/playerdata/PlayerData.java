@@ -15,6 +15,7 @@ public class PlayerData {
     private int jetpackFuel;
     private int maxJetpackFuel = 100;
     private int momentum;
+    private float damageModifier;
 
     public PlayerData(UUID i){
         id = i;
@@ -70,5 +71,13 @@ public class PlayerData {
         if (activeItems.contains(item)){
             activeItems.remove(item);
         }
+    }
+
+    public float getDamageModifier(){
+        return damageModifier;
+    }
+
+    public void setDamageModifier(float modifier){
+        damageModifier = modifier;
     }
 }

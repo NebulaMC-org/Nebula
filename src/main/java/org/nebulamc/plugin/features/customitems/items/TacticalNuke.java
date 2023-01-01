@@ -1,7 +1,8 @@
-package org.nebulamc.plugin.features.customitems.items.sets.catalyst;
+package org.nebulamc.plugin.features.customitems.items;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -15,26 +16,31 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.items.CustomItem;
-import org.nebulamc.plugin.features.playerdata.PlayerData;
-import org.nebulamc.plugin.features.playerdata.PlayerManager;
+import org.bukkit.util.Vector;
+import org.nebulamc.plugin.features.customitems.actions.*;
+import org.nebulamc.plugin.features.customitems.area.SphericArea;
+import org.nebulamc.plugin.features.customitems.entity.ItemEntity;
+import org.nebulamc.plugin.features.customitems.source.EntitySource;
+import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-public class CatalystChestplate extends CustomItem {
+public class TacticalNuke extends CustomItem{
     @Override
     public String getName() {
-        return "&fCatalyst Chestplate";
+        return "&cTactical Nuke";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.LEATHER_CHESTPLATE;
+        return Material.MAGMA_CREAM;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&a+10% &7Attack Damage");
+        return Arrays.asList("\n", "&4&lHANDLE WITH CAUTION");
     }
 
     @Override
@@ -44,15 +50,12 @@ public class CatalystChestplate extends CustomItem {
 
     @Override
     public List<ItemFlag> getFlags() {
-        return Arrays.asList(ItemFlag.HIDE_DYE);
+        return null;
     }
 
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
-        Map<Attribute, AttributeModifier> attributes = new HashMap<>();
-        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
-        return attributes;
+        return null;
     }
 
     @Override
@@ -62,17 +65,17 @@ public class CatalystChestplate extends CustomItem {
 
     @Override
     public Color getColor() {
-        return Color.fromRGB(117, 18, 171);
+        return null;
     }
 
     @Override
     public boolean isUnbreakable() {
-        return true;
+        return false;
     }
 
     @Override
     public List<EquipmentSlot> activeSlots() {
-        return Arrays.asList(EquipmentSlot.CHEST);
+        return null;
     }
 
     @Override
@@ -80,9 +83,33 @@ public class CatalystChestplate extends CustomItem {
 
     }
 
+    ListAction nukeAction = new ListAction(
+            new BlocksInAreaAction(new SphericArea(new Vector(0, 0, 0), 50, false),
+                    new ListAction(
+                            new ParticleAction(Particle.ASH, 1, 0, 0, 0, 0),
+                            new BreakBlockAction(200, false, 0)
+                   )
+                ),
+            new EntitiesInAreaAction(new SphericArea(new Vector(0, 0, 0), 50, false), new DamageAction(100))
+    );
+
+    ProjectileAction nukeLaunch = new ProjectileAction(
+            50, 0,
+            nukeAction,
+            new NullAction(),
+            nukeAction,
+            new ParticleAction(Particle.SMOKE_LARGE, 1, 0, 0, 0, 0.2),
+            new ItemEntity(new ItemStack(Material.TNT), false),
+            2, 200, 0, false, false
+    );
+
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
+        if (player.isOp()){
+            nukeLaunch.execute(new EntityTarget(player), new EntitySource(player));
+        } else {
+            player.sendMessage("You are not authorized to use this.");
+        }
     }
 
     @Override
@@ -122,14 +149,12 @@ public class CatalystChestplate extends CustomItem {
 
     @Override
     public void handleEquip(Player player, ItemStack itemStack) {
-        PlayerData data = PlayerManager.getPlayerData(player);
-        data.setDamageModifier(data.getDamageModifier() + 0.1f);
+
     }
 
     @Override
     public void handleUnequip(Player player, ItemStack itemStack) {
-        PlayerData data = PlayerManager.getPlayerData(player);
-        data.setDamageModifier(data.getDamageModifier() - 0.1f);
+
     }
 
     @Override

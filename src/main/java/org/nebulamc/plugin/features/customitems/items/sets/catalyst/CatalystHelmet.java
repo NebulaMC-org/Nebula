@@ -16,6 +16,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.items.CustomItem;
+import org.nebulamc.plugin.features.playerdata.PlayerData;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.*;
 
@@ -100,7 +102,7 @@ public class CatalystHelmet extends CustomItem {
 
     @Override
     public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
-        event.setDamage(event.getDamage() * 1.1);
+
     }
 
     @Override
@@ -120,12 +122,14 @@ public class CatalystHelmet extends CustomItem {
 
     @Override
     public void handleEquip(Player player, ItemStack itemStack) {
-
+        PlayerData data = PlayerManager.getPlayerData(player);
+        data.setDamageModifier(data.getDamageModifier() + 0.1f);
     }
 
     @Override
     public void handleUnequip(Player player, ItemStack itemStack) {
-
+        PlayerData data = PlayerManager.getPlayerData(player);
+        data.setDamageModifier(data.getDamageModifier() - 0.1f);
     }
 
     @Override

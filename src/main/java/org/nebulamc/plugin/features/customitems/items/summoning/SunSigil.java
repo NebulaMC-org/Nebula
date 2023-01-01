@@ -41,7 +41,7 @@ public class SunSigil extends CustomItem {
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("\n", "&eRight-click to summon the Avatar of Ra.");
+        return Arrays.asList("&7Summons: &eAvatar of Ra", "&7Recommended Players: &e1-3");
     }
 
     @Override

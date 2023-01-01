@@ -132,7 +132,10 @@ public final class Nebula extends JavaPlugin {
                 new CatalystBoots(),
                 new CatalystChestplate(),
                 new CatalystLeggings(),
-                new CatalystHelmet()
+                new CatalystHelmet(),
+                new TacticalNuke(),
+                new RepeaterCrossbow(),
+                new VulcansAxe()
         );
         ItemManager.registerTimers();
     }

@@ -49,7 +49,7 @@ public class VertusBoots extends CustomItem {
     public Map<Attribute, AttributeModifier> getAttributes() {
         Map<Attribute, AttributeModifier> attributes = new HashMap<>();
         attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 3, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
-        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 7, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
+        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
         attributes.put(Attribute.GENERIC_KNOCKBACK_RESISTANCE, new AttributeModifier(UUID.randomUUID(), "generic.knockbackResistance", 0.1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.FEET));
         return attributes;
     }
