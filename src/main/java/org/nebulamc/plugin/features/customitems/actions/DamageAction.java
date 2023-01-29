@@ -20,12 +20,14 @@ public class DamageAction extends Action {
     @Override
     public void execute(Target target, Source source) {
         if (Utils.canDamage(target, source)){
-            LivingEntity entityTarget = ((EntityTarget) target).getTarget();
-            if (source instanceof Player){
-                PlayerData data = PlayerManager.getPlayerData((Player) source.getCaster());
-                entityTarget.damage(damage + damage * data.getDamageModifier(), source.getCaster());
-            } else {
-                entityTarget.damage(damage, source.getCaster());
+            if (target instanceof EntityTarget){
+                LivingEntity entityTarget = ((EntityTarget) target).getTarget();
+                if (source instanceof Player){
+                    PlayerData data = PlayerManager.getPlayerData((Player) source.getCaster());
+                    entityTarget.damage(damage + damage * data.getDamageModifier(), source.getCaster());
+                } else {
+                    entityTarget.damage(damage, source.getCaster());
+                }
             }
         }
 

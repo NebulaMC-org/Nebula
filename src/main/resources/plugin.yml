@@ -21,3 +21,8 @@ commands:
     description: Gives a custom item to the player.
     usage: /<command> [<player>] [<item>]
     permission: nebula.giveitem
+  arename:
+    aliases: [ adminrename ]
+    description: Renames the held item. For admin use only.
+    usage: /<command> [<string>]
+    permission: nebula.arename

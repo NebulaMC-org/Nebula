@@ -22,6 +22,7 @@ import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 import org.nebulamc.plugin.features.customitems.targeter.LocationTarget;
 import org.nebulamc.plugin.features.customitems.targeter.Target;
 
+import java.util.HashMap;
 import java.util.Random;
 
 public final class Utils {
@@ -150,5 +151,13 @@ public final class Utils {
         }
 
         return damage;
+    }
+
+    public static boolean removeItem(Player player, ItemStack item){
+        HashMap<Integer, ItemStack> result = player.getInventory().removeItem(item);
+        if (result.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }

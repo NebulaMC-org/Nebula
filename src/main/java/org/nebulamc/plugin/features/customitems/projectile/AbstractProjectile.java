@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Explosive;
 import org.bukkit.entity.LivingEntity;
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Getter
@@ -83,6 +85,8 @@ public abstract class AbstractProjectile {
 
     protected abstract void updateLocationAndDirection();
 
+    private static final Logger log = Nebula.getInstance().getLogger();
+
     public void run() {
         projectileLife = 0;
         location.setDirection(getProjectileDirection());
@@ -96,11 +100,10 @@ public abstract class AbstractProjectile {
             public void run() {
                 Map<String, Object> map = new HashMap<>();
                 if (projectileHitBlock()) {
-                    if (dragOnGround && !source.getCaster().getMetadata("hitFace").equals("SOUTH")){
+                    if (dragOnGround && !source.getCaster().getMetadata("hitFace").equals(BlockFace.DOWN)){
                         if (!location.clone().add(new Vector(0, 1, 0)).getBlock().isSolid()){
                             location.add(new Vector(0, 0.5, 0));
-                            location.getDirection().setY(0);
-                            location.getDirection().normalize();
+                            location.setDirection(location.getDirection().setY(0).normalize());
                         } else {
                             onBlockHitAction.execute(new ProjectileTarget(projectile), source);
                             if (!(boolean) map.getOrDefault("cancelled", false))

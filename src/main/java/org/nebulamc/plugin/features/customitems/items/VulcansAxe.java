@@ -2,10 +2,11 @@ package org.nebulamc.plugin.features.customitems.items;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -19,8 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.features.customitems.actions.*;
 import org.nebulamc.plugin.features.customitems.area.SphericArea;
-import org.nebulamc.plugin.features.customitems.entity.GenericEntity;
-import org.nebulamc.plugin.features.customitems.source.EntitySource;
+import org.nebulamc.plugin.features.customitems.entity.NoEntity;
+import org.nebulamc.plugin.features.customitems.source.LocationSource;
 import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 
 import java.util.Arrays;
@@ -83,25 +84,55 @@ public class VulcansAxe extends CustomItem{
 
     }
 
-    ProjectileAction projAction = new ProjectileAction(
-            40, 1,
-            new NullAction(),
-            new NullAction(),
-            new NullAction(),
-            new ListAction(
-                    new BlocksInAreaAction(
-                            new SphericArea(new Vector(0, 0, 0), 2, false),
-                            new ListAction(
-                                    new FakeBlockAction(Material.MAGMA_BLOCK, 80, true, Arrays.asList(Material.AIR, Material.CAVE_AIR))
-                            )
+    ListAction flameHitAction = new ListAction(
+            new ParticleAction(Particle.EXPLOSION_LARGE, 1, 0, 0, 0, 0),
+            new SoundAction(Sound.ENTITY_GENERIC_EXPLODE, 1, 1.2f),
+            new EntitiesInAreaAction(
+                    new SphericArea(new Vector(0, 0, 0), 1, false),
+                    new ListAction(
+                            new DamageAction(12),
+                            new SetOnFireAction(200)
                     )
-            ),
-            new GenericEntity(EntityType.ARROW), 1, 100, 0, true, true
+            )
     );
+
+    ProjectileAction flameBurstProj = new ProjectileAction(
+            50, 2,
+            flameHitAction,
+            new NullAction(),
+            flameHitAction,
+            new ParticleAction(Particle.FLAME, 1, 0, 0, 0, 0.075),
+            new NoEntity(), 0.5, 150, 0, false, false
+    );
+
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        projAction.execute(new EntityTarget(player), new EntitySource(player));
+        new ChangeRelativeSourceAction(
+                new ProjectileAction(
+                        70, 10,
+                        new NullAction(),
+                        new NullAction(),
+                        new NullAction(),
+                        new ListAction(
+                                new BlocksInAreaAction(
+                                        new SphericArea(new Vector(0, 0, 0), 0.8, false),
+                                        new ListAction(
+                                                new FakeBlockAction(Material.MAGMA_BLOCK, 80, true, Arrays.asList(Material.AIR, Material.CAVE_AIR))
+                                        )
+                                ),
+                                new ParticleAction(Particle.FLAME, 1, 0, 0, 0, 0),
+                                new ChangeSourceAction(
+                                        new ChangeRelativeTargetAction(
+                                                flameBurstProj,
+                                                new Vector(0, 5, 0)
+                                        )
+                                )
+                        ),
+                        new NoEntity(), 1, 20, 0, true, true
+                ),
+                player.getEyeLocation().getDirection().multiply(2)
+        ).execute(new EntityTarget(player), new LocationSource(player.getLocation(), player));
     }
 
     @Override

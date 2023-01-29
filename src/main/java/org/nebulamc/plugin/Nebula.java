@@ -3,16 +3,15 @@ package org.nebulamc.plugin;
 import lombok.Getter;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Material;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.nebulamc.plugin.commands.GiveItemCommand;
-import org.nebulamc.plugin.commands.SetPronounsCommand;
-import org.nebulamc.plugin.commands.SpawnChestCommand;
-import org.nebulamc.plugin.commands.WagerCommand;
+import org.nebulamc.plugin.commands.*;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.*;
@@ -34,9 +33,11 @@ import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
 import org.nebulamc.plugin.features.wager.WagerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
+import org.nebulamc.plugin.listeners.DeathListener;
 import org.nebulamc.plugin.listeners.SmeltingListener;
 import org.nebulamc.plugin.utils.config.ConfigManager;
 import org.nebulamc.plugin.utils.config.ConfigSettings;
+
 
 public final class Nebula extends JavaPlugin {
 
@@ -52,6 +53,7 @@ public final class Nebula extends JavaPlugin {
     private static LootTable meteorLoot;
 
     private final PluginManager pm = this.getServer().getPluginManager();
+    private static Economy econ;
 
     @Override
     public void onEnable() {
@@ -62,12 +64,14 @@ public final class Nebula extends JavaPlugin {
         this.landsIntegration = new LandsIntegration(this);
 
         configManager.createDefaults();
+        setupEconomy();
         checkDependencies();
         registerListeners();
         registerCommands();
         registerCustomItems();
         buildMeteorLootTable();
         runMeteorSpawnLoop();
+
 
         getLogger().info("Successfully enabled Nebula plugin.");
 
@@ -76,6 +80,25 @@ public final class Nebula extends JavaPlugin {
     @Override
     public void onDisable() {
         HandlerList.unregisterAll();
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            getLogger().info("Couldn't find vault plugin.");
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            getLogger().info("RSP is null.");
+            return false;
+        }
+
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    public static Economy getEconomy() {
+        return econ;
     }
 
     public MiniMessage miniMessage() {
@@ -135,7 +158,8 @@ public final class Nebula extends JavaPlugin {
                 new CatalystHelmet(),
                 new TacticalNuke(),
                 new RepeaterCrossbow(),
-                new VulcansAxe()
+                new VulcansAxe(),
+                new ShamanStaff()
         );
         ItemManager.registerTimers();
     }
@@ -161,6 +185,7 @@ public final class Nebula extends JavaPlugin {
 
         pm.registerEvents(new PlayerManager(), this);
         pm.registerEvents(new CustomItemHandler(), this);
+        pm.registerEvents(new DeathListener(this), this);
 
         if (ConfigSettings.afksystem_enable) {
             // temp removed
@@ -176,6 +201,7 @@ public final class Nebula extends JavaPlugin {
     private void registerCommands(){
         this.getCommand("spawnchest").setExecutor(new SpawnChestCommand());
         this.getCommand("setpronouns").setExecutor(new SetPronounsCommand());
+        this.getCommand("arename").setExecutor(new AdminRenameCommand());
 
         this.getCommand("giveitem").setExecutor(new GiveItemCommand());
         this.getCommand("giveitem").setTabCompleter(new GiveItemCommand());

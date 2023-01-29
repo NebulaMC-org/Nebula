@@ -22,6 +22,7 @@ import org.nebulamc.plugin.features.customitems.items.CustomItem;
 import org.nebulamc.plugin.features.customitems.source.EntitySource;
 import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 import org.nebulamc.plugin.features.customitems.targeter.LocationTarget;
+import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class SunSigil extends CustomItem {
 
     @Override
     public int getModelData() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -90,51 +91,50 @@ public class SunSigil extends CustomItem {
             0, 0, new NullAction(), new NullAction(), new NullAction(), new ParticleAction(Particle.LAVA, 1, 0, 0, 0, 0),
             new ItemEntity(new ItemStack(Material.RAW_GOLD),false, 1), 0, 140, 0, false, false
     );
-    TimedAction ambientSoundAction = new TimedAction(
-            0, 60, 2,
-            new SoundAction(Sound.BLOCK_BEACON_AMBIENT, 4, 2)
-    );
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        Location loc = player.getLocation();
-        sigilProj.execute(new EntityTarget(player), new EntitySource(player));
-        new TimedAction(
-                0, 60, 2,
-                new SoundAction(Sound.BLOCK_BEACON_AMBIENT, 4, 2)
-        ).execute(new LocationTarget(loc), new EntitySource(player));
-        new DelayedAction(
-                60,
-                new ListAction(
-                        new ChangeTargetAction(
-                                new TimedAction(0, 5, 16,
-                                        new ListAction(
-                                                new BlocksInAreaAction(
-                                                        new CylindricArea(new Vector(0, -15, 0), 90, 0, false),
-                                                        new ParticleAction(Particle.FLAME, 1, 0, 0, 0, 0)
-                                                ),
-                                                new SoundAction(Sound.BLOCK_FIRE_AMBIENT, 2, 1)
-                                        )
+        itemStack.setAmount(1);
+        if (Utils.removeItem(player, itemStack)){
+            Location loc = player.getLocation();
+            sigilProj.execute(new EntityTarget(player), new EntitySource(player));
+            new TimedAction(
+                    0, 60, 2,
+                    new SoundAction(Sound.BLOCK_BEACON_AMBIENT, 4, 2)
+            ).execute(new LocationTarget(loc), new EntitySource(player));
+            new DelayedAction(
+                    60,
+                    new ListAction(
+                            new ChangeTargetAction(
+                                    new TimedAction(0, 5, 16,
+                                            new ListAction(
+                                                    new BlocksInAreaAction(
+                                                            new CylindricArea(new Vector(0, -15, 0), 90, 0, false),
+                                                            new ParticleAction(Particle.FLAME, 1, 0, 0, 0, 0)
+                                                    ),
+                                                    new SoundAction(Sound.BLOCK_FIRE_AMBIENT, 2, 1)
+                                            )
 
-                                ),
-                                new LocationTarget(loc)
-                        ),
-                        new DelayedAction(
-                                80,
-                                new ChangeTargetAction(
-                                        new ListAction(
-                                                new RunCommandAction("mm mobs spawn -s AvatarOfRa 1 " + player.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ",1,1"),
-                                                new SoundAction(Sound.ENTITY_WITHER_SPAWN, 5, 1),
-                                                new SoundAction(Sound.ENTITY_GENERIC_EXPLODE, 5, 1),
-                                                new ParticleAction(Particle.FLAME, 30, 0, 0, 0, 0.5),
-                                                new ParticleAction(Particle.EXPLOSION_HUGE, 1, 0, 0, 0, 0)
+                                    ),
+                                    new LocationTarget(loc)
+                            ),
+                            new DelayedAction(
+                                    80,
+                                    new ChangeTargetAction(
+                                            new ListAction(
+                                                    new RunCommandAction("mm mobs spawn -s AvatarOfRa 1 " + player.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ",1,1"),
+                                                    new SoundAction(Sound.ENTITY_WITHER_SPAWN, 5, 1),
+                                                    new SoundAction(Sound.ENTITY_GENERIC_EXPLODE, 5, 1),
+                                                    new ParticleAction(Particle.FLAME, 30, 0, 0, 0, 0.5),
+                                                    new ParticleAction(Particle.EXPLOSION_HUGE, 1, 0, 0, 0, 0)
 
-                                        ), new LocationTarget(loc)
-                                )
-                        )
+                                            ), new LocationTarget(loc)
+                                    )
+                            )
 
-                )
-        ).execute(new EntityTarget(player), new EntitySource(player));
+                    )
+            ).execute(new EntityTarget(player), new EntitySource(player));
+        }
     }
 
     @Override

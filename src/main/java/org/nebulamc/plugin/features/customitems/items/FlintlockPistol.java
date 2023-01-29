@@ -15,7 +15,6 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.customitems.actions.*;
@@ -25,9 +24,9 @@ import org.nebulamc.plugin.features.customitems.source.LocationSource;
 import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 import org.nebulamc.plugin.features.playerdata.PlayerData;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
+import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -105,10 +104,7 @@ public class FlintlockPistol extends CustomItem{
         PlayerData playerData = PlayerManager.getPlayerData(player);
         String name = getClass().getSimpleName();
         if (playerData.cooldownOver(name)) {
-            Inventory inv = player.getInventory();
-            ItemStack fuel = new ItemStack(Material.FLINT, 1);
-            HashMap<Integer, ItemStack> result = inv.removeItem(fuel);
-            if (result.isEmpty()) {
+            if (Utils.removeItem(player, new ItemStack(Material.FLINT, 1))) {
                 player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 2f);
                 playerData.setItemCooldown(name, 2);
                 flintShoot.execute(new EntityTarget(player), new EntitySource(player));

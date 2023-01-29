@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 //refactored from SupremeItem source code
@@ -31,7 +32,10 @@ public class ItemEntity extends Entity {
     public ItemEntity(ItemStack item, boolean gravity, int customModelData) {
         this.item = item;
         this.gravity = gravity;
-        this.item.getItemMeta().setCustomModelData(customModelData);
+
+        ItemMeta meta = item.getItemMeta();
+        meta.setCustomModelData(customModelData);
+        this.item.setItemMeta(meta);
     }
 
     @Override
