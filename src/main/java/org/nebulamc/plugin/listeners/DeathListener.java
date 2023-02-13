@@ -22,13 +22,16 @@ public class DeathListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
-        double balanceTaken = econ.getBalance(player)/10;
+        int balanceTaken = (int) econ.getBalance(player)/10;
         if (balanceTaken > 100){
             balanceTaken = 100;
         }
-        econ.withdrawPlayer(player, balanceTaken);
-        player.sendMessage("");
-        player.sendMessage(ChatColor.DARK_RED + "☠ You died and lost " +  ChatColor.BOLD + balanceTaken + " gold");
-        player.sendMessage("");
+
+        if (balanceTaken >= 1){
+            econ.withdrawPlayer(player, balanceTaken);
+            player.sendMessage("");
+            player.sendMessage(ChatColor.DARK_RED + "☠ You died and lost " +  ChatColor.BOLD + balanceTaken + " gold");
+            player.sendMessage("");
+        }
     }
 }

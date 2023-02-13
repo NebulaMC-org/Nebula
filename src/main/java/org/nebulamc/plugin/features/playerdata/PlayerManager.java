@@ -1,5 +1,6 @@
 package org.nebulamc.plugin.features.playerdata;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,4 +42,16 @@ public class PlayerManager implements Listener {
         return playerData.get(p.getUniqueId());
     }
 
+    public static boolean takeMana(Player player, int mana){
+        if (player.getGameMode() == GameMode.CREATIVE){
+            return true;
+        }
+        PlayerData data = getPlayerData(player);
+        if (data.getManaBar().getMana() >= mana) {
+            data.getManaBar().subtractMana(mana);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

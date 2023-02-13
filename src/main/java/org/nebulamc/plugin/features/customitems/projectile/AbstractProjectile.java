@@ -9,9 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Explosive;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.RayTraceResult;
@@ -158,6 +156,9 @@ public abstract class AbstractProjectile {
         Entity projectile = entity.spawnEntity(location);
         if (projectile instanceof Explosive){
             ((Explosive) projectile).setYield(0);
+        }
+        if (projectile instanceof SmallFireball){
+            ((SmallFireball) projectile).setIsIncendiary(false);
         }
         if (projectile != null) {
             projectile.setMetadata("projectile", new FixedMetadataValue(Nebula.getInstance(),

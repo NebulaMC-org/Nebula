@@ -3,7 +3,6 @@ package org.nebulamc.plugin.features.customitems.items;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -18,10 +17,8 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.actions.ExplosionAction;
-import org.nebulamc.plugin.features.customitems.actions.NullAction;
-import org.nebulamc.plugin.features.customitems.actions.ParticleAction;
-import org.nebulamc.plugin.features.customitems.actions.ProjectileAction;
+import org.bukkit.potion.PotionEffectType;
+import org.nebulamc.plugin.features.customitems.actions.*;
 import org.nebulamc.plugin.features.customitems.entity.GenericEntity;
 import org.nebulamc.plugin.features.customitems.source.EntitySource;
 import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
@@ -32,20 +29,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class Beezooka extends CustomItem{
+public class MythicalFeather extends CustomItem{
     @Override
     public String getName() {
-        return "&eBeezooka";
+        return "&dMythical Feather";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.GOLDEN_HORSE_ARMOR;
+        return Material.STICK;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b30", "\n", "&eRight-click to shoot an explosive bee!");
+        return Arrays.asList("&7Mana Use: &b15", "\n", "&eRight-click to shoot a poisonous dart!");
     }
 
     @Override
@@ -65,7 +62,7 @@ public class Beezooka extends CustomItem{
 
     @Override
     public int getModelData() {
-        return 2;
+        return 1;
     }
 
     @Override
@@ -88,24 +85,23 @@ public class Beezooka extends CustomItem{
 
     }
 
-    ExplosionAction explosionAction = new ExplosionAction(10, 1, 0);
-    ParticleAction particleAction = new ParticleAction(Particle.SMOKE_NORMAL, 1, 0, 0 ,0, 0.2);
-    ProjectileAction beeProj = new ProjectileAction(55, 0, explosionAction,
+    ProjectileAction projAction = new ProjectileAction(80, 0,
+            new ListAction(
+                    new DamageAction(10),
+                    new PotionAction(PotionEffectType.WITHER, 200, 4),
+                    new PotionAction(PotionEffectType.POISON, 200, 2)
+            ) ,
             new NullAction(),
-            explosionAction,
-            particleAction,
-            new GenericEntity(EntityType.BEE),
-            1, 200, 2, false, false);
+            new NullAction(),
+            new ParticleAction(Particle.REDSTONE, 1, 0, 0, 0, 0, new Particle.DustOptions(Color.YELLOW, 2f)),
+            new GenericEntity(EntityType.ARROW), 1.5, 200, 0, false, false);
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        PlayerData playerData = PlayerManager.getPlayerData(player);
-        String name = getClass().getSimpleName();
-        if (playerData.cooldownOver(name) && PlayerManager.takeMana(player, 30)) {
-            playerData.setItemCooldown(name, 0.2);
-            player.playSound(player.getLocation(), Sound.BLOCK_BEEHIVE_EXIT, 1.5f, 0f);
-            player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 2.5f, 1f);
-            beeProj.execute(new EntityTarget(player), new EntitySource(player));
+        PlayerData data = PlayerManager.getPlayerData(player);
+        if (data.getManaBar().getMana() >= 15) {
+            data.getManaBar().subtractMana(15);
+            projAction.execute(new EntityTarget(player), new EntitySource(player));
         }
     }
 

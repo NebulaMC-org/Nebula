@@ -34,7 +34,7 @@ public class NoFallBoots extends CustomItem {
     @Override
     public List<String> getLore() {
         return Arrays.asList("\n",
-                "&eNever worry about fall damage again!");
+                "&eReduce all fall damage by 70%!");
     }
 
     @Override
@@ -140,7 +140,7 @@ public class NoFallBoots extends CustomItem {
     @Override
     public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
         if (event.getCause().equals(EntityDamageEvent.DamageCause.FALL)){
-            event.setCancelled(true);
+            event.setDamage(event.getDamage() * 0.3f);
         }
     }
 }

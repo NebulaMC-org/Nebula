@@ -1,8 +1,7 @@
 package org.nebulamc.plugin.features.playerdata;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -67,6 +66,34 @@ public class ManaBar implements Listener {
         regenRate = r;
     }
 
+    private String getManaBarVisual(){
+        Player player = Bukkit.getPlayer(id);
+        if (player.getRemainingAir() < player.getMaximumAir() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR){
+            return " ";
+        }
+
+        int tempMana = (int) (mana/2);
+        int tempMaxMana = (int) (maxMana/2);
+
+        String text = "";
+        if (tempMaxMana > 50){
+            text += "\uF828\uF827".repeat((tempMaxMana - 50)/15);
+        } else if (tempMaxMana < 50) {
+            text += "\uF808\uF802".repeat((50 - tempMaxMana)/10);
+        }
+        text += "\uF82B\uF826\uF801\uE000";
+
+        if (tempMana <= 50){
+            text += "\uF801\uE002".repeat(tempMana);
+        } else {
+            text += "\uF801\uE002".repeat(50);
+            text += "\uF801\uE300".repeat(tempMana - 50);
+        }
+        text += "\uF801\uE001".repeat(tempMaxMana - tempMana);
+        text += "\uF801\uE000";
+        return text;
+    }
+
     public void tickManaBar(){
         Player p = Bukkit.getPlayer(id);
         new BukkitRunnable(){
@@ -81,8 +108,7 @@ public class ManaBar implements Listener {
                     }
                 }
 
-                p.sendActionBar(Component.text("Mana: ").color(NamedTextColor.GRAY)
-                        .append(Component.text((int) mana + "/" + (int) maxMana).color(NamedTextColor.AQUA)));
+                p.sendActionBar(getManaBarVisual());
             }
         }.runTaskTimer(Nebula.getInstance(), 0 ,5);
     }
