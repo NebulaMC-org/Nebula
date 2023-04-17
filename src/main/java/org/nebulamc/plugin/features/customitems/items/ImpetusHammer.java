@@ -1,36 +1,21 @@
 package org.nebulamc.plugin.features.customitems.items;
 
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class ImpetusHammer extends CustomItem {
-    @Override
-    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
-
-    }
 
     @Override
     public String getName() {
@@ -39,7 +24,7 @@ public class ImpetusHammer extends CustomItem {
 
     @Override
     public boolean isUnbreakable() {
-        return false;
+        return true;
     }
 
     @Override
@@ -54,88 +39,13 @@ public class ImpetusHammer extends CustomItem {
     }
 
     @Override
-    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
-    }
-
-    @Override
-    public Map<Enchantment, Integer> getEnchants() {
-        return null;
-    }
-
-    @Override
-    public List<ItemFlag> getFlags() {
-        return null;
-    }
-
-    @Override
-    public Map<Attribute, AttributeModifier> getAttributes() {
-        return null;
-    }
-
-    @Override
     public int getModelData() {
         return 2;
     }
 
     @Override
-    public Color getColor() {
-        return null;
-    }
-
-    @Override
-    public void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
-    }
-
-    @Override
-    public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
-    }
-
-    @Override
-    public void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event) {
-
-    }
-
-    @Override
-    public void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
-
-    }
-
-    @Override
-    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
-
-    }
-
-    @Override
     public List<EquipmentSlot> activeSlots() {
         return Arrays.asList(EquipmentSlot.HAND);
-    }
-
-    @Override
-    public void doTimerAction(Player player) {
-
-    }
-
-    @Override
-    public boolean hasTimerAction() {
-        return false;
-    }
-
-    @Override
-    public int getTimerPeriod() {
-        return 0;
-    }
-
-    @Override
-    public void handleEquip(Player player, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void handleUnequip(Player player, ItemStack itemStack) {
-
     }
 
     @Override
@@ -171,10 +81,5 @@ public class ImpetusHammer extends CustomItem {
 
             }
         }
-    }
-
-    @Override
-    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
-
     }
 }

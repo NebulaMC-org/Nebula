@@ -13,6 +13,7 @@ import java.util.UUID;
 public class ManaBar implements Listener {
 
     private final UUID id;
+    private final Player player;
     private float maxMana;
     private float mana;
     private float regenRate; //mana regenerated per 0.25s
@@ -22,6 +23,7 @@ public class ManaBar implements Listener {
         id = i;
         maxMana = 100;
         regenRate = 1;
+        player = Bukkit.getPlayer(id);
     }
 
     public float getMana() {
@@ -67,30 +69,32 @@ public class ManaBar implements Listener {
     }
 
     private String getManaBarVisual(){
-        Player player = Bukkit.getPlayer(id);
-        if (player.getRemainingAir() < player.getMaximumAir() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR){
-            return " ";
-        }
-
-        int tempMana = (int) (mana/2);
-        int tempMaxMana = (int) (maxMana/2);
-
         String text = "";
-        if (tempMaxMana > 50){
-            text += "\uF828\uF827".repeat((tempMaxMana - 50)/15);
-        } else if (tempMaxMana < 50) {
-            text += "\uF808\uF802".repeat((50 - tempMaxMana)/10);
-        }
-        text += "\uF82B\uF826\uF801\uE000";
+        if (player.isOnline()) {
+            if (player.getRemainingAir() < player.getMaximumAir() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR){
+                return " ";
+            }
 
-        if (tempMana <= 50){
-            text += "\uF801\uE002".repeat(tempMana);
-        } else {
-            text += "\uF801\uE002".repeat(50);
-            text += "\uF801\uE300".repeat(tempMana - 50);
+            int tempMana = (int) (mana/2);
+            int tempMaxMana = (int) (maxMana/2);
+
+
+            if (tempMaxMana > 50){
+                text += "\uF828\uF827".repeat((tempMaxMana - 50)/15);
+            } else if (tempMaxMana < 50) {
+                text += "\uF808\uF802".repeat((50 - tempMaxMana)/10);
+            }
+            text += "\uF82B\uF826\uF801\uE000";
+
+            if (tempMana <= 50){
+                text += "\uF801\uE002".repeat(tempMana);
+            } else {
+                text += "\uF801\uE002".repeat(50);
+                text += "\uF801\uE300".repeat(tempMana - 50);
+            }
+            text += "\uF801\uE001".repeat(tempMaxMana - tempMana);
+            text += "\uF801\uE000";
         }
-        text += "\uF801\uE001".repeat(tempMaxMana - tempMana);
-        text += "\uF801\uE000";
         return text;
     }
 

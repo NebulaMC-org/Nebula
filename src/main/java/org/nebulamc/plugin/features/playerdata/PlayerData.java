@@ -10,6 +10,7 @@ public class PlayerData {
     private final UUID id;
     private ManaBar manaBar;
     public HashMap<String, Double> itemCooldowns = new HashMap<>();
+    public HashMap<String, Double> itemDamage = new HashMap<>();
     public List<String> activeItems = new ArrayList<>();
 
     private int jetpackFuel;
@@ -29,6 +30,22 @@ public class PlayerData {
     public void setItemCooldown(String name, double seconds){
         double cooldownTime = System.currentTimeMillis() + (long) (1000 * seconds);
         itemCooldowns.put(name, cooldownTime);
+    }
+
+    public void setItemDamage(String name, double damage){
+        itemDamage.put(name, damage);
+    }
+
+    public void addItemDamage(String name, double damage){
+        if (itemDamage.containsKey(name)){
+            itemDamage.put(name, itemDamage.get(name) + 1);
+        } else {
+            itemDamage.put(name, damage);
+        }
+    }
+
+    public double getItemDamage(String name){
+        return itemDamage.get(name);
     }
 
     public boolean cooldownOver(String name){

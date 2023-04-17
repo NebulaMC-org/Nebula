@@ -4,14 +4,14 @@ import me.angeschossen.lands.api.flags.Flags;
 import me.angeschossen.lands.api.flags.type.RoleFlag;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.LandWorld;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 import org.nebulamc.plugin.Nebula;
@@ -21,11 +21,18 @@ import org.nebulamc.plugin.features.customitems.source.Source;
 import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 import org.nebulamc.plugin.features.customitems.targeter.LocationTarget;
 import org.nebulamc.plugin.features.customitems.targeter.Target;
+import org.nebulamc.plugin.features.playerdata.PlayerData;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.logging.Logger;
 
 public final class Utils {
+
+    private static final Nebula plugin = Nebula.getInstance();
+    private static final Logger log = plugin.getLogger();
+
     private Utils(){}
 
     public static LandsIntegration lands = Nebula.getInstance().getLandsIntegration();
@@ -49,7 +56,7 @@ public final class Utils {
         }
 
         if (!(player.getWorld().getName().equals("nebula")) && !(player.getWorld().getName().equals("admin")))
-            if (landWorld.hasFlag(player, loc, itemStack.getType(), flag, true)){
+            if (landWorld.hasRoleFlag(player, loc, flag, itemStack.getType(), true)){
                 return true;
             }
         return false;
@@ -159,5 +166,66 @@ public final class Utils {
             return true;
         }
         return false;
+    }
+
+    public static void loadChunksInArea(Location loc, int radius){
+        radius *= 16;
+        for (int i = (int) loc.x() - radius ; i <= radius; i +=16){
+            for (int k = (int) loc.z() - radius ; k <= radius; k +=16){
+                Location chunkLoc = new Location(loc.getWorld(), i, 90, k);
+                chunkLoc.getChunk().setForceLoaded(true);
+                chunkLoc.getChunk().load();
+            }
+        }
+    }
+
+    public static void loadChunk(Location loc){
+        if (!(loc).getChunk().isLoaded()) {
+            loc.getChunk().load();
+        }
+    }
+
+    static boolean cancelled = false;
+
+    public static void forceLoadChunk(Location loc, long secondsLoaded){
+        Chunk chunk = loc.getChunk();
+        if (!(chunk.isLoaded())){
+            chunk.setForceLoaded(true);
+            chunk.load();
+            new BukkitRunnable() {
+                public void run() {
+                    if (cancelled){
+                        Bukkit.getScheduler().cancelTask(this.getTaskId());
+                    } else {
+                        chunk.setForceLoaded(false);
+                        cancelled = true;
+                    }
+                }
+            }.runTaskTimer(Nebula.getInstance(), secondsLoaded/20, 1);
+        }
+    }
+
+    public static void handleCustomDurability(Player player, ItemStack itemStack, PlayerItemDamageEvent event, double durabilityMultiplier, String name){
+        PlayerData data = PlayerManager.getPlayerData(player);
+        ItemMeta meta = itemStack.getItemMeta();
+
+        if (meta.hasEnchant(Enchantment.DURABILITY)){
+            Random rand = new Random();
+            double chance = 60 + (40 / (meta.getEnchantLevel(Enchantment.DURABILITY) + 1));
+
+            if ((rand.nextDouble() * 100) < chance){
+                data.addItemDamage(name, 1);
+            }
+        } else {
+            data.addItemDamage(name, 1);
+        }
+
+        if (data.getItemDamage(name) >= durabilityMultiplier){
+            data.setItemDamage(name, 0);
+        } else {
+            event.setDamage(0);
+        }
+         player.sendMessage("Current Damage: " + data.getItemDamage(name));
+
     }
 }

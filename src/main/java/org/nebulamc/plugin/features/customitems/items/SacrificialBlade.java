@@ -1,25 +1,19 @@
 package org.nebulamc.plugin.features.customitems.items;
 
-import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.nebulamc.plugin.features.playerdata.PlayerData;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class SacrificialBlade extends CustomItem {
     @Override
@@ -40,42 +34,6 @@ public class SacrificialBlade extends CustomItem {
     }
 
     @Override
-    public Map<Enchantment, Integer> getEnchants() {
-        return null;
-    }
-
-    @Override
-    public List<ItemFlag> getFlags() {
-        return null;
-    }
-
-
-    @Override
-    public Map<Attribute, AttributeModifier> getAttributes() {
-        return null;
-    }
-
-    @Override
-    public int getModelData() {
-        return 0;
-    }
-
-    @Override
-    public Color getColor() {
-        return null;
-    }
-
-    @Override
-    public boolean isUnbreakable() {
-        return true;
-    }
-
-    @Override
-    public void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
-    }
-
-    @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
         PlayerData playerData = PlayerManager.playerData.get(player.getUniqueId());
         String name = getClass().getSimpleName();
@@ -91,31 +49,6 @@ public class SacrificialBlade extends CustomItem {
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, 1.0f, 0f);
             playerData.setItemCooldown(name, 0.25);
         }
-    }
-
-    @Override
-    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
-    }
-
-    @Override
-    public void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event) {
-
-    }
-
-    @Override
-    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
-
-    }
-
-    @Override
-    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
-
-    }
-
-    @Override
-    public void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
-
     }
 
     @Override
@@ -141,37 +74,7 @@ public class SacrificialBlade extends CustomItem {
     }
 
     @Override
-    public void doTimerAction(Player player) {
-
-    }
-
-    @Override
-    public boolean hasTimerAction() {
-        return false;
-    }
-
-    @Override
     public List<EquipmentSlot> activeSlots() {
         return Arrays.asList(EquipmentSlot.HAND);
-    }
-
-    @Override
-    public int getTimerPeriod() {
-        return 0;
-    }
-
-    @Override
-    public void handleEquip(Player player, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void handleUnequip(Player player, ItemStack itemStack) {
-
-    }
-
-    @Override
-    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
-
     }
 }

@@ -136,10 +136,8 @@ public final class Nebula extends JavaPlugin {
                 new GrapplingHook(),
                 new WhirlwindBlade(),
                 new ThrowingKnife(),
-                new SawbladeLauncher(),
                 new FrostBow(),
                 new MeteorStaff(),
-                new InfernoShield(),
                 new DynamoBoots(),
                 new FlintlockPistol(),
                 new SunSigil(),
@@ -156,7 +154,6 @@ public final class Nebula extends JavaPlugin {
                 new CatalystChestplate(),
                 new CatalystLeggings(),
                 new CatalystHelmet(),
-                new TacticalNuke(),
                 new RepeaterCrossbow(),
                 new VulcansAxe(),
                 new ShamanStaff(),
@@ -204,6 +201,7 @@ public final class Nebula extends JavaPlugin {
         this.getCommand("spawnchest").setExecutor(new SpawnChestCommand());
         this.getCommand("setpronouns").setExecutor(new SetPronounsCommand());
         this.getCommand("arename").setExecutor(new AdminRenameCommand());
+        this.getCommand("spawnmineshafts").setExecutor(new SpawnMineshaftsCommand());
 
         this.getCommand("giveitem").setExecutor(new GiveItemCommand());
         this.getCommand("giveitem").setTabCompleter(new GiveItemCommand());

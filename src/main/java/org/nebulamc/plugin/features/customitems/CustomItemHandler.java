@@ -131,6 +131,10 @@ public class CustomItemHandler implements Listener {
         ItemStack item = event.getItemDrop().getItemStack();
         unequipItem(event.getPlayer(), item);
 
+        if (isCustomItem(item)){
+            event.getItemDrop().setInvulnerable(true);
+        }
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -154,6 +158,15 @@ public class CustomItemHandler implements Listener {
             CustomItem customItem = ItemManager.items.get(getItemId(event.getBow()));
             customItem.handleShootBow((Player) event.getEntity(), event.getBow(), event);
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onItemDamage(PlayerItemDamageEvent event){
+
+        ItemStack item = event.getItem();
+        CustomItem customItem = ItemManager.items.get(getItemId(item));
+
+        customItem.handleItemDamaged(event.getPlayer(), item, event);
     }
 
     public static boolean isCustomItem(ItemStack itemStack){
