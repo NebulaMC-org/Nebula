@@ -21,4 +21,8 @@ public class ProjectileTarget implements Target {
     public Location getLocation() {
         return projectile.getLocation();
     }
+
+    public AbstractProjectile getProjectile(){
+        return projectile;
+    }
 }

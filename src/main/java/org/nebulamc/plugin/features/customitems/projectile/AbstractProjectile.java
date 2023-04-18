@@ -83,6 +83,10 @@ public abstract class AbstractProjectile {
 
     protected abstract void updateLocationAndDirection();
 
+    public void setDirection(Vector direction){
+        location.setDirection(direction);
+    }
+
     private static final Logger log = Nebula.getInstance().getLogger();
 
     public void run() {

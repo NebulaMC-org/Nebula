@@ -22,7 +22,7 @@ public class PoseidonsCrown extends CustomItem{
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("\n", "&eGrants water breathing, at the cost of durability.");
+        return Arrays.asList("\n", "&eGrants water breathing and maneuverability,", "&eat the cost of durability.");
     }
 
     @Override
@@ -32,7 +32,8 @@ public class PoseidonsCrown extends CustomItem{
 
     @Override
     public void doTimerAction(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 30, 0));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 30, 0, false));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.CONDUIT_POWER, 30, 0, false));
         if (player.isUnderWater()){
 
             player.getInventory().getItem(EquipmentSlot.HEAD).damage(1, player);

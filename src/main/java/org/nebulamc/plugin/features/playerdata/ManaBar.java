@@ -71,7 +71,7 @@ public class ManaBar implements Listener {
     private String getManaBarVisual(){
         String text = "";
         if (player.isOnline()) {
-            if (player.getRemainingAir() < player.getMaximumAir() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR){
+            if (player.isUnderWater() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR){
                 return " ";
             }
 
