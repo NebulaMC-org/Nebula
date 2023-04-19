@@ -34,12 +34,12 @@ public class GrapplingHook extends CustomItem {
 
     ProjectileAction projAction = new ProjectileAction(60, 0,
             new PullAction(false, 0.5),
-            new NullAction(),
+            new SoundAction(Sound.BLOCK_DISPENSER_LAUNCH, 1f, 1),
             new PullAction(true, 0.25),
             new ListAction(
                     new ParticleAction(Particle.CRIT, 1, 0, 0, 0 ,0),
                     new SoundAction(Sound.BLOCK_CHAIN_PLACE, 1.5f, 1)
-            ), new NoEntity(), 1.25, 25, 0,false, false
+            ), new NoEntity(), 1.25, 20, 0,false, false
     );
 
     @Override
@@ -47,7 +47,7 @@ public class GrapplingHook extends CustomItem {
         PlayerData playerData = PlayerManager.getPlayerData(player);
         String name = getClass().getSimpleName();
         if (playerData.cooldownOver(name)) {
-            playerData.setItemCooldown(name, 0.7);
+            playerData.setItemCooldown(name, 3);
             projAction.execute(new EntityTarget(player), new EntitySource(player));
         }
     }

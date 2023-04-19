@@ -50,7 +50,8 @@ public class FrostBow extends CustomItem{
                             new FreezeAction(320),
                             new DamageAction(1)
                     ), true
-            )
+            ),
+            new SoundAction(Sound.BLOCK_GLASS_BREAK, 1f, 1)
     );
 
     @Override

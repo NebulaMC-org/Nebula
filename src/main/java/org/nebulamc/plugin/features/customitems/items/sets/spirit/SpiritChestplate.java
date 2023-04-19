@@ -69,6 +69,6 @@ public class SpiritChestplate extends CustomItem {
 
     @Override
     public void handleItemDamaged(Player player, ItemStack itemStack, PlayerItemDamageEvent event) {
-        Utils.handleCustomDurability(player, itemStack, event, 8, getClass().getSimpleName());
+        Utils.handleCustomDurability(player, itemStack, event, 7, getClass().getSimpleName());
     }
 }

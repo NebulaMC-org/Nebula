@@ -225,7 +225,5 @@ public final class Utils {
         } else {
             event.setDamage(0);
         }
-         player.sendMessage("Current Damage: " + data.getItemDamage(name));
-
     }
 }

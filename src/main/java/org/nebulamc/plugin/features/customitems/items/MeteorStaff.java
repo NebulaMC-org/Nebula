@@ -31,7 +31,12 @@ public class MeteorStaff extends CustomItem{
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b40", "\n", "&eRight-click the ground to summon a meteor!");
+        return Arrays.asList("&7Mana Use: &65", "\n", "&eRight-click the ground to summon a meteor!");
+    }
+
+    @Override
+    public int getModelData() {
+        return 3;
     }
 
     ExplosionAction meteorExplosion = new ExplosionAction(30, 1, 60);
@@ -39,8 +44,8 @@ public class MeteorStaff extends CustomItem{
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
         PlayerData data = PlayerManager.getPlayerData(player);
-        if (data.getManaBar().getMana() >= 40) {
-            data.getManaBar().subtractMana(40);
+        if (data.getManaBar().getMana() >= 65) {
+            data.getManaBar().subtractMana(65);
             Location endLocation =
                     Utils.rayCast(player, 50, 1, false,
                             new NullAction(),

@@ -29,7 +29,7 @@ public class LaserDrill extends CustomItem{
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b9/sec", "\n", "&eRight-click to shoot out a mining laser!");
+        return Arrays.asList("&eRight-click to shoot out a mining laser!");
     }
 
     @Override
@@ -44,9 +44,8 @@ public class LaserDrill extends CustomItem{
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
         PlayerData playerData = PlayerManager.getPlayerData(player);
         String name = getClass().getSimpleName();
-        if (playerData.cooldownOver(name) && playerData.getManaBar().getMana() >= 3){
-            playerData.setItemCooldown(name, 0.33);
-            playerData.getManaBar().subtractMana(3);
+        if (playerData.cooldownOver(name)){
+            playerData.setItemCooldown(name, 0.55);
             Utils.straightRayCast(player, 12, 1, 0.5, false,
                     tickAction,
                     new NullAction(),

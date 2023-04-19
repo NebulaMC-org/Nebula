@@ -12,7 +12,7 @@ import java.util.List;
 public class PoseidonsCrown extends CustomItem{
     @Override
     public String getName() {
-        return "&fPoseidon's Crown";
+        return "&ePoseidon's Crown";
     }
 
     @Override

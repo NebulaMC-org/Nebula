@@ -3,6 +3,7 @@ package org.nebulamc.plugin.features.customitems.items;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -31,7 +32,7 @@ public class MythicalFeather extends CustomItem{
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &b15", "\n", "&eRight-click to shoot a poisonous dart!");
+        return Arrays.asList("&7Mana Use: &b65", "\n", "&eRight-click to shoot a poisonous dart!");
     }
 
     @Override
@@ -41,20 +42,21 @@ public class MythicalFeather extends CustomItem{
 
     ProjectileAction projAction = new ProjectileAction(80, 0,
             new ListAction(
-                    new DamageAction(10),
-                    new PotionAction(PotionEffectType.WITHER, 200, 4),
-                    new PotionAction(PotionEffectType.POISON, 200, 2)
+                    new DamageAction(5),
+                    new PotionAction(PotionEffectType.WITHER, 400, 4),
+                    new PotionAction(PotionEffectType.POISON, 400, 2),
+                    new SoundAction(Sound.ITEM_TRIDENT_HIT, 1, 1f)
             ) ,
-            new NullAction(),
+            new SoundAction(Sound.ENTITY_LLAMA_SPIT, 1, 1f),
             new NullAction(),
             new ParticleAction(Particle.REDSTONE, 1, 0, 0, 0, 0, new Particle.DustOptions(Color.YELLOW, 2f)),
-            new GenericEntity(EntityType.ARROW), 1.5, 200, 0, false, false);
+            new GenericEntity(EntityType.ARROW), 1, 200, 0, false, false);
 
     @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
         PlayerData data = PlayerManager.getPlayerData(player);
-        if (data.getManaBar().getMana() >= 15) {
-            data.getManaBar().subtractMana(15);
+        if (data.getManaBar().getMana() >= 65) {
+            data.getManaBar().subtractMana(65);
             projAction.execute(new EntityTarget(player), new EntitySource(player));
         }
     }

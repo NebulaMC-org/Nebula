@@ -76,21 +76,23 @@ public class Jetpack extends CustomItem {
             Vector unitVector = new Vector(player.getLocation().getDirection().getX(), 0, player.getLocation().getDirection().getZ());
             unitVector = unitVector.normalize();
 
-            player.setVelocity(player.getVelocity().add(new Vector(0, 0.25, 0)).add(unitVector.multiply(0.3)));
+            player.setVelocity(player.getVelocity().add(new Vector(0, 0.08, 0)).add(unitVector.multiply(0.5)));
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 , 0, false, false,false));
             player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(0, -0.2, 0), 2, 0, 0, 0, 0.2);
             player.getWorld().spawnParticle(Particle.SMOKE_LARGE, player.getLocation().add(0, 0, 0), 1, 0, 0, 0, 0);
 
-            if (fuel >= 60){
-                player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_SHOOT, 1f, 1.2f);
-            } else if (fuel >= 20){
-                player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_SHOOT, 1f, 0.8f);
-            } else {
-                player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_SHOOT, 1f, 0.4f);
+            if (fuel % 4 == 0){
+                if (fuel >= 60){
+                    player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_SHOOT, 1f, 1.2f);
+                } else if (fuel >= 20){
+                    player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_SHOOT, 1f, 0.8f);
+                } else {
+                    player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_SHOOT, 1f, 0.4f);
+                }
             }
 
-            data.setJetpackFuel(fuel-3);
+            data.setJetpackFuel(fuel-2);
         }
     }
 
@@ -101,6 +103,6 @@ public class Jetpack extends CustomItem {
 
     @Override
     public int getTimerPeriod() {
-        return 2;
+        return 1;
     }
 }
