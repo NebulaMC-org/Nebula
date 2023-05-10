@@ -1,29 +1,24 @@
 package org.nebulamc.plugin.features.customitems.items;
 
-import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.CustomItem;
 import org.nebulamc.plugin.features.playerdata.PlayerData;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class SacrificialBlade extends CustomItem {
     @Override
     public String getName() {
-        return "&dSacrificial Blade";
+        return "&eSacrificial Blade";
     }
 
     @Override
@@ -39,39 +34,8 @@ public class SacrificialBlade extends CustomItem {
     }
 
     @Override
-    public Map<Enchantment, Integer> getEnchants() {
-        return null;
-    }
-
-    @Override
-    public List<ItemFlag> getFlags() {
-        return null;
-    }
-
-
-    @Override
-    public Map<Attribute, AttributeModifier> getAttributes() {
-        return null;
-    }
-
-    @Override
     public int getModelData() {
-        return 0;
-    }
-
-    @Override
-    public Color getColor() {
-        return null;
-    }
-
-    @Override
-    public boolean isUnbreakable() {
-        return true;
-    }
-
-    @Override
-    public void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
+        return 2;
     }
 
     @Override
@@ -84,27 +48,12 @@ public class SacrificialBlade extends CustomItem {
             player.setHealth(player.getHealth() - 4);
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, 1.0f, 0f);
             playerData.setItemCooldown(name, 0.25);
+        } else if (player.getHealth() > 1  && playerData.cooldownOver(name)){
+            player.damage(0.1);
+            player.setHealth(player.getHealth() - (player.getHealth() - 1));
+            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT_SWEET_BERRY_BUSH, 1.0f, 0f);
+            playerData.setItemCooldown(name, 0.25);
         }
-    }
-
-    @Override
-    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-
-    }
-
-    @Override
-    public void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event) {
-
-    }
-
-    @Override
-    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
-
-    }
-
-    @Override
-    public void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event) {
-
     }
 
     @Override
@@ -130,7 +79,7 @@ public class SacrificialBlade extends CustomItem {
     }
 
     @Override
-    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
-
+    public List<EquipmentSlot> activeSlots() {
+        return Arrays.asList(EquipmentSlot.HAND);
     }
 }

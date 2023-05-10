@@ -1,9 +1,9 @@
 name: Nebula
 version: '${project.version}'
 main: org.nebulamc.plugin.Nebula
-api-version: 1.18
+api-version: 1.19
 description: The main plugin for NebulaMC.
-authors: [ Spectrify, smartfrigde, abbysrc ]
+authors: [ Spectrobyte, smartfrigde, abbysrc ]
 commands:
   spawnchest:
     description: Spawns a chest in the world randomly.
@@ -21,3 +21,12 @@ commands:
     description: Gives a custom item to the player.
     usage: /<command> [<player>] [<item>]
     permission: nebula.giveitem
+  arename:
+    aliases: [ adminrename ]
+    description: Renames the held item. For admin use only.
+    usage: /<command> [<string>]
+    permission: nebula.arename
+  spawnmineshafts:
+    description: Spawns mineshaft in the current world. ONLY USE ONCE!
+    usage: /<command>
+    permission: nebula.spawnmineshafts

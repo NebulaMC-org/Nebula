@@ -9,12 +9,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.CustomItem;
 
 import java.util.*;
 
@@ -25,8 +25,33 @@ public class TestItem extends CustomItem {
     }
 
     @Override
+    public void handleEquip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+
+    }
+
+    @Override
     public String getName() {
         return "&dTe&bst &4It&cem";
+    }
+
+    @Override
+    public int getTimerPeriod() {
+        return 20;
+    }
+
+    @Override
+    public void doTimerAction(Player player) {
+        player.sendMessage("This should send every second.");
+    }
+
+    @Override
+    public boolean hasTimerAction() {
+        return true;
     }
 
     @Override
@@ -42,6 +67,16 @@ public class TestItem extends CustomItem {
     @Override
     public List<String> getLore() {
         return null;
+    }
+
+    @Override
+    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+
+    }
+
+    @Override
+    public List<EquipmentSlot> activeSlots() {
+        return Arrays.asList(EquipmentSlot.CHEST);
     }
 
     @Override

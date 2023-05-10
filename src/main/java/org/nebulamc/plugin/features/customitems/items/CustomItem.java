@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems;
+package org.nebulamc.plugin.features.customitems.items;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -9,14 +9,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.utils.Utils;
 
 import java.util.ArrayList;
@@ -25,41 +29,55 @@ import java.util.Map;
 
 public abstract class CustomItem {
 
-    public long cooldownTime;
-
     public abstract String getName();
 
     public abstract Material getMaterial();
 
-    public abstract List<String> getLore();
+    public List<String> getLore(){ return null; }
 
-    public abstract Map<Enchantment, Integer> getEnchants();
+    public Map<Enchantment, Integer> getEnchants(){ return null; }
 
-    public abstract List<ItemFlag> getFlags();
+    public List<ItemFlag> getFlags(){ return null; }
 
-    public abstract Map<Attribute, AttributeModifier> getAttributes();
+    public Map<Attribute, AttributeModifier> getAttributes(){ return null; }
 
-    public abstract int getModelData();
+    public int getModelData(){ return 0; }
 
-    public abstract Color getColor();
+    public Color getColor(){ return null; }
 
-    public abstract boolean isUnbreakable();
+    public boolean isUnbreakable(){ return false; }
 
-    public abstract void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
+    public List<EquipmentSlot> activeSlots(){ return null; }
 
-    public abstract void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
+    public void handleLeftClick(Player player, ItemStack itemStack, PlayerInteractEvent event){}
 
-    public abstract void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event);
+    public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event){}
 
-    public abstract void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event);
+    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event){}
 
-    public abstract void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event);
+    public void handleConsumption(Player player, ItemStack itemStack, PlayerItemConsumeEvent event){}
 
-    public abstract void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event);
+    public void handleDamagedByEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event){}
 
-    public abstract void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event);
+    public void handleAttackEntity(Player player, ItemStack itemStack, EntityDamageByEntityEvent event){}
 
-    public abstract void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event);
+    public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event){}
+
+    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event){}
+
+    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event){}
+
+    public void handleItemDamaged(Player player, ItemStack itemStack, PlayerItemDamageEvent event){}
+
+    public void handleEquip(Player player, ItemStack itemStack){}
+
+    public void handleUnequip(Player player, ItemStack itemStack){}
+
+    public void doTimerAction(Player player){}
+
+    public boolean hasTimerAction(){ return false; }
+
+    public int getTimerPeriod(){ return 0; }
 
     public String getId(){
         return getClass().getSimpleName();

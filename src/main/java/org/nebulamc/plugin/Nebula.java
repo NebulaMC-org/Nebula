@@ -3,29 +3,41 @@ package org.nebulamc.plugin;
 import lombok.Getter;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Material;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.nebulamc.plugin.commands.SetPronounsCommand;
-import org.nebulamc.plugin.commands.SpawnChestCommand;
-import org.nebulamc.plugin.commands.WagerCommand;
-import org.nebulamc.plugin.commands.GiveItemCommand;
+import org.nebulamc.plugin.commands.*;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.*;
-import org.nebulamc.plugin.features.customitems.items.vertus.VertusCrystal;
-import org.nebulamc.plugin.features.customitems.items.vertus.VertusShard;
-import org.nebulamc.plugin.features.customitems.items.vertus.VertusSword;
+import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystBoots;
+import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystChestplate;
+import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystHelmet;
+import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystLeggings;
+import org.nebulamc.plugin.features.customitems.items.sets.spirit.SpiritBoots;
+import org.nebulamc.plugin.features.customitems.items.sets.spirit.SpiritChestplate;
+import org.nebulamc.plugin.features.customitems.items.sets.spirit.SpiritHelmet;
+import org.nebulamc.plugin.features.customitems.items.sets.spirit.SpiritLeggings;
+import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelBoots;
+import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelChestplate;
+import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelHelmet;
+import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelLeggings;
+import org.nebulamc.plugin.features.customitems.items.sets.vertus.*;
+import org.nebulamc.plugin.features.customitems.items.summoning.SunSigil;
 import org.nebulamc.plugin.features.loottable.LootTable;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
 import org.nebulamc.plugin.features.wager.WagerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
-import org.nebulamc.plugin.listeners.PlayerListener;
+import org.nebulamc.plugin.listeners.DeathListener;
 import org.nebulamc.plugin.listeners.SmeltingListener;
 import org.nebulamc.plugin.utils.config.ConfigManager;
 import org.nebulamc.plugin.utils.config.ConfigSettings;
+
 
 public final class Nebula extends JavaPlugin {
 
@@ -41,6 +53,7 @@ public final class Nebula extends JavaPlugin {
     private static LootTable meteorLoot;
 
     private final PluginManager pm = this.getServer().getPluginManager();
+    private static Economy econ;
 
     @Override
     public void onEnable() {
@@ -51,12 +64,14 @@ public final class Nebula extends JavaPlugin {
         this.landsIntegration = new LandsIntegration(this);
 
         configManager.createDefaults();
+        setupEconomy();
         checkDependencies();
         registerListeners();
         registerCommands();
         registerCustomItems();
         buildMeteorLootTable();
         runMeteorSpawnLoop();
+
 
         getLogger().info("Successfully enabled Nebula plugin.");
 
@@ -65,6 +80,25 @@ public final class Nebula extends JavaPlugin {
     @Override
     public void onDisable() {
         HandlerList.unregisterAll();
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            getLogger().info("Couldn't find vault plugin.");
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            getLogger().info("RSP is null.");
+            return false;
+        }
+
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    public static Economy getEconomy() {
+        return econ;
     }
 
     public MiniMessage miniMessage() {
@@ -82,8 +116,53 @@ public final class Nebula extends JavaPlugin {
                 new BridgeWand(),
                 new VertusCrystal(),
                 new VertusShard(),
-                new VertusSword()
+                new VertusSword(),
+                new ShadowBoots(),
+                new Jetpack(),
+                new SolarFlare(),
+                new VertusAxe(),
+                new VertusPickaxe(),
+                new VertusShovel(),
+                new VertusHoe(),
+                new VertusChestplate(),
+                new VertusLeggings(),
+                new VertusHelmet(),
+                new VertusBoots(),
+                new ArrowStick(),
+                new LaserDrill(),
+                new Beezooka(),
+                new Shatterbow(),
+                new Flamethrower(),
+                new GrapplingHook(),
+                new WhirlwindBlade(),
+                new ThrowingKnife(),
+                new FrostBow(),
+                new MeteorStaff(),
+                new DynamoBoots(),
+                new FlintlockPistol(),
+                new SunSigil(),
+                new SpiritChestplate(),
+                new SpiritBoots(),
+                new SpiritHelmet(),
+                new SpiritLeggings(),
+                new PoseidonsCrown(),
+                new TitanSteelChestplate(),
+                new TitanSteelHelmet(),
+                new TitanSteelLeggings(),
+                new TitanSteelBoots(),
+                new CatalystBoots(),
+                new CatalystChestplate(),
+                new CatalystLeggings(),
+                new CatalystHelmet(),
+                new RepeaterCrossbow(),
+                new VulcansAxe(),
+                new ShamanStaff(),
+                new MythicalFeather(),
+                new FireballCannon(),
+                new HolyClaymore(),
+                new SonicBlaster()
         );
+        ItemManager.registerTimers();
     }
 
     private void buildMeteorLootTable() {
@@ -105,8 +184,9 @@ public final class Nebula extends JavaPlugin {
 
     private void registerListeners() {
 
-        pm.registerEvents(new PlayerListener(), this);
+        pm.registerEvents(new PlayerManager(), this);
         pm.registerEvents(new CustomItemHandler(), this);
+        pm.registerEvents(new DeathListener(this), this);
 
         if (ConfigSettings.afksystem_enable) {
             // temp removed
@@ -122,6 +202,8 @@ public final class Nebula extends JavaPlugin {
     private void registerCommands(){
         this.getCommand("spawnchest").setExecutor(new SpawnChestCommand());
         this.getCommand("setpronouns").setExecutor(new SetPronounsCommand());
+        this.getCommand("arename").setExecutor(new AdminRenameCommand());
+        this.getCommand("spawnmineshafts").setExecutor(new SpawnMineshaftsCommand());
 
         this.getCommand("giveitem").setExecutor(new GiveItemCommand());
         this.getCommand("giveitem").setTabCompleter(new GiveItemCommand());

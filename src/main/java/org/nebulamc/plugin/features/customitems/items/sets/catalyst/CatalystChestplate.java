@@ -1,4 +1,4 @@
-package org.nebulamc.plugin.features.customitems.items.vertus;
+package org.nebulamc.plugin.features.customitems.items.sets.catalyst;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -9,34 +9,32 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.nebulamc.plugin.features.customitems.CustomItem;
+import org.nebulamc.plugin.features.customitems.items.CustomItem;
+import org.nebulamc.plugin.features.playerdata.PlayerData;
+import org.nebulamc.plugin.features.playerdata.PlayerManager;
 
 import java.util.*;
 
-public class VertusSword extends CustomItem {
+public class CatalystChestplate extends CustomItem {
     @Override
     public String getName() {
-        return "&fVertus Sword";
+        return "&fCatalyst Chestplate";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.NETHERITE_SWORD;
+        return Material.LEATHER_CHESTPLATE;
     }
 
     @Override
     public List<String> getLore() {
-        return null;
-    }
-
-    @Override
-    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
-
+        return Arrays.asList("&a+10% &7Attack Damage");
     }
 
     @Override
@@ -46,29 +44,35 @@ public class VertusSword extends CustomItem {
 
     @Override
     public List<ItemFlag> getFlags() {
-        return Arrays.asList(ItemFlag.HIDE_ATTRIBUTES);
+        return Arrays.asList(ItemFlag.HIDE_DYE);
     }
 
     @Override
     public Map<Attribute, AttributeModifier> getAttributes() {
         Map<Attribute, AttributeModifier> attributes = new HashMap<>();
-        attributes.put(Attribute.GENERIC_ATTACK_DAMAGE, new AttributeModifier(UUID.randomUUID(), "generic.attackDamage", 1, AttributeModifier.Operation.ADD_SCALAR, EquipmentSlot.HAND));
+        attributes.put(Attribute.GENERIC_ARMOR, new AttributeModifier(UUID.randomUUID(), "generic.armor", 6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
+        attributes.put(Attribute.GENERIC_ARMOR_TOUGHNESS, new AttributeModifier(UUID.randomUUID(), "generic.armorToughness", 1, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.CHEST));
         return attributes;
     }
 
     @Override
     public int getModelData() {
-        return 1;
+        return 0;
     }
 
     @Override
     public Color getColor() {
-        return null;
+        return Color.fromRGB(117, 18, 171);
     }
 
     @Override
     public boolean isUnbreakable() {
         return true;
+    }
+
+    @Override
+    public List<EquipmentSlot> activeSlots() {
+        return Arrays.asList(EquipmentSlot.CHEST);
     }
 
     @Override
@@ -104,5 +108,42 @@ public class VertusSword extends CustomItem {
     @Override
     public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event) {
 
+    }
+
+    @Override
+    public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event) {
+
+    }
+
+    @Override
+    public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event) {
+
+    }
+
+    @Override
+    public void handleEquip(Player player, ItemStack itemStack) {
+        PlayerData data = PlayerManager.getPlayerData(player);
+        data.setDamageModifier(data.getDamageModifier() + 0.1f);
+    }
+
+    @Override
+    public void handleUnequip(Player player, ItemStack itemStack) {
+        PlayerData data = PlayerManager.getPlayerData(player);
+        data.setDamageModifier(data.getDamageModifier() - 0.1f);
+    }
+
+    @Override
+    public void doTimerAction(Player player) {
+
+    }
+
+    @Override
+    public boolean hasTimerAction() {
+        return false;
+    }
+
+    @Override
+    public int getTimerPeriod() {
+        return 0;
     }
 }
