@@ -31,7 +31,6 @@ import org.nebulamc.plugin.features.customitems.items.sets.vertus.*;
 import org.nebulamc.plugin.features.customitems.items.summoning.SunSigil;
 import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
-import org.nebulamc.plugin.features.wager.WagerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
 import org.nebulamc.plugin.listeners.DeathListener;
 import org.nebulamc.plugin.listeners.SmeltingListener;
@@ -46,8 +45,6 @@ public final class Nebula extends JavaPlugin {
     @Getter
     private ConfigManager configManager;
     @Getter
-    private WagerManager wagerManager;
-    @Getter
     private LandsIntegration landsIntegration;
     @Getter
     private static LootTable meteorLoot;
@@ -60,7 +57,6 @@ public final class Nebula extends JavaPlugin {
 
         instance = this;
         this.configManager = new ConfigManager(this);
-        this.wagerManager = new WagerManager();
         this.landsIntegration = new LandsIntegration(this);
 
         configManager.createDefaults();
@@ -207,9 +203,6 @@ public final class Nebula extends JavaPlugin {
 
         this.getCommand("giveitem").setExecutor(new GiveItemCommand());
         this.getCommand("giveitem").setTabCompleter(new GiveItemCommand());
-
-        this.getCommand("wager").setTabCompleter(new WagerCommand());
-        this.getCommand("wager").setExecutor(new WagerCommand());
     }
 
     private void checkDependencies() {
