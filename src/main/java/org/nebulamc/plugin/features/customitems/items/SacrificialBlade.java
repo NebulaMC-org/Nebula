@@ -34,6 +34,11 @@ public class SacrificialBlade extends CustomItem {
     }
 
     @Override
+    public int getModelData() {
+        return 2;
+    }
+
+    @Override
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
         PlayerData playerData = PlayerManager.playerData.get(player.getUniqueId());
         String name = getClass().getSimpleName();

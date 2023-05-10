@@ -76,7 +76,7 @@ public class Jetpack extends CustomItem {
             Vector unitVector = new Vector(player.getLocation().getDirection().getX(), 0, player.getLocation().getDirection().getZ());
             unitVector = unitVector.normalize();
 
-            player.setVelocity(player.getVelocity().add(new Vector(0, 0.08, 0)).add(unitVector.multiply(0.5)));
+            player.setVelocity(player.getVelocity().add(new Vector(0, 0.3, 0)).add(unitVector.multiply(0.1)));
 
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 5 , 0, false, false,false));
             player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(0, -0.2, 0), 2, 0, 0, 0, 0.2);

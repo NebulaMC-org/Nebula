@@ -176,6 +176,9 @@ public abstract class AbstractProjectile {
         if (!location.getDirection().isNormalized()) {
             return location.getBlock().getType().isCollidable();
         }
+        if (hitBoxSize == 0){
+            return false;
+        }
         RayTraceResult result = oldLocation.getWorld().rayTraceBlocks(oldLocation, location.getDirection(),
                 location.distance(oldLocation));
         if (result != null) {

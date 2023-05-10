@@ -158,7 +158,9 @@ public final class Nebula extends JavaPlugin {
                 new VulcansAxe(),
                 new ShamanStaff(),
                 new MythicalFeather(),
-                new FireballCannon()
+                new FireballCannon(),
+                new HolyClaymore(),
+                new SonicBlaster()
         );
         ItemManager.registerTimers();
     }

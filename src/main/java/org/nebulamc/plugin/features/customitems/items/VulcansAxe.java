@@ -73,7 +73,7 @@ public class VulcansAxe extends CustomItem{
                             new BlocksInAreaAction(
                                     new SphericArea(new Vector(0, 0, 0), 0.8, false),
                                     new ListAction(
-                                            new FakeBlockAction(Material.MAGMA_BLOCK, 80, true, Arrays.asList(Material.AIR, Material.CAVE_AIR))
+                                            new FakeBlockAction(Material.MAGMA_BLOCK, 80, true, Arrays.asList(Material.AIR, Material.CAVE_AIR), true)
                                     )
                             ),
                             new BlocksInAreaAction(

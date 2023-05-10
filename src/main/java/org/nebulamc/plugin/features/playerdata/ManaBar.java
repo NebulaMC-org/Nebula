@@ -13,7 +13,6 @@ import java.util.UUID;
 public class ManaBar implements Listener {
 
     private final UUID id;
-    private final Player player;
     private float maxMana;
     private float mana;
     private float regenRate; //mana regenerated per 0.25s
@@ -23,7 +22,6 @@ public class ManaBar implements Listener {
         id = i;
         maxMana = 100;
         regenRate = 1;
-        player = Bukkit.getPlayer(id);
     }
 
     public float getMana() {
@@ -69,8 +67,11 @@ public class ManaBar implements Listener {
     }
 
     private String getManaBarVisual(){
+
+        Player player = Bukkit.getPlayer(id);
+
         String text = "";
-        if (player.isOnline()) {
+        if (player != null && player.isOnline()) {
             if (player.isUnderWater() || player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR){
                 return " ";
             }

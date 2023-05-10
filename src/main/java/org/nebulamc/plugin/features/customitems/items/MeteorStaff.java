@@ -31,7 +31,7 @@ public class MeteorStaff extends CustomItem{
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Mana Use: &65", "\n", "&eRight-click the ground to summon a meteor!");
+        return Arrays.asList("&7Mana Use: &b65", "\n", "&eRight-click the ground to summon a meteor!");
     }
 
     @Override

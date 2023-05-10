@@ -154,6 +154,11 @@ public class CustomItemHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBowShoot(EntityShootBowEvent event){
+
+        if (!isCustomItem(event.getBow())){
+            return;
+        }
+
         if (event.getEntity() instanceof Player && isCustomItem(event.getBow())){
             CustomItem customItem = ItemManager.items.get(getItemId(event.getBow()));
             customItem.handleShootBow((Player) event.getEntity(), event.getBow(), event);
@@ -162,6 +167,10 @@ public class CustomItemHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onItemDamage(PlayerItemDamageEvent event){
+
+        if (!isCustomItem(event.getItem())){
+            return;
+        }
 
         ItemStack item = event.getItem();
         CustomItem customItem = ItemManager.items.get(getItemId(item));

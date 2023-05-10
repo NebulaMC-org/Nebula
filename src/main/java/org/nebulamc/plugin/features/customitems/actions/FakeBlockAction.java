@@ -17,6 +17,7 @@ public class FakeBlockAction extends Action{
     int ticks;
     boolean blacklist;
     List<Material> materialList;
+    boolean solidsOnly;
 
     public FakeBlockAction(Material blockMaterial, int ticks, boolean blacklist, List<Material> materialList){
         blockData = blockMaterial.createBlockData();
@@ -25,9 +26,20 @@ public class FakeBlockAction extends Action{
         this.materialList = materialList;
     }
 
+    public FakeBlockAction(Material blockMaterial, int ticks, boolean blacklist, List<Material> materialList, boolean solidsOnly){
+        blockData = blockMaterial.createBlockData();
+        this.ticks = ticks;
+        this.blacklist = blacklist;
+        this.materialList = materialList;
+        this.solidsOnly = solidsOnly;
+    }
+
     @Override
     public void execute(Target target, Source source) {
         Material type = target.getLocation().getBlock().getType();
+        if (solidsOnly && !type.isSolid()){
+            return;
+        }
         if (blacklist){
             if (materialList.contains(type)){
                 return;

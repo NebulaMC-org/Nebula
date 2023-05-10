@@ -17,6 +17,7 @@ public class PlayerData {
     private int maxJetpackFuel = 100;
     private int momentum;
     private float damageModifier;
+    private long lastInHolyGround;
 
     public PlayerData(UUID i){
         id = i;
@@ -96,5 +97,13 @@ public class PlayerData {
 
     public void setDamageModifier(float modifier){
         damageModifier = modifier;
+    }
+
+    public void setInHolyGround(float buffer){
+        lastInHolyGround = System.currentTimeMillis() + (long) (1000 * buffer);;
+    }
+
+    public boolean isInHolyGround(){
+        return lastInHolyGround >= System.currentTimeMillis();
     }
 }

@@ -44,7 +44,6 @@ public class MythicalFeather extends CustomItem{
             new ListAction(
                     new DamageAction(5),
                     new PotionAction(PotionEffectType.WITHER, 400, 4),
-                    new PotionAction(PotionEffectType.POISON, 400, 2),
                     new SoundAction(Sound.ITEM_TRIDENT_HIT, 1, 1f)
             ) ,
             new SoundAction(Sound.ENTITY_LLAMA_SPIT, 1, 1f),
