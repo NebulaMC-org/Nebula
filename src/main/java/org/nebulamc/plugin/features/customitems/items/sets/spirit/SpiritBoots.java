@@ -29,7 +29,7 @@ public class SpiritBoots extends CustomItem {
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&a+0.4 &7Mana Regen");
+        return Arrays.asList("&a+0.3 &7Mana Regen");
     }
 
     @Override
@@ -63,12 +63,12 @@ public class SpiritBoots extends CustomItem {
     @Override
     public void handleEquip(Player player, ItemStack itemStack) {
         ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
-        manaBar.setRegenRate(manaBar.getRegenRate() + 0.4f);
+        manaBar.setRegenRate(manaBar.getRegenRate() + 0.3f);
     }
 
     @Override
     public void handleUnequip(Player player, ItemStack itemStack) {
         ManaBar manaBar = PlayerManager.getPlayerData(player).getManaBar();
-        manaBar.setRegenRate(manaBar.getRegenRate() - 0.4f);
+        manaBar.setRegenRate(manaBar.getRegenRate() - 0.3f);
     }
 }

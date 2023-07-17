@@ -1,11 +1,13 @@
 package org.nebulamc.plugin.features.customitems.items;
 
+import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -64,6 +66,10 @@ public abstract class CustomItem {
     public void handleDamaged(Player player, ItemStack itemStack, EntityDamageEvent event){}
 
     public void handlePlaceBlock(Player player, ItemStack itemStack, BlockPlaceEvent event){}
+
+    public void handleBreakBlock(Player player, ItemStack itemStack, BlockBreakEvent event){}
+
+    public void handleJump(Player player, ItemStack itemStack, PlayerJumpEvent event){}
 
     public void handleShootBow(Player player, ItemStack itemStack, EntityShootBowEvent event){}
 

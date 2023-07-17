@@ -15,6 +15,11 @@ import org.nebulamc.plugin.commands.*;
 import org.nebulamc.plugin.features.customitems.CustomItemHandler;
 import org.nebulamc.plugin.features.customitems.ItemManager;
 import org.nebulamc.plugin.features.customitems.items.*;
+import org.nebulamc.plugin.features.customitems.items.combat.*;
+import org.nebulamc.plugin.features.customitems.items.consumables.Ambrosia;
+import org.nebulamc.plugin.features.customitems.items.consumables.GoldenCookie;
+import org.nebulamc.plugin.features.customitems.items.consumables.SpicyApple;
+import org.nebulamc.plugin.features.customitems.items.materials.*;
 import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystBoots;
 import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystChestplate;
 import org.nebulamc.plugin.features.customitems.items.sets.catalyst.CatalystHelmet;
@@ -29,6 +34,7 @@ import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteel
 import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelLeggings;
 import org.nebulamc.plugin.features.customitems.items.sets.vertus.*;
 import org.nebulamc.plugin.features.customitems.items.summoning.SunSigil;
+import org.nebulamc.plugin.features.customitems.items.utility.*;
 import org.nebulamc.plugin.features.loottable.LootTable;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
 import org.nebulamc.plugin.listeners.ChatListener;
@@ -156,7 +162,21 @@ public final class Nebula extends JavaPlugin {
                 new MythicalFeather(),
                 new FireballCannon(),
                 new HolyClaymore(),
-                new SonicBlaster()
+                new SonicBlaster(),
+                new UnstablePickaxe(),
+                new Ambrosia(),
+                new SpicyApple(),
+                new PyromancersTome(),
+                new MechanicalLegs(),
+                new BloodRune(),
+                new MeteorShard(),
+                new NovaCell(),
+                new QuetzalcoatlFeather(),
+                new SculkSoul(),
+                new SolarEssence(),
+                new SpiritOrb(),
+                new RelicShard(),
+                new ToxicVial()
         );
         ItemManager.registerTimers();
     }
@@ -166,15 +186,16 @@ public final class Nebula extends JavaPlugin {
                 .add(new ItemStack(Material.AIR), 16)
                 .add(new ItemStack(Material.GOLD_BLOCK, 2), 12)
                 .add(new ItemStack(Material.DIAMOND_BLOCK, 1), 8)
-                .add(new ItemStack(Material.SLIME_BALL, 18), 8)
+                .add(new ItemStack(Material.SLIME_BALL, 12), 8)
                 .add(new ItemStack(Material.GUNPOWDER, 16), 8)
-                .add(new ItemStack(Material.ANCIENT_DEBRIS, 1), 8)
+                .add(new ItemStack(Material.ANCIENT_DEBRIS, 2), 10)
                 .add(new ItemStack(Material.NETHERITE_PICKAXE, 1), 1)
                 .add(new ItemStack(Material.NETHERITE_SWORD, 1), 1)
                 .add(new ItemStack(Material.NETHERITE_AXE, 1), 1)
                 .add(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1), 3)
                 .add(new ItemStack(Material.EXPERIENCE_BOTTLE, 12), 6)
                 .add(new ItemStack(Material.ELYTRA, 1), 1)
+                .add(new MeteorShard().getItem(), 18)
                 .build();
     }
 

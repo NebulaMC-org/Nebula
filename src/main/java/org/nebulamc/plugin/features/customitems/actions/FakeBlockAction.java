@@ -49,6 +49,7 @@ public class FakeBlockAction extends Action{
                 return;
             }
         }
+
         List<Player> players = new ArrayList<>();
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (p.getWorld() == source.getCaster().getWorld() && p.getLocation().distanceSquared(source.getLocation()) <= 5000) {

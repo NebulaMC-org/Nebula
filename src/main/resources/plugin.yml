@@ -9,6 +9,10 @@ commands:
     description: Spawns a chest in the world randomly.
     usage: /<command>
     permission: nebula.spawnchest
+  spawnmineshafts:
+    description: Spawns mineshafts in the world.
+    usage: /<command>
+    permission: nebula.spawnmineshafts
   setpronouns:
     description: Coming soon!
     usage: /<command>
@@ -26,7 +30,3 @@ commands:
     description: Renames the held item. For admin use only.
     usage: /<command> [<string>]
     permission: nebula.arename
-  spawnmineshafts:
-    description: Spawns mineshaft in the current world. ONLY USE ONCE!
-    usage: /<command>
-    permission: nebula.spawnmineshafts

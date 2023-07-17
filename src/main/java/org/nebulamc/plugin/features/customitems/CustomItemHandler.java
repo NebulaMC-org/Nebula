@@ -1,12 +1,14 @@
 package org.nebulamc.plugin.features.customitems;
 
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
+import com.destroystokyo.paper.event.player.PlayerJumpEvent;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -100,6 +102,24 @@ public class CustomItemHandler implements Listener {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
         for (ItemStack i : getCustomItems(player)){
             ItemManager.items.get(getItemId(i)).handlePlaceBlock(player, heldItem, event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBreakBlock(BlockBreakEvent event){
+        Player player = event.getPlayer();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
+        for (ItemStack i : getCustomItems(player)){
+            ItemManager.items.get(getItemId(i)).handleBreakBlock(player, heldItem, event);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onJump(PlayerJumpEvent event){
+        Player player = event.getPlayer();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
+        for (ItemStack i : getCustomItems(player)){
+            ItemManager.items.get(getItemId(i)).handleJump(player, heldItem, event);
         }
     }
 
