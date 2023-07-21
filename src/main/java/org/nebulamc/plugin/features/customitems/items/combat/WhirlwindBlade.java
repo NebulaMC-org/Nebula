@@ -61,4 +61,9 @@ public class WhirlwindBlade extends CustomItem {
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_SWEEP, 2.5f, 0.8f);
         }
     }
+
+    @Override
+    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
+        handleRightClick(player, itemStack, event);
+    }
 }

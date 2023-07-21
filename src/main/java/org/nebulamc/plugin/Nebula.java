@@ -33,6 +33,7 @@ import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteel
 import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelHelmet;
 import org.nebulamc.plugin.features.customitems.items.sets.titansteel.TitanSteelLeggings;
 import org.nebulamc.plugin.features.customitems.items.sets.vertus.*;
+import org.nebulamc.plugin.features.customitems.items.summoning.RoyalOffering;
 import org.nebulamc.plugin.features.customitems.items.summoning.SunSigil;
 import org.nebulamc.plugin.features.customitems.items.utility.*;
 import org.nebulamc.plugin.features.loottable.LootTable;
@@ -162,7 +163,7 @@ public final class Nebula extends JavaPlugin {
                 new MythicalFeather(),
                 new FireballCannon(),
                 new HolyClaymore(),
-                new SonicBlaster(),
+                new SculkTome(),
                 new UnstablePickaxe(),
                 new Ambrosia(),
                 new SpicyApple(),
@@ -176,7 +177,10 @@ public final class Nebula extends JavaPlugin {
                 new SolarEssence(),
                 new SpiritOrb(),
                 new RelicShard(),
-                new ToxicVial()
+                new ToxicVial(),
+                new ReinforcedCopper(),
+                new BottledLightning(),
+                new RoyalOffering()
         );
         ItemManager.registerTimers();
     }
@@ -195,7 +199,7 @@ public final class Nebula extends JavaPlugin {
                 .add(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1), 3)
                 .add(new ItemStack(Material.EXPERIENCE_BOTTLE, 12), 6)
                 .add(new ItemStack(Material.ELYTRA, 1), 1)
-                .add(new MeteorShard().getItem(), 18)
+                .add(new MeteorShard().getItem(), 10)
                 .build();
     }
 

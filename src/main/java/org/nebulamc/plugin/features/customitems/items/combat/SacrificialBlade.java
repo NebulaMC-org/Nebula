@@ -83,4 +83,9 @@ public class SacrificialBlade extends CustomItem {
     public List<EquipmentSlot> activeSlots() {
         return Arrays.asList(EquipmentSlot.HAND);
     }
+
+    @Override
+    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
+        handleRightClick(player, itemStack, event);
+    }
 }

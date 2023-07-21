@@ -30,7 +30,7 @@ public class LaserDrill extends CustomItem {
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&eRight-click to shoot out a mining laser!");
+        return Arrays.asList("\n","&eRight-click to shoot out a mining laser!");
     }
 
     @Override

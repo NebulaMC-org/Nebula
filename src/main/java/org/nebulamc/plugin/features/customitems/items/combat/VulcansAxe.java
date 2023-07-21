@@ -96,4 +96,11 @@ public class VulcansAxe extends CustomItem {
                     .execute(new EntityTarget((LivingEntity) event.getEntity()), new EntitySource(player));
         }
     }
+
+    @Override
+    public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
+        handleRightClick(player, itemStack, event);
+    }
+
+
 }

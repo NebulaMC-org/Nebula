@@ -22,7 +22,7 @@ public class DeathListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onDeath(PlayerDeathEvent event) {
         Player player = event.getPlayer();
-        int balanceTaken = (int) econ.getBalance(player)/10;
+        int balanceTaken = (int) econ.getBalance(player)/25;
         if (balanceTaken > 100){
             balanceTaken = 100;
         }

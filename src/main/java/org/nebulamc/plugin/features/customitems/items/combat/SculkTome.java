@@ -20,25 +20,25 @@ import org.nebulamc.plugin.utils.Utils;
 import java.util.Arrays;
 import java.util.List;
 
-public class SonicBlaster extends CustomItem {
+public class SculkTome extends CustomItem {
     @Override
     public String getName() {
-        return "&eSonic Blaster";
+        return "&eSculk Tome";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.IRON_HORSE_ARMOR;
+        return Material.BOOK;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Ammo: &3Echo Shard", "\n", "&eRight-click to create a sonic blast!", "&eGoes through walls.");
+        return Arrays.asList("&7Ammo: &3Echo Shard", "\n", "&eRight-click to summon a sonic blast!", "&eGoes through walls.");
     }
 
     @Override
     public int getModelData() {
-        return 2;
+        return 1;
     }
 
     ProjectileAction sonicBlast = new ProjectileAction(

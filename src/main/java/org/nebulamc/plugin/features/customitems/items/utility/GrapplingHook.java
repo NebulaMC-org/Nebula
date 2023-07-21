@@ -13,6 +13,7 @@ import org.nebulamc.plugin.features.customitems.source.EntitySource;
 import org.nebulamc.plugin.features.customitems.targeter.EntityTarget;
 import org.nebulamc.plugin.features.playerdata.PlayerData;
 import org.nebulamc.plugin.features.playerdata.PlayerManager;
+import org.nebulamc.plugin.utils.Utils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,18 +26,23 @@ public class GrapplingHook extends CustomItem {
 
     @Override
     public Material getMaterial() {
-        return Material.LEATHER_HORSE_ARMOR;
+        return Material.IRON_HORSE_ARMOR;
+    }
+
+    @Override
+    public int getModelData() {
+        return 1;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("\n", "&eHook a block to pull yourself to it.", "&eHook an enemy to pull them towards you!");
+        return Arrays.asList("&7Ammo: &8Chain", "\n", "&eHook a block to pull yourself to it.", "&eHook an enemy to pull them towards you!");
     }
 
     ProjectileAction projAction = new ProjectileAction(60, 0,
             new PullAction(false, 0.5),
             new SoundAction(Sound.BLOCK_DISPENSER_LAUNCH, 1f, 1),
-            new PullAction(true, 0.25),
+            new PullAction(true, 0.35),
             new ListAction(
                     new ParticleAction(Particle.CRIT, 1, 0, 0, 0 ,0),
                     new SoundAction(Sound.BLOCK_CHAIN_PLACE, 1.5f, 1)
@@ -47,14 +53,19 @@ public class GrapplingHook extends CustomItem {
     public void handleRightClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
         PlayerData playerData = PlayerManager.getPlayerData(player);
         String name = getClass().getSimpleName();
-        if (playerData.cooldownOver(name)) {
-            playerData.setItemCooldown(name, 3);
+        if (playerData.cooldownOver(name) && Utils.removeItem(player, new ItemStack(Material.CHAIN, 1))) {
+            playerData.setItemCooldown(name, 2);
             projAction.execute(new EntityTarget(player), new EntitySource(player));
         }
     }
 
     @Override
     public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        handleRightClick(player, itemStack, event);
+        PlayerData playerData = PlayerManager.getPlayerData(player);
+        String name = getClass().getSimpleName() + "OffHand";
+        if (playerData.cooldownOver(name) && Utils.removeItem(player, new ItemStack(Material.CHAIN, 1))) {
+            playerData.setItemCooldown(name, 2);
+            projAction.execute(new EntityTarget(player), new EntitySource(player));
+        }
     }
 }

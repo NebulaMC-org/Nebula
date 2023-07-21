@@ -58,6 +58,12 @@ public class ThrowingKnife extends CustomItem {
 
     @Override
     public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        handleRightClick(player, itemStack, event);
+        PlayerData data = PlayerManager.getPlayerData(player);
+        String name = getClass().getSimpleName() + "OffHand";
+        if (data.getManaBar().getMana() >= 10 && data.cooldownOver(name)){
+            data.getManaBar().subtractMana(10);
+            data.setItemCooldown(name, 0.33);
+            projAction.execute(new EntityTarget(player), new EntitySource(player));
+        }
     }
 }

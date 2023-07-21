@@ -31,6 +31,11 @@ public class FlintlockPistol extends CustomItem {
     }
 
     @Override
+    public int getModelData() {
+        return 3;
+    }
+
+    @Override
     public List<String> getLore() {
         return Arrays.asList("&7Ammo: &8Flint", "\n", "&eRight-click to shoot a powerful flint bullet!");
     }
@@ -69,6 +74,20 @@ public class FlintlockPistol extends CustomItem {
 
     @Override
     public void handleOffHandClick(Player player, ItemStack itemStack, PlayerInteractEvent event) {
-        handleRightClick(player, itemStack, event);
+        PlayerData playerData = PlayerManager.getPlayerData(player);
+        String name = getClass().getSimpleName() + "OffHand";
+        if (playerData.cooldownOver(name)) {
+            if (Utils.removeItem(player, new ItemStack(Material.FLINT, 1))) {
+                player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 2f);
+                playerData.setItemCooldown(name, 2);
+                flintShoot.execute(new EntityTarget(player), new EntitySource(player));
+                new PullAction(1, false).execute(
+                        new EntityTarget(player),
+                        new LocationSource(player.getEyeLocation().add(player.getEyeLocation().getDirection().multiply(-2)), player)
+                );
+            } else {
+                player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 1.5f, 0f);
+            }
+        }
     }
 }

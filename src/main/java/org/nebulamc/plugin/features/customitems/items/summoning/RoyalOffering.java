@@ -29,20 +29,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SunSigil extends CustomItem {
+public class RoyalOffering extends CustomItem {
     @Override
     public String getName() {
-        return "&6Sun Sigil";
+        return "&6Royal Offering";
     }
 
     @Override
     public Material getMaterial() {
-        return Material.RAW_GOLD;
+        return Material.RAW_COPPER;
     }
 
     @Override
     public List<String> getLore() {
-        return Arrays.asList("&7Summons: &eAvatar of Ra", "&7Recommended Players: &e1-3");
+        return Arrays.asList("&7Summons: &eThe Mountain King", "&7Recommended Players: &e1-3");
     }
 
     @Override
@@ -88,8 +88,8 @@ public class SunSigil extends CustomItem {
     }
 
     ProjectileAction sigilProj = new ProjectileAction(
-            0, 0, new NullAction(), new NullAction(), new NullAction(), new ParticleAction(Particle.LAVA, 1, 0, 0, 0, 0),
-            new ItemEntity(new ItemStack(Material.RAW_GOLD),false, 1), 0, 140, 0, false, false
+            0, 0, new NullAction(), new NullAction(), new NullAction(), new ParticleAction(Particle.FIREWORKS_SPARK, 1, 0, 0, 0, 0.3),
+            new ItemEntity(new ItemStack(Material.RAW_COPPER),false, 1), 0, 140, 0, false, false
     );
 
     @Override
@@ -109,9 +109,9 @@ public class SunSigil extends CustomItem {
                                             new ListAction(
                                                     new BlocksInAreaAction(
                                                             new CylindricArea(new Vector(0, -15, 0), 90, 0, false),
-                                                            new ParticleAction(Particle.FLAME, 1, 0, 0, 0, 0)
+                                                            new ParticleAction(Particle.FIREWORKS_SPARK, 1, 0, 0, 0, 0)
                                                     ),
-                                                    new SoundAction(Sound.BLOCK_FIRE_AMBIENT, 2, 1)
+                                                    new SoundAction(Sound.ENTITY_GUARDIAN_ATTACK, 2, 1)
                                             )
 
                                     ),
@@ -121,11 +121,12 @@ public class SunSigil extends CustomItem {
                                     80,
                                     new ChangeTargetAction(
                                             new ListAction(
-                                                    new RunCommandAction("mm mobs spawn -s AvatarOfRa 1 " + player.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ",1,1"),
+                                                    new RunCommandAction("mm mobs spawn -s MountainKing 1 " + player.getWorld().getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ() + ",1,1"),
                                                     new SoundAction(Sound.ENTITY_WITHER_SPAWN, 5, 1),
                                                     new SoundAction(Sound.ENTITY_GENERIC_EXPLODE, 5, 1),
-                                                    new ParticleAction(Particle.FLAME, 30, 0, 0, 0, 0.5),
-                                                    new ParticleAction(Particle.EXPLOSION_HUGE, 1, 0, 0, 0, 0)
+                                                    new ParticleAction(Particle.FIREWORKS_SPARK, 30, 0, 0, 0, 0.5),
+                                                    new ParticleAction(Particle.EXPLOSION_HUGE, 1, 0, 0, 0, 0),
+                                                    new LightningAction(false)
 
                                             ), new LocationTarget(loc)
                                     )

@@ -42,7 +42,7 @@ public class Ambrosia extends CustomItem {
 
     @Override
     public int getModelData() {
-        return 1;
+        return 0;
     }
 
     @Override
