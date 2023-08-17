@@ -22,7 +22,9 @@ public class SetHolyGround extends Action{
             if (((EntityTarget) target).getTarget() instanceof Player){
                 Player player = ((Player) ((EntityTarget) target).getTarget()).getPlayer();
                 PlayerData data = PlayerManager.getPlayerData(player);
-                data.setInHolyGround(buffer);
+                if (data != null){
+                    data.setInHolyGround(buffer);
+                }
             }
         }
     }

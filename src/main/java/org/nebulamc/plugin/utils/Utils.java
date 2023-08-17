@@ -4,6 +4,7 @@ import me.angeschossen.lands.api.flags.Flags;
 import me.angeschossen.lands.api.flags.type.RoleFlag;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.LandWorld;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,34 +50,39 @@ public final class Utils {
         return new Vector(absX, absY, absZ);
     }
 
+    static String[] blacklistedWorlds = new String[]{"nebula", "admin"};
+
     public static boolean hasFlag(Player player, Location loc, ItemStack itemStack, RoleFlag flag){
-        LandWorld landWorld = lands.getLandWorld(player.getWorld());
 
         if (itemStack == null){
             itemStack = new ItemStack(Material.AIR);
         }
 
-        if (!(player.getWorld().getName().equals("nebula")) && !(player.getWorld().getName().equals("admin")))
-            if (landWorld.hasRoleFlag(player, loc, flag, itemStack.getType(), true)){
-                return true;
+        for(String s : blacklistedWorlds){
+            if (player.getWorld().equals(Bukkit.getWorld(s))){
+                return false;
             }
-        return false;
+        }
+
+        LandWorld landWorld = lands.getLandWorld(player.getWorld());
+        if (landWorld != null) {
+            return landWorld.hasRoleFlag(player, loc, flag, itemStack.getType(), true);
+        }
+
+        return true;
     }
 
     public static boolean canDamage(Player player, Entity target){
         Location location = target.getLocation();
         if (target instanceof LivingEntity) {
             if (target instanceof Player) {
-                if (Utils.hasFlag(player, location, null, Flags.ATTACK_PLAYER))
-                    return true;
+                return  (Utils.hasFlag(player, location, null, Flags.ATTACK_PLAYER));
             }
             if (target instanceof Monster || target instanceof Golem) {
-                if (Utils.hasFlag(player, location, null, Flags.ATTACK_MONSTER))
-                    return true;
+                return  (Utils.hasFlag(player, location, null, Flags.ATTACK_MONSTER));
             }
             if (target instanceof Animals || target instanceof Ambient || target instanceof WaterMob || target instanceof NPC) {
-                if (Utils.hasFlag(player, location, null, Flags.ATTACK_ANIMAL))
-                    return true;
+                return (Utils.hasFlag(player, location, null, Flags.ATTACK_ANIMAL));
             }
         }
         return false;

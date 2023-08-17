@@ -24,7 +24,7 @@ public class SpawnChestCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            World w = Bukkit.getWorld("world");
+            World w = Bukkit.getWorld("irisworld");
             double border = w.getWorldBorder().getSize();
             int loc_x;
             int loc_z;

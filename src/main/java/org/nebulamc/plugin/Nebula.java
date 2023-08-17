@@ -73,7 +73,7 @@ public final class Nebula extends JavaPlugin {
         registerCommands();
         registerCustomItems();
         buildMeteorLootTable();
-        runMeteorSpawnLoop();
+        // runMeteorSpawnLoop();
 
 
         getLogger().info("Successfully enabled Nebula plugin.");
